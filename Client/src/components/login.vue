@@ -5,7 +5,7 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
-              <v-toolbar dark color="green accent-4">
+              <v-toolbar dark color="primary">
                 <v-toolbar-title>Login</v-toolbar-title>
                 <v-spacer></v-spacer> 
               </v-toolbar>

@@ -4,7 +4,7 @@
     <v-layout justify-center>
         <v-flex xs4>
             <v-card  raised>
-                <v-card-title :style="{backgroundColor : '#00C853'}" class="headline" >Registration</v-card-title>
+                <v-card-title class="headline primary" >Registration</v-card-title>
                 <v-divider></v-divider>
                 <br>               
               
