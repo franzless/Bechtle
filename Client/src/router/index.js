@@ -5,6 +5,7 @@ import main from '@/components/main'
 import profil from '@/components/profil'
 import urlaubsplan from '@/components/Urlaubsplan'
 import schichtplan from '@/components/Schichtplan'
+import register from '@/components/register'
 
 Vue.use(Router)
 
@@ -34,8 +35,12 @@ export default new Router({
       path:'/Schichtplan',
       name:'Schichtplan',
       component:schichtplan
+    },
+    {
+    path:'/register',
+      name:'register',
+      component:register
     }
-    
   ],
   mode:'history'
 })

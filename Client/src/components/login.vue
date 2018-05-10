@@ -39,13 +39,14 @@
     },
     methods:{
       submit(){
-        this.$http.post('localhost:8081',this.user)
+        
+        this.$http.post('http://localhost:8081/login',this.user.email)
         .then(response =>
-        {console.log(response)})
+        {console.log(response);
+        }
       , error =>{
-        console.log(error)
+        console.log(error);
+      });
       }}
-    }
-   
   }
 </script>

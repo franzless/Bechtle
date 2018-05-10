@@ -6,8 +6,12 @@ import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import toolbar from './components/toolbar.vue'
+import VueResource from 'vue-resource'
 
-Vue.component('my-toolbar',toolbar)
+
+Vue.component('my-toolbar',toolbar);
+Vue.use(VueResource);
+
 
 Vue.use(Vuetify, { theme: {
   primary: '#ee44aa',
@@ -18,7 +22,7 @@ Vue.use(Vuetify, { theme: {
   success: '#4CAF50',
   warning: '#FFC107'
 }})
-
+Vue.http.options.root = 'http://localhost:8081';
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -28,3 +32,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+

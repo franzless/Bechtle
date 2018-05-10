@@ -2,7 +2,7 @@
   <div>
       
 
-      <img   src="../assets/bechtle1.jpg">
+      <img  class="displayed" src="../assets/bechtle1.jpg">
        <br>
       <v-container grid-list-md text-xs-center>
       <v-layout row >
@@ -81,6 +81,7 @@
 export default {
     data: () => ({
       dialog: false,
+      
       headers: [
         {
           text: 'Datum',
@@ -176,8 +177,12 @@ export default {
 
 </script>
 <style>
-img{
-    align:middle
+img.displayed{
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:80%;
+    height:auto
 }
 </style>
 
