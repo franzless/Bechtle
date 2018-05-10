@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     submit () {
-      if (this.newuser.password != this.password2) {
+      if (this.newuser.password !== this.password2) {
         alert('passwords have to be the same. Please check')
       } else if ((this.$refs.form.validate())) {
         this.$http.post('http://localhost:8081/register', this.newuser)
