@@ -36,19 +36,19 @@
 </template>
 <script>
 export default {
-    data(){
-        return{
-            
-            sidenav:false,
-            menuitems:[
-             {icon:'supervisor_account', title:'Profil',link:'/profil'},             
-             {icon:'flight',title:'Urlaubsplan',link:'/Urlaubsplan'},
-             {icon:'assignment',title:'Schichtplan', link:'/Schichtplan'},
-             {icon:'exit_to_app',title:'Logout', link:'/logout'},     
-            ]
-        }
+  data () {
+    return {
+
+      sidenav: false,
+      menuitems: [
+             {icon: 'supervisor_account', title: 'Profil', link: '/profil'},
+             {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
+             {icon: 'assignment', title: 'Schichtplan', link: '/Schichtplan'},
+             {icon: 'exit_to_app', title: 'Logout', link: '/logout'}
+      ]
     }
-  
+  }
+
 }
 </script>
 <style scoped>

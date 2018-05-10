@@ -17,30 +17,30 @@ export default new Router({
       component: login
     },
     {
-      path:'/Main',
-      name:'Main',
-      component:main
+      path: '/Main',
+      name: 'Main',
+      component: main
     },
     {
-      path:'/Profil',
-      name:'Profil',
-      component:profil
+      path: '/Profil',
+      name: 'Profil',
+      component: profil
     },
     {
-      path:'/Urlaubsplan',
-      name:'ZUrlaubsplan',
-      component:urlaubsplan
+      path: '/Urlaubsplan',
+      name: 'ZUrlaubsplan',
+      component: urlaubsplan
     },
     {
-      path:'/Schichtplan',
-      name:'Schichtplan',
-      component:schichtplan
+      path: '/Schichtplan',
+      name: 'Schichtplan',
+      component: schichtplan
     },
     {
-    path:'/register',
-      name:'register',
-      component:register
+      path: '/register',
+      name: 'register',
+      component: register
     }
   ],
-  mode:'history'
+  mode: 'history'
 })

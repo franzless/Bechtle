@@ -79,102 +79,99 @@
 </template>
 <script>
 export default {
-    data: () => ({
-      dialog: false,
-      
-      headers: [
-        {
-          text: 'Datum',
-          align: 'left',
-          
-          value: 'datum'
-        },
-        { text: 'Arbeitsbeginn', value: 'von', sortable: false, },
-        { text: 'ArbeitsEnde', value: 'bis', sortable: false, },
-        { text: 'Serviceleistung', value:'SL', sortable: false, },
-        { text: 'Leistungsschein',value:'LS'  },
+  data: () => ({
+    dialog: false,
+
+    headers: [
+      {
+        text: 'Datum',
+        align: 'left',
+
+        value: 'datum'
+      },
+        { text: 'Arbeitsbeginn', value: 'von', sortable: false },
+        { text: 'ArbeitsEnde', value: 'bis', sortable: false },
+        { text: 'Serviceleistung', value: 'SL', sortable: false },
+        { text: 'Leistungsschein', value: 'LS' },
         { text: 'Actions', value: 'name', sortable: false }
-      ],
-      desserts: [],
-      editedIndex: -1,
-      editedItem: {
-        datum: '',
-        von: '',
-        bis: '',
-        SL: '',
-        LS: ''
-      },
-      defaultItem: {
-        datum: '',
-        von: '',
-        bis: '',
-        SL: '',
-        LS: ''
-      }
-    }),
-
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      }
+    ],
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      datum: '',
+      von: '',
+      bis: '',
+      SL: '',
+      LS: ''
     },
+    defaultItem: {
+      datum: '',
+      von: '',
+      bis: '',
+      SL: '',
+      LS: ''
+    }
+  }),
 
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
-    },
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+    }
+  },
 
-    created () {
-      this.initialize()
-    },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
+  },
 
-    methods: {
-      initialize () {
-        this.desserts = [
-          
-            
-          {
-            datum: '10.05.2018',
-            von: '07:30',
-            bis: '16:00',
-            SL: 'ServiceTechniker',
-            LS: 'Rollout'
-          }
-        ]
-      },
+  created () {
+    this.initialize()
+  },
 
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
+  methods: {
+    initialize () {
+      this.desserts = [
 
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
-
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
+        {
+          datum: '10.05.2018',
+          von: '07:30',
+          bis: '16:00',
+          SL: 'ServiceTechniker',
+          LS: 'Rollout'
         }
-        this.close()
+      ]
+    },
+
+    editItem (item) {
+      this.editedIndex = this.desserts.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item) {
+      const index = this.desserts.indexOf(item)
+      confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+    },
+
+    close () {
+      this.dialog = false
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      }, 300)
+    },
+
+    save () {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+      } else {
+        this.desserts.push(this.editedItem)
       }
+      this.close()
     }
   }
-  
-
+}
 </script>
 <style>
 img.displayed{

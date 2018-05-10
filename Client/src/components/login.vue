@@ -29,24 +29,23 @@
 
 <script>
   export default {
-    data(){
-      return{
-        user:{
-          email:'',
-          password:''
+    data () {
+      return {
+        user: {
+          email: '',
+          password: ''
         }
       }
     },
-    methods:{
-      submit(){
-        
-        this.$http.post('http://localhost:8081/login',this.user.email)
-        .then(response =>
-        {console.log(response);
+    methods: {
+      submit () {
+        this.$http.post('http://localhost:8081/login', this.user.email)
+        .then(response => {
+          console.log(response)
         }
-      , error =>{
-        console.log(error);
-      });
+      , error => {
+        console.log(error)
+      })
       }}
   }
 </script>
