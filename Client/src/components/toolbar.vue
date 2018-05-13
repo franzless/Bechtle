@@ -16,7 +16,7 @@
     </v-list>
     
 </v-navigation-drawer>
-    <v-toolbar  class="green accent-4">
+    <v-toolbar  class="primary">
           <v-toolbar-side-icon @click.native.stop="sidenav=!sidenav"
           class="hidden-sm-and-up"></v-toolbar-side-icon>
           <v-toolbar-title >
@@ -51,4 +51,8 @@ export default {
 
 }
 </script>
+<style scoped>
+
+</style>
+
 
