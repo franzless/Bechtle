@@ -26,7 +26,7 @@
           <v-toolbar-items class="hidden-xs-only">
             
           
-          <v-btn router :to="menu.link" v-for="menu in menuitems" :key="menu.title" flat color="black">
+          <v-btn router :to="menu.link" v-for="menu in menuitems" :key="menu.title"  flat color="black">
           <v-icon left>{{menu.icon}}</v-icon>      
             {{menu.title}}
           </v-btn>
@@ -36,19 +36,19 @@
 </template>
 <script>
 export default {
-    data(){
-        return{
-            
-            sidenav:false,
-            menuitems:[
-             {icon:'supervisor_account', title:'Profil',link:'/profil'},             
-             {icon:'flight',title:'Urlaubsplan',link:'/Urlaubsplan'},
-             {icon:'assignment',title:'Schichtplan', link:'/Schichtplan'},
-             {icon:'exit_to_app',title:'Logout', link:'/logout'},     
-            ]
-        }
+  data () {
+    return {
+
+      sidenav: false,
+      menuitems: [
+             {icon: 'supervisor_account', title: 'Profil', link: '/profil'},
+             {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
+             {icon: 'assignment', title: 'Schichtplan', link: '/Schichtplan'},
+             {icon: 'exit_to_app', title: 'Logout', link: '/'}
+      ]
     }
-  
+  }
+
 }
 </script>
 
