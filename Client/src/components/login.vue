@@ -12,6 +12,7 @@
               <v-card-text>
                 <v-form>
                   <v-text-field v-model="user.email" prepend-icon="person" name="login" label="E-Mail required " type="text"></v-text-field>
+                  <p>{{error}}</p>
                   <v-text-field v-model="user.password" id="password" prepend-icon="lock" name="password" label="Password" type="password"></v-text-field>
                 </v-form>
               </v-card-text>
@@ -28,25 +29,32 @@
 </template>
 
 <script>
+import router from '../router'
   export default {
-    data(){
-      return{
-        user:{
-          email:'',
-          password:''
-        }
+    data () {
+      return {
+        user: {
+          email: '',
+          password: ''
+        },
+        error: ''
       }
     },
-    methods:{
-      submit(){
-        
-        this.$http.post('http://localhost:8081/login',this.user.email)
-        .then(response =>
-        {console.log(response);
+    methods: {
+      submit () {
+        this.$http.post('http://localhost:8081/login', this.user)
+        .then(response => {
+        router.push('main')  
+          console.log(response)
         }
-      , error =>{
-        console.log(error);
-      });
+      , error => {
+        this.error = error.body
+      })
       }}
   }
 </script>
+<style scoped>
+p{
+  color:red!important
+}
+</style>
