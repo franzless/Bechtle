@@ -1,7 +1,7 @@
 <template>
   <div>
     
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="dialog" max-width="750px">
       <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
       <v-card>
         <v-card-title>
@@ -11,10 +11,11 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
+                
                   <v-menu
         ref="menu"
         :close-on-content-click="false"
-        v-model="menu"
+        v-model="menu1"
         :nudge-right="40"
         :return-value.sync="editedItem.datum"
         lazy
@@ -39,17 +40,72 @@
 
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.von" label="Arbeitsbeginn"></v-text-field>
+                <v-menu
+        ref="menu"
+        :close-on-content-click="false"
+        v-model="menu2"
+        :nudge-right="40"
+        :return-value.sync="editedItem.von"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="editedItem.von"
+          label="Arbeitsbeginn"
+          prepend-icon="access_time"
+          readonly
+        ></v-text-field>
+        <v-time-picker v-model="editedItem.von" @change="$refs.menu2.save(editedItem.von)">
+        <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.von)">OK</v-btn>
+        </v-time-picker>
+        </v-menu>
+                
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.bis" label="ArbeitsEnde"></v-text-field>
+                <v-menu
+        ref="menu"
+        :close-on-content-click="false"
+        v-model="menu3"
+        :nudge-right="40"
+        :return-value.sync="editedItem.bis"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        max-width="290px"
+        min-width="290px"
+      >
+        <v-text-field
+          slot="activator"
+          v-model="editedItem.bis"
+          label="ArbeitsEnde"
+          prepend-icon="access_time"
+          readonly
+        ></v-text-field>
+        <v-time-picker v-model="editedItem.bis" @change="$refs.menu3.save(editedItem.bis)">
+        <v-spacer></v-spacer>
+          <v-btn flat color="primary" @click="menu3 = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.bis)">OK</v-btn>
+          </v-time-picker>
+        </v-menu>
+              </v-flex>
+               <v-flex xs12 sm6 md4>
+                 
+                <v-select prepend-icon="portrait" :items="Serviceleistung" v-model="editedItem.SL" label="ServiceLeistung"></v-select>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select :items="Serviceleistung" v-model="editedItem.SL" label="ServiceLeistung"></v-select>
-              </v-flex>
+                <v-select prepend-icon="book" :items="Leistungsschein" v-model="editedItem.LS" label="Leistungsschein"></v-select>
+               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select :items="Leistungsschein" v-model="editedItem.SL" label="Leistungsschein"></v-select>
-                <v-select :items="Arbeitsort" v-model="editedItem.SL" label="Arbeitsort"></v-select>
+                <v-select prepend-icon="trip_origin" :items="Arbeitsort" v-model="editedItem.Ort" label="Arbeitsort"></v-select>
+              
               </v-flex>
             </v-layout>
           </v-container>
@@ -63,17 +119,18 @@
     </v-dialog>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="list"
       hide-actions
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.datum }}</td>
-        <td class="text-xs-right">{{ props.item.von }}</td>
-        <td class="text-xs-right">{{ props.item.bis }}</td>
-        <td class="text-xs-right">{{ props.item.SL }}</td>
-        <td class="text-xs-right">{{ props.item.LS }}</td>
-        <td class="justify-center layout px-0">
+        <td> {{ props.item.von }}</td>
+        <td> {{ props.item.bis }}</td>
+        <td> {{ props.item.SL }}</td>
+        <td >{{ props.item.LS }}</td>
+        <td >{{ props.item.Ort }}</td>
+        <td>
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
           </v-btn>
@@ -93,57 +150,62 @@
 </template>
 <script>
 export default {
-  data: () => ({
+  data() { return{
     dialog: false,
     menu: false,
+    menu1: false,
+    menu2:false,
+    menu3:false,
 
     headers: [
-        { text: 'Datum',align: 'left',value: 'datum'},
+        { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
         { text: 'ArbeitsEnde', value: 'bis', sortable: false },
         { text: 'Serviceleistung', value: 'SL', sortable: false },
         { text: 'Leistungsschein', value: 'LS' },
-        { text: 'ArbeitsOrt', value:'Ort'},
+        { text: 'ArbeitsOrt', value: 'Ort'},
         { text: 'Actions', value: 'name', sortable: false }
-            ],
+    ],
     Leistungsschein: [
-'LS01-AK-Beschaffung',
-'LS02-AK-Lager & Logistik, Installation',
-'LS03-AK Rollout',
-'LS04-AK-Incident & VPN Token',
-'LS05-AK MAC OS X',
-'LS06-AK-Mobile Devices & Asset MGMT.',
-'LS07-AK-Produktion',
-'LS08-AK-Ersatzteile & Reperaturen',
-'LS09-AK-Sonderaufträge',
-'LS10-AK-Produktion & Testing'],
-    Serviceleistung:[
-'Service Techniker',
-'Service Techniker ""B""',
-'System Engineer',
-'Repräsentant / Projektleiter',
-'Senior Engineer / Consultant',
-'Auszubildende',
-'Praktikant',
-'DB Entwicklung'],
-    Arbeitsort:['Kärcher','Heller','MHP','Mercedes-Benz-Museum'],
+      'LS01-AK-Beschaffung',
+      'LS02-AK-Lager & Logistik, Installation',
+      'LS03-AK Rollout',
+      'LS04-AK-Incident & VPN Token',
+      'LS05-AK MAC OS X',
+      'LS06-AK-Mobile Devices & Asset MGMT.',
+      'LS07-AK-Produktion',
+      'LS08-AK-Ersatzteile & Reperaturen',
+      'LS09-AK-Sonderaufträge',
+      'LS10-AK-Produktion & Testing'],
+    Serviceleistung: [
+      'Service Techniker',
+      'Service Techniker ""B""',
+      'System Engineer',
+      'Repräsentant / Projektleiter',
+      'Senior Engineer / Consultant',
+      'Auszubildende',
+      'Praktikant',
+      'DB Entwicklung'],
+    Arbeitsort: ['Kärcher', 'Heller', 'MHP', 'Mercedes-Benz-Museum'],
     list: [],
     editedIndex: -1,
     editedItem: {
       datum: null,
-      von: '',
-      bis: '',
+      von: null,
+      bis: null,
       SL: '',
-      LS: ''
+      LS: '',
+      Ort:''
     },
     defaultItem: {
       datum: null,
-      von: '',
-      bis: '',
+      von: null,
+      bis: null,
       SL: '',
-      LS: ''
+      LS: '',
+      Ort:''
     }
-  }),
+  }},
 
   computed: {
     formTitle () {
@@ -170,20 +232,21 @@ export default {
           von: '07:30',
           bis: '16:00',
           SL: 'ServiceTechniker',
-          LS: 'Rollout'
+          LS: 'Rollout',
+          Ort: 'Kärcher'
         }
       ]
     },
 
     editItem (item) {
-      this.editedIndex = list.indexOf(item)
+      this.editedIndex = this.list.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
       const index = this.list.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+      confirm('Are you sure you want to delete this item?') && this.list.splice(index, 1)
     },
 
     close () {
