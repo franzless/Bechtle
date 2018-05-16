@@ -12,36 +12,34 @@
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
                 
-                  <v-menu
-        ref="menu"
-        :close-on-content-click="false"
-        v-model="menu1"
-        :nudge-right="40"
+                 <v-dialog
+        ref="dialog"
+        v-model="modal"
         :return-value.sync="editedItem.datum"
+        persistent
         lazy
-        transition="scale-transition"
-        offset-y
         full-width
-        min-width="290px"
+        width="290px"
       >
         <v-text-field
           slot="activator"
           v-model="editedItem.datum"
-          label="Datum auswählen"
+          label="Datum"
           prepend-icon="event"
           readonly
         ></v-text-field>
-        <v-date-picker locale="de" v-model="editedItem.datum" no-title scrollable>
+        <v-date-picker v-model="editedItem.datum" scrollable>
           <v-spacer></v-spacer>
-          <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.datum)">OK</v-btn>
+          <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+          <v-btn flat color="primary" @click="$refs.dialog.save(editedItem.datum)">OK</v-btn>
         </v-date-picker>
-      </v-menu>
+      </v-dialog>
 
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-menu
-        ref="menu"
+
+                 <v-menu
+        ref="menu2"
         :close-on-content-click="false"
         v-model="menu2"
         :nudge-right="40"
@@ -60,11 +58,11 @@
           prepend-icon="access_time"
           readonly
         ></v-text-field>
-        <v-time-picker v-model="editedItem.von" @change="$refs.menu2.save(editedItem.von)">
+        <v-time-picker v-model="editedItem.von" @change="$refs.menu.save(editedItem.von)">
         <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.von)">OK</v-btn>
-        </v-time-picker>
+          <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.von)">OK</v-btn>
+          </v-time-picker>
         </v-menu>
                 
               </v-flex>
