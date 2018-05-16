@@ -2,8 +2,8 @@
  const bodyParser = require ('body-parser')
  const morgan = require ('morgan')
  const cors = require ('cors')
- const db = require ('./database.js')
- const {sequelize} =require ('./models')
+ 
+ const {sequelize} =require ('./db/models')
  const config = require ('./config/config')
 
  const app = express()

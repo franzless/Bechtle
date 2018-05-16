@@ -1,16 +1,31 @@
 module.exports ={
-    port:8081,
-    db:{
-        user     : 'root',
-        password : 'start123',
-        database: 'bechtle',
-        options:{
-           dialect:'mysql',
-           host:'localhost',
-            
+    
+        "development": {
+          "username": "root",
+          "password": "start123",
+          "database": "bechtle",
+          "host": "localhost",
+          "dialect": "mysql"
+        },
+        "test": {
+          "username": "root",
+          "password": null,
+          "database": "database_test",
+          "host": "127.0.0.1",
+          "dialect": "mysql"
+        },
+        "production": {
+          "username": "root",
+          "password": null,
+          "database": "database_production",
+          "host": "127.0.0.1",
+          "dialect": "mysql"
         }
-
-    },
+      ,
+      
+    port:8080,
+    
+    
     authentication:{
         jwtSecret:'secret'
     }

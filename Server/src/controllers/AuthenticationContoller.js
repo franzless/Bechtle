@@ -1,4 +1,5 @@
-const {User} = require('../models')
+const {users} = require('../db/models')
+const {zeitstempel} = require('../db/models')
 const jwt = require ('jsonwebtoken')
 const config = require('../config/config')
 
@@ -12,13 +13,27 @@ return jwt.sign(user, config.authentication.jwtSecret,{
 module.exports = {
    async register (req,res){
         try {
-            const test = await User.create(req.body)
+            const test = await users.create(req.body)
             res.send(test.toJSON())
             
             
         }catch(err){
                 res.status(400).send ({
                 error:'This email account is already in use.'
+            })
+        }
+        
+    },
+    async zeitstempel (req,res){
+        try {
+            const zeit = await zeitstempel.create(req.body)
+            console.log(req.body)
+            res.send(zeit.toJSON())
+            
+            
+        }catch(err){
+                res.status(400).send ({
+                error:'blubb'
             })
         }
         
