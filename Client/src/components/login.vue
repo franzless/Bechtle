@@ -30,28 +30,28 @@
 
 <script>
 import router from '../router'
-  export default {
-    data () {
-      return {
-        user: {
-          email: '',
-          password: ''
-        },
-        error: ''
-      }
-    },
-    methods: {
-      submit () {
-        this.$http.post('http://localhost:8081/login', this.user)
+export default {
+  data () {
+    return {
+      user: {
+        email: '',
+        password: ''
+      },
+      error: ''
+    }
+  },
+  methods: {
+    submit () {
+      this.$http.post('http://localhost:8081/login', this.user)
         .then(response => {
-        router.push('main')  
+          router.push('main')
           console.log(response)
         }
       , error => {
         this.error = error.body
       })
-      }}
-  }
+    }}
+}
 </script>
 <style scoped>
 p{
