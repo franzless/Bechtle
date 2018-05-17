@@ -122,7 +122,7 @@
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.datum }}</td>
+        <td> {{ props.item.datum }}</td>
         <td> {{ props.item.arbeitsbeginn }}</td>
         <td> {{ props.item.arbeitsende }}</td>
         <td> {{ props.item.serviceleistung }}</td>
@@ -213,16 +213,17 @@ export default {
     }
   },
 
-  created () {
+  mounted () {
     this.initialize()
   },
+ 
 
   methods: {
     initialize () {
       this.$http.get('http://localhost:8082/db/main')
         .then(response => {
-          response.body.slice(this.list)
-          console.log(response)
+          var newdata = response.body
+          Array.prototype.push.apply(this.list,newdata)
           console.log(this.list)
         }
       , error => {
