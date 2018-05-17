@@ -58,7 +58,7 @@
           prepend-icon="access_time"
           readonly
         ></v-text-field>
-        <v-time-picker v-model="editedItem.arbeitsbeginn" @change="$refs.menu.save(editedItem.arbeitsbeginn)">
+        <v-time-picker v-model="editedItem.arbeitsbeginn" @change="$refs.menu2.save(editedItem.arbeitsbeginn)">
         <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.arbeitsbeginn)">OK</v-btn>
@@ -147,6 +147,7 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
 export default {
   data() { return{
     dialog: false,
@@ -209,11 +210,11 @@ export default {
 
   watch: {
     dialog (val) {
-      val || this.close()
+      val || this.close() 
     }
   },
 
-  mounted () {
+  created () {
     this.initialize()
   },
  
@@ -223,8 +224,12 @@ export default {
       this.$http.get('http://localhost:8082/db/main')
         .then(response => {
           var newdata = response.body
-          Array.prototype.push.apply(this.list,newdata)
-          console.log(this.list)
+          var x= newdata.length
+          for (var i= 0; i<x ;i++){
+          this.list.push(newdata[i])
+          }
+          //Array.prototype.push.apply(this.list,newdata)
+          
         }
       , error => {
         this.error = error.body
