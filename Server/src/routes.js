@@ -13,8 +13,10 @@ module.exports = (app) => {
         zeitstempel.findAll().then(zeitstempel =>{
             res.send(zeitstempel)
         })
+       .catch(error =>{
+       console.log (error) })
         
-           
+          
         
         
             
@@ -27,7 +29,7 @@ module.exports = (app) => {
             res.send(zeitstempel)
         })
         .catch(error =>{
-        throw error;
+         console.log (error);
         })
         
     }

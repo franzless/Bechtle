@@ -43,7 +43,7 @@
         :close-on-content-click="false"
         v-model="menu2"
         :nudge-right="40"
-        :return-value.sync="editedItem.von"
+        :return-value.sync="editedItem.arbeitsbeginn"
         lazy
         transition="scale-transition"
         offset-y
@@ -53,15 +53,15 @@
       >
         <v-text-field
           slot="activator"
-          v-model="editedItem.von"
+          v-model="editedItem.arbeitsbeginn"
           label="Arbeitsbeginn"
           prepend-icon="access_time"
           readonly
         ></v-text-field>
-        <v-time-picker v-model="editedItem.von" @change="$refs.menu.save(editedItem.von)">
+        <v-time-picker v-model="editedItem.arbeitsbeginn" @change="$refs.menu.save(editedItem.arbeitsbeginn)">
         <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.von)">OK</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.arbeitsbeginn)">OK</v-btn>
           </v-time-picker>
         </v-menu>
                 
@@ -72,7 +72,7 @@
         :close-on-content-click="false"
         v-model="menu3"
         :nudge-right="40"
-        :return-value.sync="editedItem.bis"
+        :return-value.sync="editedItem.arbeitsende"
         lazy
         transition="scale-transition"
         offset-y
@@ -82,27 +82,27 @@
       >
         <v-text-field
           slot="activator"
-          v-model="editedItem.bis"
+          v-model="editedItem.arbeitsende"
           label="ArbeitsEnde"
           prepend-icon="access_time"
           readonly
         ></v-text-field>
-        <v-time-picker v-model="editedItem.bis" @change="$refs.menu3.save(editedItem.bis)">
+        <v-time-picker v-model="editedItem.arbeitsende" @change="$refs.menu3.save(editedItem.arbeitsende)">
         <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu3 = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.bis)">OK</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(editedItem.arbeitsende)">OK</v-btn>
           </v-time-picker>
         </v-menu>
               </v-flex>
                <v-flex xs12 sm6 md4>
                  
-                <v-select prepend-icon="portrait" :items="Serviceleistung" v-model="editedItem.SL" label="ServiceLeistung"></v-select>
+                <v-select prepend-icon="portrait" :items="Serviceleistung" v-model="editedItem.serviceleistung" label="ServiceLeistung"></v-select>
               </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select prepend-icon="book" :items="Leistungsschein" v-model="editedItem.LS" label="Leistungsschein"></v-select>
+                <v-select prepend-icon="book" :items="Leistungsschein" v-model="editedItem.leistungsschein" label="Leistungsschein"></v-select>
                </v-flex>
               <v-flex xs12 sm6 md4>
-                <v-select prepend-icon="trip_origin" :items="Arbeitsort" v-model="editedItem.Ort" label="Arbeitsort"></v-select>
+                <v-select prepend-icon="trip_origin" :items="Arbeitsort" v-model="editedItem.arbeitsort" label="Arbeitsort"></v-select>
               
               </v-flex>
             </v-layout>
@@ -189,12 +189,7 @@ export default {
     list: [],
     editedIndex: -1,
     editedItem: {
-      datum: null,
-      arbeitsbeginn: null,
-      arbeitsende: null,
-      leistungsschein: '',
-      serviceleistung: '',
-      arbeitsort:''
+      
     },
     defaultItem: {
       datum: null,
@@ -258,6 +253,7 @@ export default {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
         this.$http.post('http://localhost:8082/db/zeitstempel',this.editedItem)
+        console.log(this.editedItem)
       }
       this.close()
     }
