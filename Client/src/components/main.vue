@@ -226,7 +226,7 @@ export default {
     initialize () {
       this.$http.get('http://localhost:8082/db/main')
         .then(response => {
-          response.body.push(this.list)
+          response.body.slice(this.list)
           console.log(response)
           console.log(this.list)
         }
