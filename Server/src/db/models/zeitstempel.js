@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER
     }
-  }, {timestamps:false,freezetableName:true});
+  }, {timestamps:false, freezeTableName: true});
   zeitstempel.associate = function(models) {
     // associations can be defined here
     zeitstempel.belongsTo(models.users)

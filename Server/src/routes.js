@@ -10,11 +10,26 @@ module.exports = (app) => {
       
     ),
     app.get('/db/main', function(req,res){
-        const zs = zeitstempel.findAll()   
+        zeitstempel.findAll().then(zeitstempel =>{
+            res.send(zeitstempel)
+        })
+        
+           
+        
+        
+            
+        
     }),
 
-    app.post('/db/zeitstempel', function(req,res){
-        AuthenticationController.zeitstempel
+    app.post('/db/zeitstempel', function(req, res){
+        zeitstempel.create(req.body)
+        .then(zeitstempel => {
+            res.send(zeitstempel)
+        })
+        .catch(error =>{
+        throw error;
+        })
+        
     }
 
     

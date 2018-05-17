@@ -74,7 +74,7 @@ export default {
       password2: '',
       valid: true,
       alert: false,
-      login: 'http://localhost:8080/',
+      login: 'http://localhost:8081/',
       emailrules: [
         v => !!v || 'E-mail is required',
         v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
@@ -90,7 +90,7 @@ export default {
       if (this.newuser.password != this.password2) {
         alert('passwords have to be the same. Please check')
       } else if ((this.$refs.form.validate())) {
-        this.$http.post('http://localhost:8081/register', this.newuser)
+        this.$http.post('http://localhost:8082/register', this.newuser)
         this.alert = true
         this.newuser = ''
         this.password2 = ''

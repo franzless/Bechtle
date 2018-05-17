@@ -27,12 +27,12 @@ module.exports = {
     async zeitstempel (req,res){
         try {
             const zeit = await zeitstempel.create(req.body)
-            console.log(req.body)
+            console.log(zeit)
             res.send(zeit.toJSON())
             
             
         }catch(err){
-                res.status(400).send ({
+                res.status(404).send ({
                 error:'blubb'
             })
         }
@@ -41,7 +41,7 @@ module.exports = {
     async login (req,res){
         try {
             const {email,password}= req.body
-            const user = await User.findOne({
+            const user = await users.findOne({
                 where:{
                     email:email
                 }
