@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     submit () {
-      this.$http.post('http://localhost:8081/login', this.user)
+      this.$http.post('http://localhost:8082/login', this.user)
         .then(response => {
           router.push('main')
           console.log(response)

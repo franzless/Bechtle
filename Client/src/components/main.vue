@@ -123,11 +123,11 @@
     >
       <template slot="items" slot-scope="props">
         <td>{{ props.item.datum }}</td>
-        <td> {{ props.item.von }}</td>
-        <td> {{ props.item.bis }}</td>
-        <td> {{ props.item.SL }}</td>
-        <td >{{ props.item.LS }}</td>
-        <td >{{ props.item.Ort }}</td>
+        <td> {{ props.item.arbeitsbeginn }}</td>
+        <td> {{ props.item.arbeitsende }}</td>
+        <td> {{ props.item.serviceleistung }}</td>
+        <td >{{ props.item.leistungsschein }}</td>
+        <td >{{ props.item.arbeitsort }}</td>
         <td>
           <v-btn icon class="mx-0" @click="editItem(props.item)">
             <v-icon color="teal">edit</v-icon>
@@ -150,6 +150,7 @@
 export default {
   data() { return{
     dialog: false,
+    modal:false,
     menu: false,
     menu1: false,
     menu2:false,
@@ -189,11 +190,11 @@ export default {
     editedIndex: -1,
     editedItem: {
       datum: null,
-      von: null,
-      bis: null,
-      SL: '',
-      LS: '',
-      Ort:''
+      arbeitsbeginn: null,
+      arbeitsende: null,
+      leistungsschein: '',
+      serviceleistung: '',
+      arbeitsort:''
     },
     defaultItem: {
       datum: null,
@@ -223,19 +224,16 @@ export default {
 
   methods: {
     initialize () {
-      this.list = [
-
-        {
-          datum: '10.05.2018',
-          von: '07:30',
-          bis: '16:00',
-          SL: 'ServiceTechniker',
-          LS: 'Rollout',
-          Ort: 'Kärcher'
+      this.$http.get('http://localhost:8082/db/main')
+        .then(response => {
+          response.body.push(this.list)
+          console.log(response)
+          console.log(this.list)
         }
-      ]
+      , error => {
+        this.error = error.body
+      })
     },
-
     editItem (item) {
       this.editedIndex = this.list.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -259,7 +257,7 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
-        this.list.push(this.editedItem)
+        this.$http.post('http://localhost:8082/db/zeitstempel',this.editedItem)
       }
       this.close()
     }

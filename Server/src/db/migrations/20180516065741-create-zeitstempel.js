@@ -26,7 +26,7 @@ module.exports = {
       arbeitsort: {
         type: Sequelize.STRING
       },
-      userid:{
+      userUserid:{
         type:Sequelize.INTEGER,
         referenes:{
           model:'users',

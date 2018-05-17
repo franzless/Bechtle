@@ -20,7 +20,7 @@ Vue.use(Vuetify, { theme: {
   success: '#4CAF50',
   warning: '#FFC107'
 }})
-Vue.http.options.root = 'http://localhost:8081'
+Vue.http.options.root = 'http://localhost:8082'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
