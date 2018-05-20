@@ -30,27 +30,25 @@
 
 <script>
 import router from '../router'
-import {bus} from '../main'
+import {mapMutations} from 'vuex'
 export default {
   data () {
     return {
       user: {
         email: '',
         password: '',
-        firstname:'',
-        lastname:''
-      },
+        },
       error: ''
     }
   },
-  created() {
-
-  },
+  
   methods: {
     submit () {
       this.$http.post('http://localhost:8082/login', this.user)
         .then(response => {
-          bus.$emit('userloaded',response.body.user)
+          var userdata= response.body.user
+          this.$store.commit('setuser', userdata)
+          //bus.$emit('userloaded',response.body.user)
           router.push('main')
           
         }

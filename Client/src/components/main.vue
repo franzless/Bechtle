@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+      <my-toolbar></my-toolbar>
       <v-dialog v-model="dialog" max-width="750px">
       <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
       <v-card>
@@ -156,6 +156,7 @@ export default {
     menu1: false,
     menu2:false,
     menu3:false,
+    
 
     headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
@@ -205,6 +206,9 @@ export default {
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+    },
+    getuser () {
+      return this.$store.getters.getuser
     }
   },
 
@@ -213,15 +217,18 @@ export default {
       val || this.close() 
     }
   },
-
-  created () {
-    this.initialize()
+  created(){
+      this.initialize()
+      
+ 
   },
+
  
 
   methods: {
     initialize () {
-      this.$http.get('http://localhost:8082/db/main')
+        console.log(this.getuser)
+         this.$http.post('http://localhost:8082/db/main', this.getuser)
         .then(response => {
           var newdata = response.body
           var x= newdata.length
@@ -258,7 +265,7 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
-        this.$http.post('http://localhost:8082/db/zeitstempel',this.editedItem)
+        this.$http.post('http://localhost:8082/db/zeitstempel',this.editedItem,this.user.userid)
         console.log(this.editedItem)
       }
       this.close()

@@ -7,6 +7,8 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import toolbar from './components/toolbar.vue'
 import VueResource from 'vue-resource'
+import {store} from './store/store'
+
 
 Vue.component('my-toolbar', toolbar)
 Vue.use(VueResource)
@@ -22,12 +24,13 @@ Vue.use(Vuetify, { theme: {
 }})
 Vue.http.options.root = 'http://localhost:8082'
 Vue.config.productionTip = false
-export const bus=new Vue();
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

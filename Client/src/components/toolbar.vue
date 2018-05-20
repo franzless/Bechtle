@@ -22,7 +22,7 @@
           <v-toolbar-title >
               <router-link to="/main" tag="span" style="cursor:pointer">
               
-              Willkommen <v-icon>{{userimage}}</v-icon> {{user.firstname}}</router-link>
+              Willkommen <v-icon>{{userimage}}</v-icon> {{getuserfn}}</router-link>
               
           </v-toolbar-title>
           
@@ -58,13 +58,15 @@ export default {
     
 
   },
-  created(){
-    bus.$on('userloaded', (data)=>{
-      this.user = data
-      this.userimage=data.userimage
-    })
-    console.log(this.user)
+  computed:{
+    getuserfn(){
+      return this.$store.getters.getuserfn
+    }
+
   }
+  
+    
+  
 
 }
 </script>
