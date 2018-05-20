@@ -11,7 +11,6 @@
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
-                
                  <v-dialog
         ref="dialog"
         v-model="modal"
@@ -58,7 +57,7 @@
           prepend-icon="access_time"
           readonly
         ></v-text-field>
-        <v-time-picker v-model="editedItem.arbeitsbeginn" @change="$refs.menu2.save(editedItem.arbeitsbeginn)">
+        <v-time-picker v-model="editedItem.arbeitsbeginn" @change="$refs.menu.save(editedItem.arbeitsbeginn)">
         <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu2.save(editedItem.arbeitsbeginn)">OK</v-btn>
@@ -103,8 +102,7 @@
                </v-flex>
               <v-flex xs12 sm6 md4>
                 <v-select prepend-icon="trip_origin" :items="Arbeitsort" v-model="editedItem.arbeitsort" label="Arbeitsort"></v-select>
-              
-              </v-flex>
+                </v-flex>
             </v-layout>
           </v-container>
         </v-card-text>
@@ -191,6 +189,14 @@ export default {
     list: [],
     editedIndex: -1,
     editedItem: {
+      datum:null,
+      arbeitsbeginn:null,
+      arbeitsEnde:null,
+      serviceleistung:'',
+      leistungsschein:'',
+      arbeitsOrt:''
+      
+          
       
     },
     defaultItem: {
@@ -199,7 +205,8 @@ export default {
       bis: null,
       SL: '',
       LS: '',
-      Ort:''
+      Ort:'',
+      
     }
   }},
 
@@ -209,6 +216,9 @@ export default {
     },
     getuser () {
       return this.$store.getters.getuser
+    },
+    getuserid () {
+      return this.$store.getters.getuserid
     }
   },
 
@@ -227,7 +237,7 @@ export default {
 
   methods: {
     initialize () {
-        console.log(this.getuser)
+        
          this.$http.post('http://localhost:8082/db/main', this.getuser)
         .then(response => {
           var newdata = response.body
@@ -265,10 +275,13 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
-        this.$http.post('http://localhost:8082/db/zeitstempel',this.editedItem,this.user.userid)
-        console.log(this.editedItem)
+        this.$http.post('http://localhost:8082/db/zeitstempel',{userUserid:this.getuserid,datum:this.editedItem.datum,arbeitsbeginn:this.editedItem.arbeitsbeginn,arbeitsende:this.editedItem.arbeitsende,leistungsschein:this.editedItem.leistungsschein,serviceleistung:this.editedItem.serviceleistung,arbeitsort:this.editedItem.arbeitsort})
+        
       }
       this.close()
+      this.list = []
+      this.initialize()
+      
     }
   }
 }
