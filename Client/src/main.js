@@ -22,6 +22,7 @@ Vue.use(Vuetify, { theme: {
 }})
 Vue.http.options.root = 'http://localhost:8082'
 Vue.config.productionTip = false
+export const bus=new Vue();
 
 /* eslint-disable no-new */
 new Vue({
