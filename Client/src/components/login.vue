@@ -30,22 +30,29 @@
 
 <script>
 import router from '../router'
+import {bus} from '../main'
 export default {
   data () {
     return {
       user: {
         email: '',
-        password: ''
+        password: '',
+        firstname:'',
+        lastname:''
       },
       error: ''
     }
+  },
+  created() {
+
   },
   methods: {
     submit () {
       this.$http.post('http://localhost:8082/login', this.user)
         .then(response => {
+          bus.$emit('userloaded',response.body.user)
           router.push('main')
-          console.log(response)
+          
         }
       , error => {
         this.error = error.body
