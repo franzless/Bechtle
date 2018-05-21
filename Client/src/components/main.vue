@@ -2,7 +2,7 @@
   <div>
       <my-toolbar></my-toolbar>
       <v-dialog v-model="dialog" max-width="750px">
-      <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
+      <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
       <v-card>
         <v-card-title>
           <span class="headline">{{ formTitle }}</span>
@@ -108,8 +108,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+          <v-btn  color="blue darken-1"  flat @click.native="close">Cancel</v-btn>
+          <v-btn v-if="saves" color="blue darken-1" flat @click.native="save">Save</v-btn>
+          <v-btn v-if="updates" color="blue darken-1" flat @click.native="update">update</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -127,7 +128,7 @@
         <td >{{ props.item.leistungsschein }}</td>
         <td >{{ props.item.arbeitsort }}</td>
         <td>
-          <v-btn icon class="mx-0" @click="editItem(props.item)">
+          <v-btn icon class="mx-0" @click="(editItem(props.item), updates=!updates)">
             <v-icon color="teal">edit</v-icon>
           </v-btn>
           <v-btn icon class="mx-0" @click="deleteItem(props.item)">
@@ -154,8 +155,9 @@ export default {
     menu1: false,
     menu2:false,
     menu3:false,
+    updates:false,
+    saves:false,
     
-
     headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
@@ -249,18 +251,36 @@ export default {
           
         }
       , error => {
-        this.error = error.body
+        this.error = error
       })
     },
     editItem (item) {
       this.editedIndex = this.list.indexOf(item)
       this.editedItem = Object.assign({}, item)
+      console.log(this.editedItem, this.list)
       this.dialog = true
+      
     },
 
     deleteItem (item) {
       const index = this.list.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.list.splice(index, 1)
+      confirm('Are you sure you want to delete this item?') && this.$http.post('http://localhost:8082/db/zeitstempel/del',this.list.splice(index, 1))
+      
+      console.log(this.list.splice(index, 1))
+      this.list=[]
+      this.initialize()
+      
+    },
+
+    update(){
+       this.$http.post('http://localhost:8082/db/zeitstempel/update', this.editedItem)
+      .then(res => {
+        this.list=[]
+        this.initialize()
+        this.close()
+        
+      })
+
     },
 
     close () {
@@ -268,6 +288,8 @@ export default {
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
+        this.updates=false
+        this.saves=false
       }, 300)
     },
 
@@ -278,10 +300,10 @@ export default {
         this.$http.post('http://localhost:8082/db/zeitstempel',{userUserid:this.getuserid,datum:this.editedItem.datum,arbeitsbeginn:this.editedItem.arbeitsbeginn,arbeitsende:this.editedItem.arbeitsende,leistungsschein:this.editedItem.leistungsschein,serviceleistung:this.editedItem.serviceleistung,arbeitsort:this.editedItem.arbeitsort})
         
       }
-      this.close()
+      
       this.list = []
       this.initialize()
-      
+      this.close()
     }
   }
 }
