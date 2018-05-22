@@ -21,7 +21,7 @@ module.exports = (app) => {
     app.post('/db/zeitstempel', 
         ZeitstempelController.addnew),
     
-    app.post('db/zeitstempel/del',
+    app.post('/db/zeitstempel/del',
         ZeitstempelController.deleterecord)
         
     

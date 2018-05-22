@@ -114,12 +114,17 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-data-table
+
+    <v-layout justify-center>
+      <v-flex xs20 sm10 md8>
+
+      <v-data-table
       :headers="headers"
       :items="list"
       hide-actions
       class="elevation-1"
-    >
+    > 
+     
       <template slot="items" slot-scope="props">
         <td> {{ props.item.datum }}</td>
         <td> {{ props.item.arbeitsbeginn }}</td>
@@ -135,6 +140,7 @@
             <v-icon color="pink">delete</v-icon>
           </v-btn>
         </td>
+          
         
        
       </template>
@@ -142,7 +148,8 @@
         <v-btn color="primary" @click="initialize">Reset</v-btn>
       </template>
     </v-data-table>
-          
+        </v-flex>
+       </v-layout>   
   </div>
 </template>
 <script>
@@ -264,13 +271,17 @@ export default {
 
     deleteItem (item) {
       const index = this.list.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.$http.post('http://localhost:8082/db/zeitstempel/del',this.list.splice(index, 1))
-      
-      console.log(this.list.splice(index, 1))
-      this.list=[]
-      this.initialize()
-      
-    },
+      const spliced = this.list.splice(index, 1)
+      console.log(spliced[0])
+
+      var conf= confirm('Are you sure you want to delete this item?') 
+      if (conf== true) {
+         this.$http.post('http://localhost:8082/db/zeitstempel/del',spliced[0])
+         .then(res=>{
+           this.list=[]
+           this.initialize()
+      })}         
+          },
 
     update(){
        this.$http.post('http://localhost:8082/db/zeitstempel/update', this.editedItem)
@@ -298,12 +309,13 @@ export default {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
         this.$http.post('http://localhost:8082/db/zeitstempel',{userUserid:this.getuserid,datum:this.editedItem.datum,arbeitsbeginn:this.editedItem.arbeitsbeginn,arbeitsende:this.editedItem.arbeitsende,leistungsschein:this.editedItem.leistungsschein,serviceleistung:this.editedItem.serviceleistung,arbeitsort:this.editedItem.arbeitsort})
-        
-      }
-      
-      this.list = []
+        .then(res =>{
+          this.list = []
       this.initialize()
       this.close()
+        })
+      }
+           
     }
   }
 }

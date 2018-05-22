@@ -40,7 +40,7 @@ module.exports = {
     },
     deleterecord(req,res){
         console.log(req.body)
-        const zeitid = req.body[0].zeitstempelid
+        const zeitid = req.body.zeitstempelid
         zeitstempel.destroy({
             where:{
                 zeitstempelid:zeitid
