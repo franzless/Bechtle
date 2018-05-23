@@ -1,6 +1,7 @@
 <template>
   <div>
       <my-toolbar></my-toolbar>
+      <my-schichtplan></my-schichtplan>
       <v-dialog v-model="dialog" max-width="750px">
       <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
       <v-card>
@@ -154,7 +155,6 @@
 </template>
 <script>
 import Vue from 'vue';
-import schichtplan from './Schichtplan.vue'
 export default {
   data() { return{
     dialog: false,

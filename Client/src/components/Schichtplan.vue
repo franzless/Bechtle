@@ -17,10 +17,10 @@
               <v-list>
                 <v-list-tile v-for="item in items" :key="item.title" avatar>
                   <v-list-tile-action>
-                    <v-icon :color="item.color">star</v-icon>
+                    <v-icon :color="item.color">radio_button_checked</v-icon>
                    </v-list-tile-action>
                    <v-list-tile-content>
-                      <v-list-tile-title v-text="item.title"></v-list-tile-title>
+                      <v-list-tile-title v-text="item.firstname +' '+ item.lastname"></v-list-tile-title>
                     </v-list-tile-content>
                    <v-list-tile-avatar>
                        <img :src="item.avatar">
@@ -33,8 +33,8 @@
              <v-date-picker
                 ref="picker"
                 locale="de"
-                v-model="datumzeitf"
-                :picker-date.sync="pickerdatumf"
+                v-model="datumzeits"
+                :picker-date.sync="pickerdatums"
                 full-width
               ></v-date-picker>
            </v-flex>
@@ -50,11 +50,11 @@ export default {
       datumzeits:null,
       pickerdatumf:null,
       pickerdatums:null,
-        items:[]
+      items:[]
     }
   },
   created(){
-    this.items=this.getusers()
+    this.items=this.getusers
   },
   computed:{
     getusers(){
