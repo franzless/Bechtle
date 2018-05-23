@@ -52,7 +52,9 @@ export default {
              {icon: this.usericon, title: 'Profil', link: '/profil'},
              {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
              {icon: 'assignment', title: 'Schichtplan', link: '/Schichtplan'},
-             {icon: 'exit_to_app', title: 'Logout', link: '/'}
+             {icon: 'account_box', title:'Register', link:'/register'},
+             {icon: 'exit_to_app', title: 'Logout', link: '/'},
+             
       ]
     }
     
