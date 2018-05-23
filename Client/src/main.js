@@ -11,6 +11,7 @@ import {store} from './store/store'
 
 
 Vue.component('my-toolbar', toolbar)
+
 Vue.use(VueResource)
 
 Vue.use(Vuetify, { theme: {

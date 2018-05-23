@@ -76,5 +76,14 @@ module.exports = {
             })
         }
         
+    },
+    getall(req,res){
+        
+        users.findAll().then(response =>{
+            
+            res.send(response)
+        })
+    
+
     }
 }

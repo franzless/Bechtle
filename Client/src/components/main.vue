@@ -154,6 +154,7 @@
 </template>
 <script>
 import Vue from 'vue';
+import schichtplan from './Schichtplan.vue'
 export default {
   data() { return{
     dialog: false,

@@ -1,6 +1,7 @@
 const AuthenticationController = require ('./controllers/AuthenticationContoller.js')
 const ZeitstempelController = require ('./controllers/ZeitstempelController.js')
 const {zeitstempel} = require('./db/models')
+const {users} = require('./db/models')
 module.exports = (app) => {
     app.post('/register', 
         AuthenticationController.register
@@ -16,7 +17,9 @@ module.exports = (app) => {
     app.post('/db/zeitstempel/update',
         ZeitstempelController.updatezeitstempel
     ),      
-    
+    app.get('/users',
+        AuthenticationController.getall
+    ),
 
     app.post('/db/zeitstempel', 
         ZeitstempelController.addnew),

@@ -41,6 +41,9 @@ export default {
       error: ''
     }
   },
+  created(){
+      this.getusers()
+    },
   
   methods: {
     submit () {
@@ -49,13 +52,26 @@ export default {
           var userdata= response.body.user
           this.$store.commit('setuser', userdata)
           //bus.$emit('userloaded',response.body.user)
-          router.push('main')
-          
+          router.push('main')          
         }
       , error => {
         this.error = error.body
       })
-    }}
+    },
+    getusers(){
+    this.$http.get('http://localhost:8082/users')
+    .then(res =>{
+    var data = res.body
+    this.$store.commit('addusers', data)
+    })
+    .catch(err =>{
+      console.log(err)
+    })
+    
+    
+    },
+    
+    }
 }
 </script>
 <style scoped>
