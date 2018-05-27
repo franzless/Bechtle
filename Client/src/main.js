@@ -10,7 +10,6 @@ import schichtplan from './components/Schichtplan.vue'
 import VueResource from 'vue-resource'
 import {store} from './store/store'
 
-
 Vue.component('my-toolbar', toolbar)
 Vue.component('my-schichtplan', schichtplan)
 Vue.use(VueResource)
@@ -26,7 +25,6 @@ Vue.use(Vuetify, { theme: {
 }})
 Vue.http.options.root = 'http://localhost:8082'
 Vue.config.productionTip = false
-
 
 /* eslint-disable no-new */
 new Vue({
