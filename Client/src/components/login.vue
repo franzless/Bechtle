@@ -36,42 +36,40 @@ export default {
     return {
       user: {
         email: '',
-        password: '',
-        },
+        password: ''
+      },
       error: ''
     }
   },
-  created(){
-      this.getusers()
-    },
-  
+  created () {
+    this.getusers()
+  },
+
   methods: {
     submit () {
       this.$http.post('http://localhost:8082/login', this.user)
         .then(response => {
-          var userdata= response.body.user
+          var userdata = response.body.user
           this.$store.commit('setuser', userdata)
-          //bus.$emit('userloaded',response.body.user)
-          router.push('main')          
+          // bus.$emit('userloaded',response.body.user)
+          router.push('main')
         }
       , error => {
         this.error = error.body
       })
     },
-    getusers(){
-    this.$http.get('http://localhost:8082/users')
-    .then(res =>{
-    var data = res.body
-    this.$store.commit('addusers', data)
+    getusers () {
+      this.$http.get('http://localhost:8082/users')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('addusers', data)
     })
-    .catch(err =>{
+    .catch(err => {
       console.log(err)
     })
-    
-    
-    },
-    
     }
+
+  }
 }
 </script>
 <style scoped>
