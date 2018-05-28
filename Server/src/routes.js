@@ -1,5 +1,6 @@
 const AuthenticationController = require ('./controllers/AuthenticationContoller.js')
 const ZeitstempelController = require ('./controllers/ZeitstempelController.js')
+const schichtController = require ('./controllers/schichtController.js')
 const {zeitstempel} = require('./db/models')
 const {users} = require('./db/models')
 module.exports = (app) => {
@@ -26,6 +27,9 @@ module.exports = (app) => {
     
     app.post('/db/zeitstempel/del',
         ZeitstempelController.deleterecord)
+    app.get('/db/schicht',
+        schichtController.getschicht
+        )
         
     
 
