@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     user: {},
-    users: []
+    users: [],
+    schicht:[]
 
   },
   getters: {
@@ -25,7 +26,15 @@ export const store = new Vuex.Store({
     },
     getusers: state => {
       return state.users
+    },
+    getfrüh: state => {
+        return state.schicht.filter(x=>x.schichtname == 'früh')
+    },
+    getspät: state => {
+        return state.schicht.filter(x=>x.schichtname == 'spät')
+    
     }
+    
 
   },
   mutations: {
@@ -34,6 +43,9 @@ export const store = new Vuex.Store({
     },
     addusers: (state, users) => {
       state.users = users
+    },
+    addschicht:(state,schicht)=>{
+        state.schicht=schicht
     }
   }
 
