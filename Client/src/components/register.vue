@@ -74,7 +74,7 @@ export default {
       password2: '',
       valid: true,
       alert: false,
-      login: 'http://localhost:8082/',
+      login: 'http://localhost:8080/',
       emailrules: [
         v => !!v || 'E-mail is required',
         v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
