@@ -33,6 +33,9 @@ module.exports = (app) => {
         ),
     app.post('/db/updateschichtf',
         schichtController.updateschichtf)
+        ,
+    app.post('/db/addschicht',
+        schichtController.addschicht)
         
     
 

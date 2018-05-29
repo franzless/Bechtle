@@ -2,7 +2,7 @@
   <div>
      
         <v-layout row >
-          <v-dialog v-model="dialog" >
+          <v-dialog v-model="dialog" persistent >
             <v-card>
               <v-card-title>
                 <span class="headline">{{formTitle}}</span>
@@ -34,7 +34,7 @@
             <h1>Frühschicht</h1>
              <v-date-picker
                 @click.native="dialog=true"
-                ref="picker"
+                ref="dialog"
                 :events="nurdatumf"
                 :event-color="eventcolorf"
                 locale="de"
@@ -159,7 +159,7 @@ export default {
       this.eventfrüh=[]
       this.eventspät=[]
       this.nurdatumf=[]
-     this.start()
+      this.start()
       this.cancel()             
         
         
