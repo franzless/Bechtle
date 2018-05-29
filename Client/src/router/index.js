@@ -6,6 +6,7 @@ import profil from '@/components/profil'
 import urlaubsplan from '@/components/Urlaubsplan'
 import schichtplan from '@/components/Schichtplan'
 import register from '@/components/register'
+import addschicht from '@/components/addschicht'
 
 Vue.use(Router)
 
@@ -33,8 +34,8 @@ export default new Router({
     },
     {
       path: '/Schichtplan',
-      name: 'Schichtplan',
-      component: schichtplan
+      name: 'addschicht',
+      component: addschicht
     },
     {
       path: '/register',
