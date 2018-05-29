@@ -2,15 +2,45 @@
   <div>
      
         <v-layout row >
+          <v-dialog v-model="dialog" >
+            <v-card>
+              <v-card-title>
+                <span class="headline">{{formTitle}}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-text-field v-if="datumzeitf!=null" disabled v-model="datumzeitf">{{datumzeitf}}</v-text-field>
+                <v-text-field  v-if="datumzeits!=null" disabled v-model="datumzeits">{{datumzeits}}</v-text-field>
+                <v-select
+                 :items="items"
+                  required
+                  label="Select"
+                  v-model="updatef"
+                  item-text="firstname"
+                  item-value="userid"
+                  ></v-select>
+                  <v-card-actions>
+                    <v-text-field class="error" v-if="error !== '' " v-model="error">{{error}}</v-text-field>
+                    
+                    <v-btn class="primary" @click="updateschicht"> update</v-btn>
+                    <v-btn class="primary" @click="cancel" >Cancel</v-btn>
+                    
+                  </v-card-actions>
+                </v-card-text> 
+            </v-card>
+            </v-dialog>
+
+          
           <v-flex xs12 sm6 class="my-2 px-1">
             <h1>Frühschicht</h1>
              <v-date-picker
+                @click.native="dialog=true"
                 ref="picker"
                 :events="nurdatumf"
                 :event-color="eventcolorf"
                 locale="de"
                 v-model="datumzeitf"
-                :picker-date.sync="pickerdatumf"
+                :return-value.sync="pickerdatumf"
+                
                 full-width
               ></v-date-picker>
            </v-flex>
@@ -33,6 +63,7 @@
             <v-flex xs12 sm6 class="my-2 px-1">
               <h1>Spätschicht</h1>
              <v-date-picker
+              @click.native="dialog=true"
                 ref="picker"
                 locale="de"
                 :events="nurdatums"
@@ -42,7 +73,7 @@
                 full-width
               ></v-date-picker>
            </v-flex>
-
+              
           </v-layout>
    </div>
 </template>
@@ -54,36 +85,25 @@ export default {
       datumzeits: null,
       pickerdatumf: null,
       pickerdatums: null,
+      updatef:'',
       items: [],
-           
+      dialog:'false',     
       nurdatumf:[],
       nurdatums:[],
       eventspät:[],
-      eventfrüh:[]
+      eventfrüh:[],
+      error:''
     }
   },
   created () {
-    this.items = this.getusers
-    this.eventfrüh = this.getfrüh
-    this.eventspät = this.getspät
+    this.start()
     
   },
-  mounted () {
-    
-        var x = this.eventfrüh.length
-        var y = this.eventspät.length
-        for (var i= 0; i<x; i++){
-        this.nurdatumf.push(this.eventfrüh[i].datum)}
-        for (var i=0; i<y ;i++){
-          this.nurdatums.push(this.eventspät[i].datum)}
-        }
-      
-
-    
-      
-
-  ,
+  
   computed: {
+    formTitle () {
+      return this.datumzeitf !== null ? 'früh' : 'spät'}
+      ,
     getusers () {
       return this.$store.getters.getusers
     },
@@ -91,9 +111,31 @@ export default {
       return this.$store.getters.getfrüh
     },
     getspät (){
-      return this.$store.getters.getspät}
+      return this.$store.getters.getspät},
+    
   },
   methods:{
+    start(){
+    this.items = this.getusers
+    this.eventfrüh = this.getfrüh
+    this.eventspät = this.getspät
+
+        var x = this.eventfrüh.length
+        var y = this.eventspät.length
+          for (var i= 0; i<x; i++){
+        this.nurdatumf.push(this.eventfrüh[i].datum)}
+          for (var i=0; i<y ;i++){
+          this.nurdatums.push(this.eventspät[i].datum)}
+    },
+    cancel(){
+      this.dialog=false
+      this.datumzeitf=null
+      this.datumzeits=null
+
+    },
+
+    
+    
     eventcolorf(date){
       var index = this.nurdatumf.indexOf(date)
       if (index == -1){}
@@ -105,6 +147,27 @@ export default {
       if (index == -1){}
       else{      
       return this.eventspät[index].user.usercolor  }    
+    },
+    updateschicht(){
+       
+      var data = {datum:this.datumzeitf,userid:this.updatef,schichtname:this.formTitle}
+
+      this.$http.post('http://localhost:8082/db/updateschichtf',data)
+      .then(res => {
+      var data = res.body
+      this.$store.commit('addschicht', data)
+      this.eventfrüh=[]
+      this.eventspät=[]
+      this.nurdatumf=[]
+     this.start()
+      this.cancel()             
+        
+        
+      })
+      .catch(err =>{
+        console.log(err)
+        this.error= 'Irgendwas ist schief gegangen'
+      })
     }
     
 
@@ -113,4 +176,10 @@ export default {
 
 }
 </script>
+<style scoped>
+.error{
+  color:red
+}
+</style>
+
 
