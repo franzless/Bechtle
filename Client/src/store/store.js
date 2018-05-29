@@ -18,10 +18,15 @@ export const store = new Vuex.Store({
       return state.user.userid
     },
     getuser: state => {
+       
       return state.user
     },
     fullname: state => {
-      const fullname = state.users.firstname + '  ' + state.users.lastname
+      const fullname=[]
+      var l= state.users.length
+        for(var i=0;i<l;i++){
+          var data= state.users[i].firstname + '  ' + state.users[i].lastname
+          fullname.push(data)}
       return fullname
     },
     getusers: state => {
