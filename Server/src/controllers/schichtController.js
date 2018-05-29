@@ -36,6 +36,15 @@ updateschichtf(req,res){
     }).catch(err=>{
         res.send(err)
     })
+},
+addschicht(req,res){
+    var data = req.body 
+    console.log(data)
+    schicht.bulkCreate(
+        data
+    ).then(response =>{
+        res.send(response)
+    })
 }
 
 
