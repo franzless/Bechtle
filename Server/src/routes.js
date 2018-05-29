@@ -26,7 +26,8 @@ module.exports = (app) => {
         ZeitstempelController.addnew),
     
     app.post('/db/zeitstempel/del',
-        ZeitstempelController.deleterecord)
+        ZeitstempelController.deleterecord),
+
     app.get('/db/schicht',
         schichtController.getschicht
         )

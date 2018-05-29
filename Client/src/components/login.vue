@@ -43,6 +43,7 @@ export default {
   },
   created () {
     this.getusers()
+    this.getschicht()
   },
 
   methods: {
@@ -63,6 +64,16 @@ export default {
     .then(res => {
       var data = res.body
       this.$store.commit('addusers', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    },
+    getschicht(){
+      this.$http.get('http://localhost:8082/db/schicht')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('addschicht', data)
     })
     .catch(err => {
       console.log(err)
