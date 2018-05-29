@@ -154,19 +154,20 @@
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Vue from 'vue'
 export default {
-  data() { return{
-    dialog: false,
-    modal:false,
-    menu: false,
-    menu1: false,
-    menu2:false,
-    menu3:false,
-    updates:false,
-    saves:false,
-    
-    headers: [
+  data () {
+    return {
+      dialog: false,
+      modal: false,
+      menu: false,
+      menu1: false,
+      menu2: false,
+      menu3: false,
+      updates: false,
+      saves: false,
+
+      headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
         { text: 'ArbeitsEnde', value: 'bis', sortable: false },
@@ -174,51 +175,50 @@ export default {
         { text: 'Leistungsschein', value: 'LS' },
         { text: 'ArbeitsOrt', value: 'Ort'},
         { text: 'Actions', value: 'name', sortable: false }
-    ],
-    Leistungsschein: [
-      'LS01-AK-Beschaffung',
-      'LS02-AK-Lager & Logistik, Installation',
-      'LS03-AK Rollout',
-      'LS04-AK-Incident & VPN Token',
-      'LS05-AK MAC OS X',
-      'LS06-AK-Mobile Devices & Asset MGMT.',
-      'LS07-AK-Produktion',
-      'LS08-AK-Ersatzteile & Reperaturen',
-      'LS09-AK-Sonderaufträge',
-      'LS10-AK-Produktion & Testing'],
-    Serviceleistung: [
-      'Service Techniker',
-      'Service Techniker ""B""',
-      'System Engineer',
-      'Repräsentant / Projektleiter',
-      'Senior Engineer / Consultant',
-      'Auszubildende',
-      'Praktikant',
-      'DB Entwicklung'],
-    Arbeitsort: ['Kärcher', 'Heller', 'MHP', 'Mercedes-Benz-Museum'],
-    list: [],
-    editedIndex: -1,
-    editedItem: {
-      datum:null,
-      arbeitsbeginn:null,
-      arbeitsEnde:null,
-      serviceleistung:'',
-      leistungsschein:'',
-      arbeitsOrt:''
-      
-          
-      
-    },
-    defaultItem: {
-      datum: null,
-      von: null,
-      bis: null,
-      SL: '',
-      LS: '',
-      Ort:'',
-      
+      ],
+      Leistungsschein: [
+        'LS01-AK-Beschaffung',
+        'LS02-AK-Lager & Logistik, Installation',
+        'LS03-AK Rollout',
+        'LS04-AK-Incident & VPN Token',
+        'LS05-AK MAC OS X',
+        'LS06-AK-Mobile Devices & Asset MGMT.',
+        'LS07-AK-Produktion',
+        'LS08-AK-Ersatzteile & Reperaturen',
+        'LS09-AK-Sonderaufträge',
+        'LS10-AK-Produktion & Testing'],
+      Serviceleistung: [
+        'Service Techniker',
+        'Service Techniker ""B""',
+        'System Engineer',
+        'Repräsentant / Projektleiter',
+        'Senior Engineer / Consultant',
+        'Auszubildende',
+        'Praktikant',
+        'DB Entwicklung'],
+      Arbeitsort: ['Kärcher', 'Heller', 'MHP', 'Mercedes-Benz-Museum'],
+      list: [],
+      editedIndex: -1,
+      editedItem: {
+        datum: null,
+        arbeitsbeginn: null,
+        arbeitsEnde: null,
+        serviceleistung: '',
+        leistungsschein: '',
+        arbeitsOrt: ''
+
+      },
+      defaultItem: {
+        datum: null,
+        von: null,
+        bis: null,
+        SL: '',
+        LS: '',
+        Ort: ''
+
+      }
     }
-  }},
+  },
 
   computed: {
     formTitle () {
@@ -234,29 +234,23 @@ export default {
 
   watch: {
     dialog (val) {
-      val || this.close() 
+      val || this.close()
     }
   },
-  created(){
-      this.initialize()
-      
- 
+  created () {
+    this.initialize()
   },
-
- 
 
   methods: {
     initialize () {
-        
-         this.$http.post('http://localhost:8082/db/main', this.getuser)
+      this.$http.post('http://localhost:8082/db/main', this.getuser)
         .then(response => {
           var newdata = response.body
-          var x= newdata.length
-          for (var i= 0; i<x ;i++){
-          this.list.push(newdata[i])
+          var x = newdata.length
+          for (var i = 0; i < x; i++) {
+            this.list.push(newdata[i])
           }
-          //Array.prototype.push.apply(this.list,newdata)
-          
+          // Array.prototype.push.apply(this.list,newdata)
         }
       , error => {
         this.error = error
@@ -267,7 +261,6 @@ export default {
       this.editedItem = Object.assign({}, item)
       console.log(this.editedItem, this.list)
       this.dialog = true
-      
     },
 
     deleteItem (item) {
@@ -275,24 +268,23 @@ export default {
       const spliced = this.list.splice(index, 1)
       console.log(spliced[0])
 
-      var conf= confirm('Are you sure you want to delete this item?') 
-      if (conf== true) {
-         this.$http.post('http://localhost:8082/db/zeitstempel/del',spliced[0])
-         .then(res=>{
-           this.list=[]
+      var conf = confirm('Are you sure you want to delete this item?')
+      if (conf == true) {
+        this.$http.post('http://localhost:8082/db/zeitstempel/del', spliced[0])
+         .then(res => {
+           this.list = []
            this.initialize()
-      })}         
-          },
+         })
+      }
+    },
 
-    update(){
-       this.$http.post('http://localhost:8082/db/zeitstempel/update', this.editedItem)
+    update () {
+      this.$http.post('http://localhost:8082/db/zeitstempel/update', this.editedItem)
       .then(res => {
-        this.list=[]
+        this.list = []
         this.initialize()
         this.close()
-        
       })
-
     },
 
     close () {
@@ -300,8 +292,8 @@ export default {
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
-        this.updates=false
-        this.saves=false
+        this.updates = false
+        this.saves = false
       }, 300)
     },
 
@@ -309,14 +301,13 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
-        this.$http.post('http://localhost:8082/db/zeitstempel',{userUserid:this.getuserid,datum:this.editedItem.datum,arbeitsbeginn:this.editedItem.arbeitsbeginn,arbeitsende:this.editedItem.arbeitsende,leistungsschein:this.editedItem.leistungsschein,serviceleistung:this.editedItem.serviceleistung,arbeitsort:this.editedItem.arbeitsort})
-        .then(res =>{
+        this.$http.post('http://localhost:8082/db/zeitstempel', {userUserid: this.getuserid, datum: this.editedItem.datum, arbeitsbeginn: this.editedItem.arbeitsbeginn, arbeitsende: this.editedItem.arbeitsende, leistungsschein: this.editedItem.leistungsschein, serviceleistung: this.editedItem.serviceleistung, arbeitsort: this.editedItem.arbeitsort})
+        .then(res => {
           this.list = []
-      this.initialize()
-      this.close()
+          this.initialize()
+          this.close()
         })
       }
-           
     }
   }
 }

@@ -10,7 +10,9 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER
-    }
+    },
+    usercolor:DataTypes.STRING,
+    usergroup:DataTypes.STRING
   }, {timestamps:true, freezetableNames:true});
   users.associate = function(models) {
     // associations can be defined here
