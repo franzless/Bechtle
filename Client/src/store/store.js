@@ -55,13 +55,16 @@ export const store = new Vuex.Store({
     addusers: (state, users) => {
       state.users = users
     },
-    addschicht:(state,schicht)=>{
+    updateschicht:(state,schicht)=>{
         state.schicht=[]
         var l= schicht.length
         for(var i= 0; i<l ; i++){
             state.schicht.push(schicht[i])}
-        
-    }
+     },
+     addschicht:(state,schicht)=>{
+      var l= schicht.length
+      for(var i= 0; i<l ; i++){
+          state.schicht.push(schicht[i])}}
   },
   actions:{
 

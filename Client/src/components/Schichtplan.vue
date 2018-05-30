@@ -125,8 +125,8 @@ export default {
         var y = this.eventspät.length
           for (var i= 0; i<x; i++){
         this.nurdatumf.push(this.eventfrüh[i].datum)}
-          for (var i=0; i<y ;i++){
-          this.nurdatums.push(this.eventspät[i].datum)}
+          for (var z=0; z<y ;z++){
+          this.nurdatums.push(this.eventspät[z].datum)}
     },
     cancel(){
       this.dialog=false
@@ -155,7 +155,7 @@ export default {
       this.$http.post('http://localhost:8082/db/updateschichtf',data)
       .then(res => {
       var data = res.body
-      this.$store.commit('addschicht', data)
+      this.$store.commit('updateschicht', data)
       this.eventfrüh=[]
       this.eventspät=[]
       this.nurdatumf=[]
