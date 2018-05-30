@@ -25,7 +25,7 @@ export const store = new Vuex.Store({
       const fullname=[]
       var l= state.users.length
         for(var i=0;i<l;i++){
-          var data= state.users[i].firstname + '  ' + state.users[i].lastname
+          var data= state.users[i].firstname + ' ' + state.users[i].lastname
           fullname.push(data)}
       return fullname
     },
@@ -37,8 +37,14 @@ export const store = new Vuex.Store({
     },
     getspät: state => {
         return state.schicht.filter(x=>x.schichtname == 'spät')
-    
+      },
+
+    getbyfirst: (state,first) => {
+      return state.users.filter(x=>x.firstname == first)
+
     }
+    
+    
     
 
   },

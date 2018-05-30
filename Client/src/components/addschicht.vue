@@ -60,6 +60,7 @@
                     </v-flex>
                     </v-layout>
                     <v-btn class="primary" @click.native="e1=3">Weiter</v-btn>
+                    <v-alert :value="true" type="info">Samstage und Sonntage, welche in dem gewählten Zeitraum liegen, werden automatisch heraus gerechnet</v-alert>
 
                 </v-card-actions>
             </v-card>
@@ -69,11 +70,11 @@
                  <v-card-title>Mitarbeiter auswählen</v-card-title>
                  <v-card-actions>
                      <v-select
-                 :items="fullname"
+                 :items="getusers"
                   required
                   label="Select User"
                   v-model="user"
-                  item-text="firstname"
+                  item-text="email"
                   item-value="userid"></v-select>
                  </v-card-actions>
                  <v-btn @click="submit" class="primary">abschicken</v-btn>
@@ -101,21 +102,102 @@ export default {
             user:''
         }
     },
+    updated(){
+        /* var datum = new Date (this.picker)
+        console.log(datum)
+        console.log(this.wochentag(datum.getDay())) */
+    },
     computed:{
         getusers () {
              return this.$store.getters.getusers
         },
         fullname () {
             return this.$store.getters.fullname
-        }
+        },
+        getbyfirst () {
+             return this.$store.getters.getbyfirst
+    }
+        
     },
    methods:{
+
+         wochentag(i){
+            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+            var tag = (typeof(i) == 'object') ? i.getDay() : i ;
+                return tage[tag];
+         },
+         getuserid(){
+                var splituser = this.user.split(" ",2)
+                 console.log(splituser)
+                 var user= this.getbyfirst(splituser[0])
+                 console.log(user)
+
+    },
+    
+        
+    
        submit(){
-           var data=[]
+           var valdate= []
+           var datum =new Date(this.picker)
+           let datum1 =new Date(this.picker2)
+           let datum2= ''
+           var difference = datum1.getDate() - datum.getDate();
+           console.log(difference)
+            //Samstage und Sonntage rausfiltern
+           for (var i= 0; i<difference ; i++){
+               datum2 =datum
+               
+               console.log(this.wochentag(datum2.getDay()))
+               var x = this.wochentag(datum2.getDay().toString())
+
+               if(x === 'Samstag' || x === 'Sonntag'){
+                   console.log('true')
+                   datum2= datum2.setDate(datum2.getDate() + 1)   
+               }else{
+                   
+                   
+                                    
+                   valdate.push(datum2)
+                   console.log(valdate)
+
+                   
+                   datum2= datum2.setDate(datum2.getDate() + 1)
+               }
+           }
+           //Neues Array basteln
+
+           var l= valdate.length
+            var final = []
+           for(var y=0; y<l;y++){
+               
+               var object = new Object()
+               object.userUserid=this.user
+               object.schichtname=this.radiogroup
+               object.datum=valdate[y]
+               final.push(object)
+
+           }
+           console.log(final)
+            
+           
+           
+           
+           
+           
+
+
+
+
+
+
+           
+           
+           
+                      
            router.push('main')
        }
    } 
-    
 }
+
 </script>
 

@@ -113,6 +113,7 @@ export default {
     getspät (){
       return this.$store.getters.getspät},
     
+    
   },
   methods:{
     start(){
@@ -133,7 +134,6 @@ export default {
       this.datumzeits=null
 
     },
-
     
     
     eventcolorf(date){
