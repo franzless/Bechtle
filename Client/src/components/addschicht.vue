@@ -2,6 +2,8 @@
 <div>
     
 <v-dialog v-model="dialog">
+    <v-layout justify-center>
+        <v-flex xl7  >
     <v-toolbar class="primary">
         <v-toolbar-title>
             Neue Schicht erstellen
@@ -83,8 +85,9 @@
          </v-stepper-content>
     </v-stepper-items>
     
-    </v-stepper>    
-
+    </v-stepper>
+    </v-flex>    
+</v-layout>
 </v-dialog>
 
 </div>
@@ -114,9 +117,7 @@ export default {
         fullname () {
             return this.$store.getters.fullname
         },
-        getbyfirst () {
-             return this.$store.getters.getbyfirst
-    }
+        
         
     },
    methods:{
@@ -126,13 +127,7 @@ export default {
             var tag = (typeof(i) == 'object') ? i.getDay() : i ;
                 return tage[tag];
          },
-         getuserid(){
-                var splituser = this.user.split(" ",2)
-                 console.log(splituser)
-                 var user= this.getbyfirst(splituser[0])
-                 console.log(user)
-
-    },
+         
     
         
     
@@ -147,26 +142,22 @@ export default {
            for (var i= 0; i<difference ; i++){
                datum2 =datum
                
-               console.log(this.wochentag(datum2.getDay()))
+               
                var x = this.wochentag(datum2.getDay().toString())
 
                if(x === 'Samstag' || x === 'Sonntag'){
-                   console.log('true')
+                   
                    datum2= datum2.setDate(datum2.getDate() + 1)   
-               }else{
-                   
-                   
-                                    
-                   valdate.push(datum2)
-                   console.log(valdate)
-
+               }else{               
+                                  
+                   valdate.push(datum2.toISOString().split("T",1)[0])
                    
                    datum2= datum2.setDate(datum2.getDate() + 1)
                }
            }
            //Neues Array basteln
 
-           var l= valdate.length
+            var l= valdate.length
             var final = []
            for(var y=0; y<l;y++){
                
@@ -175,9 +166,11 @@ export default {
                object.schichtname=this.radiogroup
                object.datum=valdate[y]
                final.push(object)
-
            }
-           console.log(final)
+           this.$http.post('http://localhost:8082/db/addschicht',final)
+           .then(res=>{
+               this.$store.commit('addschicht', final)
+           })
             
            
            
