@@ -73,7 +73,7 @@ export default {
       this.$http.get('http://localhost:8082/db/schicht')
     .then(res => {
       var data = res.body
-      this.$store.commit('addschicht', data)
+      this.$store.commit('updateschicht', data)
     })
     .catch(err => {
       console.log(err)

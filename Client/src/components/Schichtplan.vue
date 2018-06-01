@@ -2,7 +2,7 @@
   <div>
      
         <v-layout row >
-          <v-dialog v-model="dialog" persistent >
+          <v-dialog v-model="dialog" persistent  >
             <v-card>
               <v-card-title>
                 <span class="headline">{{formTitle}}</span>
@@ -63,7 +63,7 @@
             <v-flex xs12 sm6 class="my-2 px-1">
               <h1>Spätschicht</h1>
              <v-date-picker
-              @click.native="dialog=true"
+               @click.native="dialog=true"
                 ref="picker"
                 locale="de"
                 :events="nurdatums"
@@ -87,7 +87,7 @@ export default {
       pickerdatums: null,
       updatef:'',
       items: [],
-      dialog:'false',     
+      dialog:false,    
       nurdatumf:[],
       nurdatums:[],
       eventspät:[],
@@ -95,10 +95,14 @@ export default {
       error:''
     }
   },
-  created () {
+  
+  mounted() {
+    this.getschicht()
     this.start()
+  } , 
     
-  },
+    
+  
   
   computed: {
     formTitle () {
@@ -116,6 +120,15 @@ export default {
     
   },
   methods:{
+    getschicht(){
+      this.$http.get('http://localhost:8082/db/schicht')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('updateschicht', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })},
     start(){
     this.items = this.getusers
     this.eventfrüh = this.getfrüh
@@ -159,6 +172,7 @@ export default {
       this.eventfrüh=[]
       this.eventspät=[]
       this.nurdatumf=[]
+      this.getschicht()
       this.start()
       this.cancel()             
         
