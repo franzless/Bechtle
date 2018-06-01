@@ -1,7 +1,7 @@
 <template>
   <div>
       <v-container grid-list-xl fluid>
-        <v-layout row wrap>
+        <v-layout row >
           
           <v-dialog v-model="dialog" persistent width="400px" >
             
