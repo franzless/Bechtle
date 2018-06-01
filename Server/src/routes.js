@@ -35,7 +35,11 @@ module.exports = (app) => {
         schichtController.updateschichtf)
         ,
     app.post('/db/addschicht',
-        schichtController.addschicht)
+        schichtController.addschicht),
+
+    app.post('/db/filter',
+        ZeitstempelController.filter)
+
         
     
 
