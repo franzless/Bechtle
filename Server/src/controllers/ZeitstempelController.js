@@ -1,4 +1,6 @@
 const {zeitstempel} = require('../db/models')
+const {sequelize} =require ('../db/models')
+
 
 module.exports = {
 
@@ -45,7 +47,22 @@ module.exports = {
             where:{
                 zeitstempelid:zeitid
             }
-        })}
+        })},
+        
     
+    filter(req,res){
+        const Op = sequelize.Op
+        zeitstempel.findAll({
+            where:{
+                userUserid:req.body.userid,
+                
+                datum:{
+                    [Op.lte]:req.body.datum2,
+                    [Op.gte]:req.body.datum1}
+            }
+        }).then(response =>{
+            res.send(response)
+        })
 
+    }   
 }

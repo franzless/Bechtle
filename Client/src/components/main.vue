@@ -5,13 +5,27 @@
       <v-layout justify-center >
          <v-flex xs5 >
         <v-card>
-         <v-expansion-panel   color="primary" dark class="mb-2">
+         <v-expansion-panel color="primary" dark class="mb-2">
          <v-expansion-panel-content>
             <div slot="header">Filter</div>
               <v-card>
-              <v-card-text>
-              test123
-               </v-card-text>
+              <v-card-actions>
+                <v-menu
+                v-model="menüfilter"
+                >
+                <v-text-field v-model="filterdatum1" prepend-icon="access_time" readonly label="Erstes Datum" slot="activator"></v-text-field>
+                <v-date-picker locale="de" v-model="filterdatum1"></v-date-picker>
+                </v-menu>
+                <v-menu
+                v-model="menüfilter2"
+                >
+                <v-text-field v-model="filterdatum2" prepend-icon="access_time" readonly label="Zweites Datum" slot="activator"></v-text-field>
+                <v-date-picker locale="de" v-model="filterdatum2"></v-date-picker>
+                </v-menu>
+                   
+                <v-btn @click="filter" round color="primary">filtern</v-btn>
+                <v-btn @click="filterlöschen" round color="red">Filter löschen</v-btn>
+               </v-card-actions>
                </v-card>
         </v-expansion-panel-content>
          </v-expansion-panel>
@@ -50,7 +64,7 @@
           prepend-icon="event"
           readonly
         ></v-text-field>
-        <v-date-picker v-model="editedItem.datum" scrollable>
+        <v-date-picker locale="de" v-model="editedItem.datum" scrollable>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.dialog.save(editedItem.datum)">OK</v-btn>
@@ -150,7 +164,7 @@
       
       class="elevation-1"
     > 
-     
+     <v-progress-linear slot="progress" color="primary" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
         <td> {{ props.item.datum }}</td>
         <td> {{ props.item.arbeitsbeginn }}</td>
@@ -189,9 +203,12 @@ export default {
       menu1: false,
       menu2: false,
       menu3: false,
+      menüfilter:false,
+      menüfilter2:false,
       updates: false,
       saves: false,
-
+      filterdatum1:'',
+      filterdatum2:'',
       headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
@@ -333,6 +350,26 @@ export default {
           this.close()
         })
       }
+    },
+    filter(){
+      var daten = new Object()
+               daten.userid=this.getuser.userid
+               daten.datum1=this.filterdatum1
+               daten.datum2=this.filterdatum2
+      this.$http.post('http://localhost:8082/db/filter', daten)
+                  .then(filter =>{
+                    
+                    this.list = []
+                    var newdata = filter.body
+                    var x = newdata.length
+                    for (var i = 0; i < x; i++) {
+                     this.list.push(newdata[i])
+                  }})               
+    },
+    filterlöschen(){
+      console.log('test')
+       this.list = []
+        this.initialize()
     }
   }
 }
