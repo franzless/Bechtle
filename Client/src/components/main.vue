@@ -5,19 +5,25 @@
       <v-layout justify-center >
          <v-flex xs5 >
         <v-card>
+         <v-expansion-panel   color="primary" dark class="mb-2">
+         <v-expansion-panel-content>
+            <div slot="header">Filter</div>
+              <v-card>
+              <v-card-text>
+              test123
+               </v-card-text>
+               </v-card>
+        </v-expansion-panel-content>
+         </v-expansion-panel>
+
+
+
+
+
       <v-dialog v-model="dialog" max-width="750px">
         
-      <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
-      <v-expansion-panel   color="primary" dark class="mb-2">
-        <v-expansion-panel-content>
-          <div slot="header">Filter</div>
-          <v-card>
-            <v-card-text>
-              test123
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+      <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">Neuer Eintrag</v-btn>
+      
       <v-card>
         <v-card-title>
           <span class="headline">{{ formTitle }}</span>
@@ -139,7 +145,7 @@
       <v-data-table
       :headers="headers"
       :items="list"
-      hide-actions
+      
       class="elevation-1"
     > 
      
@@ -163,7 +169,7 @@
        
       </template>
       <template slot="no-data">
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
+        <v-alert type="warning" value="true">Es sind keine Daten vorhanden! Um neue Datensätze zu erstellen gehen zu "Neuer Eintrag"</v-alert>
       </template>
     </v-data-table>
         </v-flex>
