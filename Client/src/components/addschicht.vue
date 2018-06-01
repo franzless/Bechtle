@@ -3,7 +3,7 @@
     
 <v-dialog v-model="dialog">
     <v-layout justify-center>
-        <v-flex xl7  >
+        <v-flex xs7  >
     <v-toolbar class="primary">
         <v-toolbar-title>
             Neue Schicht erstellen
@@ -19,31 +19,45 @@
     </v-stepper-header>
     <v-stepper-items>
         <v-stepper-content step="1">
-            <v-card class="mb-5">
-                <v-card-title>
-                    Früh oder Spät?
+            <v-layout align-center justify-center>
+                <v-flex xs5>
+            <v-card color="grey lighten-3" class="mb-5" height="200px" >
+                <v-layout justify-center row wrap>
+                    <v-flex xs6> 
+                <v-card-title> <h2>Früh oder Spät?</h2>
+                    
                 </v-card-title>
                 <v-card-actions>
-                    <v-radio-group v-model="radiogroup">
+                    <v-radio-group  row v-model="radiogroup">
                         <v-radio
                         label="früh"
                         value="früh"
-                        color="yellow"></v-radio>
+                        color="amber accent-3"></v-radio>
                         <v-radio
                         label="spät"
                         value="spät"
                         color="blue"></v-radio>
 
                     </v-radio-group>
+                     </v-card-actions>
+                     </v-flex>
+                     </v-layout>
+                </v-card>
+                </v-flex>
+                </v-layout>
+                <v-layout justify-center>
+                    <v-btn class="secondary"  @click="main" flat>Cancel</v-btn>
                     <v-btn class="primary" @click.native="e1=2">Weiter</v-btn>
-                </v-card-actions>
-            </v-card>
+                    
+              </v-layout>
+           
         </v-stepper-content>
         <v-stepper-content step="2">
-            <v-card>
-                <v-card-title>Zeitraum auswählen</v-card-title>
+            <v-layout justify-center>
+            <v-card color="grey lighten-3" class="mb-5" >
+                <v-card-title> <h2>Zeitraum auswählen</h2>    </v-card-title>
                 <v-card-actions>
-                    <v-layout justify-space-between wrap>
+                    <v-layout >
                     <v-flex xs12 sm6 class="my3">	
                      <div class="subheading">Von</div>
                         <v-date-picker
@@ -61,15 +75,31 @@
                         ></v-date-picker>
                     </v-flex>
                     </v-layout>
-                    <v-btn class="primary" @click.native="e1=3">Weiter</v-btn>
-                    <v-alert :value="true" type="info">Samstage und Sonntage, welche in dem gewählten Zeitraum liegen, werden automatisch heraus gerechnet</v-alert>
+                    
 
                 </v-card-actions>
             </v-card>
+            </v-layout>
+            <v-flex xs5 offset-xs3>
+            <v-layout justify-center>
+            
+            <v-card color="blue-grey lighten-4">
+              
+                <v-btn class="secondary" @click.native="e1=1">Zurück</v-btn>
+                <v-btn class="primary" @click.native="e1=3">Weiter</v-btn>
+              
+            </v-card>
+            </v-layout>
+            </v-flex>
+            <v-alert :value="true" type="info">Samstage und Sonntage, welche in dem gewählten Zeitraum liegen, werden automatisch heraus gerechnet</v-alert>
          </v-stepper-content>
          <v-stepper-content step="3">
+             
+             <v-flex xs5 offset-xs3>
              <v-card>
-                 <v-card-title>Mitarbeiter auswählen</v-card-title>
+                 <v-layout justify-center>    
+                 <v-card-title> <h2>Mitarbeiter auswählen</h2>   </v-card-title>
+                 </v-layout>  
                  <v-card-actions>
                      <v-select
                  :items="getusers"
@@ -79,8 +109,12 @@
                   item-text="email"
                   item-value="userid"></v-select>
                  </v-card-actions>
+                 <v-layout just>
+                 <v-btn @click.native="e1=2" class="secondary">Zurück</v-btn>
                  <v-btn @click="submit" class="primary">abschicken</v-btn>
+                  </v-layout>
              </v-card>
+             </v-flex>
 
          </v-stepper-content>
     </v-stepper-items>
@@ -112,15 +146,29 @@ export default {
     },
     computed:{
         getusers () {
-             return this.$store.getters.getusers
+            return this.$store.getters.getusers
         },
         fullname () {
             return this.$store.getters.fullname
         },
         
-        
     },
+        
+        
+    
    methods:{
+       getschicht(){
+      this.$http.get('http://localhost:8082/db/schicht')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('updateschicht', data)
+    })
+    .catch(err => {
+      console.log(err)
+    })},
+       main(){
+           router.push('main')
+       },
 
          wochentag(i){
             var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
@@ -169,24 +217,9 @@ export default {
            }
            this.$http.post('http://localhost:8082/db/addschicht',final)
            .then(res=>{
-               this.$store.commit('addschicht', final)
-           })
-            
+               
+           })  
            
-           
-           
-           
-           
-
-
-
-
-
-
-           
-           
-           
-                      
            router.push('main')
        }
    } 
