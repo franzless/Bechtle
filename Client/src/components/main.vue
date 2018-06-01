@@ -25,9 +25,11 @@
       <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">Neuer Eintrag</v-btn>
       
       <v-card>
-        <v-card-title>
-          <span class="headline">{{ formTitle }}</span>
-        </v-card-title>
+        <v-toolbar color="primary"> 
+          <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
+        </v-toolbar>
+        
+        
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
@@ -245,7 +247,7 @@ export default {
 
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag editieren'
     },
     getuser () {
       return this.$store.getters.getuser
