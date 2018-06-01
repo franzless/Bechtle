@@ -2,8 +2,22 @@
   <div>
       <my-toolbar></my-toolbar>
       <my-schichtplan></my-schichtplan>
+      <v-layout justify-center >
+         <v-flex xs5 >
+        <v-card>
       <v-dialog v-model="dialog" max-width="750px">
+        
       <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
+      <v-expansion-panel   color="primary" dark class="mb-2">
+        <v-expansion-panel-content>
+          <div slot="header">Filter</div>
+          <v-card>
+            <v-card-text>
+              test123
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       <v-card>
         <v-card-title>
           <span class="headline">{{ formTitle }}</span>
@@ -115,6 +129,9 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    </v-card>
+    </v-flex>
+    </v-layout>
 
     <v-layout justify-center>
       <v-flex xs20 sm10 md8>

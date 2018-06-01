@@ -1,9 +1,8 @@
 <template>
 <div>
     
-<v-dialog v-model="dialog">
-    <v-layout justify-center>
-        <v-flex xs7  >
+<v-dialog v-model="dialog" width="1200">
+   
     <v-toolbar class="primary">
         <v-toolbar-title>
             Neue Schicht erstellen
@@ -120,8 +119,7 @@
     </v-stepper-items>
     
     </v-stepper>
-    </v-flex>    
-</v-layout>
+    
 </v-dialog>
 
 </div>
