@@ -1,8 +1,10 @@
 <template>
   <div>
-     
-        <v-layout row >
-          <v-dialog v-model="dialog" persistent  >
+      <v-container grid-list-xl fluid>
+        <v-layout row wrap>
+          
+          <v-dialog v-model="dialog" persistent width="400px" >
+            
             <v-card>
               <v-card-title>
                 <span class="headline">{{formTitle}}</span>
@@ -27,9 +29,9 @@
                   </v-card-actions>
                 </v-card-text> 
             </v-card>
+            
             </v-dialog>
-
-          
+            
           <v-flex xs12 sm6 class="my-2 px-1">
             <h1>Frühschicht</h1>
              <v-date-picker
@@ -40,12 +42,16 @@
                 locale="de"
                 v-model="datumzeitf"
                 :return-value.sync="pickerdatumf"
-                
                 full-width
+                
               ></v-date-picker>
            </v-flex>
-           <v-flex xs12 sm6 class="my-2 px-1">
-             <h1>Liste der Mitarbeiter:</h1>
+           <v-flex xs12 sm6 >
+             <v-card>
+               <v-card-title>
+             <h2>Liste der Mitarbeiter:</h2>
+             </v-card-title>
+             <hr>
               <v-list>
                 <v-list-tile v-for="item in items" :key="item.title" avatar>
                   <v-list-tile-action>
@@ -59,7 +65,9 @@
                    </v-list-tile-avatar>
                   </v-list-tile>
                </v-list>
+               </v-card>
            </v-flex>
+           
             <v-flex xs12 sm6 class="my-2 px-1">
               <h1>Spätschicht</h1>
              <v-date-picker
@@ -75,6 +83,7 @@
            </v-flex>
               
           </v-layout>
+          </v-container>
    </div>
 </template>
 <script>
@@ -193,6 +202,10 @@ export default {
 <style scoped>
 .error{
   color:red
+}
+.list{
+  font-size: 5px;
+  
 }
 </style>
 
