@@ -1,7 +1,8 @@
 <template>
   <div>
+    <my-toolbar></my-toolbar>
       <v-container grid-list-xl fluid>
-        <v-layout row >
+        <v-layout row wrap >
           
           <v-dialog v-model="dialog" persistent width="400px" >
             

@@ -1,7 +1,7 @@
 <template>
   <div>
       <my-toolbar></my-toolbar>
-      <my-schichtplan></my-schichtplan>
+      
       <v-layout justify-center >
          <v-flex xs5 >
         <v-card>
@@ -24,7 +24,7 @@
                 </v-menu>
                    
                 <v-btn @click="filter" round color="primary">filtern</v-btn>
-                <v-btn @click="filterlöschen" round color="red">Filter löschen</v-btn>
+                <v-btn @click="filterlöschen()" round color="red">Filter löschen</v-btn>
                </v-card-actions>
                </v-card>
         </v-expansion-panel-content>
@@ -32,12 +32,28 @@
 
 
 
-
-
+    <v-btn @click="saves=!saves,dialog=!dialog"  color="primary" dark class="mb-2">Neuer Eintrag</v-btn>
+    <v-btn @click="dialogkrank=!dialogkrank"  color="primary" dark class="mb-2">Krankheitstage eintragen</v-btn>
+    
       <v-dialog v-model="dialog" max-width="750px">
-        
-      <v-btn @click="saves=!saves" slot="activator" color="primary" dark class="mb-2">Neuer Eintrag</v-btn>
+           
+      <v-dialog v-model="dialogkrank" max-width="750px">
       
+      <v-toolbar color="primary"><t-toolbar-title>Krankheitstage eintragen</t-toolbar-title></v-toolbar>
+      <v-card>
+        <v-card-text>
+          <v-container grid-list-md>
+            <v-flex xs12 sm6 md4>
+            <v-menu :close-on-content-click="false" persistent v-model="menukrank" prepend-icon="access_time" label="von">
+            <v-text-field label="von" slot="activator" v-model="krank"></v-text-field>
+            <v-date-picker locale="de" v-model="krank"></v-date-picker>
+             </v-menu>
+            </v-flex>
+           
+          </v-container>
+        </v-card-text>
+      </v-card>
+      </v-dialog>
       <v-card>
         <v-toolbar color="primary"> 
           <v-toolbar-title>{{ formTitle }}</v-toolbar-title>
@@ -198,6 +214,7 @@ export default {
   data () {
     return {
       dialog: false,
+      dialogkrank:false,
       modal: false,
       menu: false,
       menu1: false,
@@ -209,6 +226,7 @@ export default {
       saves: false,
       filterdatum1:'',
       filterdatum2:'',
+      krank:'',
       headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
@@ -366,8 +384,8 @@ export default {
                      this.list.push(newdata[i])
                   }})               
     },
-    filterlöschen(){
-      console.log('test')
+    filterlöschen (){
+      
        this.list = []
         this.initialize()
     }

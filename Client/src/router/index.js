@@ -33,7 +33,7 @@ export default new Router({
       component: urlaubsplan
     },
     {
-      path: '/Schichtplan',
+      path: '/NeueSchicht',
       name: 'addschicht',
       component: addschicht
     },
@@ -41,7 +41,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register
-    }
+    },{
+      path: '/Schichtplan',
+      name: 'schichtplan',
+      component: schichtplan
+    },
   ],
   mode: 'history'
 })
