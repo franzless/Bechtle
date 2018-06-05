@@ -38,7 +38,10 @@ module.exports = (app) => {
         schichtController.addschicht),
 
     app.post('/db/filter',
-        ZeitstempelController.filter)
+        ZeitstempelController.filter),
+
+    app.post('/zeitstempel/krank',
+        ZeitstempelController.krank)
 
         
     

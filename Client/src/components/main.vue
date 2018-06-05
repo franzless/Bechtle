@@ -37,19 +37,26 @@
     
       <v-dialog v-model="dialog" max-width="750px">
            
-      <v-dialog v-model="dialogkrank" max-width="750px">
+      <v-dialog v-model="dialogkrank" max-width="450px">
       
-      <v-toolbar color="primary"><t-toolbar-title>Krankheitstage eintragen</t-toolbar-title></v-toolbar>
+      <v-toolbar color="primary"><v-toolbar-title>Krankheitstage eintragen</v-toolbar-title></v-toolbar>
       <v-card>
         <v-card-text>
           <v-container grid-list-md>
             <v-flex xs12 sm6 md4>
-            <v-menu :close-on-content-click="false" persistent v-model="menukrank" prepend-icon="access_time" label="von">
-            <v-text-field label="von" slot="activator" v-model="krank"></v-text-field>
+            <v-menu :close-on-content-click="false" persistent v-model="menukrank"  >
+            <v-text-field prepend-icon="event" label="von" slot="activator" v-model="krank"></v-text-field>
             <v-date-picker locale="de" v-model="krank"></v-date-picker>
              </v-menu>
             </v-flex>
-           
+            <v-flex xs12 sm6 md4>
+            <v-menu :close-on-content-click="false" persistent v-model="menukrank2" prepend-icon="access_time" >
+            <v-text-field prepend-icon="event" label="bis" slot="activator" v-model="krank2"></v-text-field>
+            <v-date-picker locale="de" v-model="krank2"></v-date-picker>
+             </v-menu>
+            </v-flex>
+            <v-btn @click="funckrank" color="primary">add</v-btn>
+           <v-alert value="true" type="info">Samstage und Sonntage werden automatisch heraus gerechnet, Feiertage müssen selbst gelöscht werden</v-alert>
           </v-container>
         </v-card-text>
       </v-card>
@@ -215,6 +222,8 @@ export default {
     return {
       dialog: false,
       dialogkrank:false,
+      menukrank:false,
+      menukrank2:false,
       modal: false,
       menu: false,
       menu1: false,
@@ -227,6 +236,7 @@ export default {
       filterdatum1:'',
       filterdatum2:'',
       krank:'',
+      krank2:'',
       headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
@@ -388,6 +398,46 @@ export default {
       
        this.list = []
         this.initialize()
+    },
+    wochentag(i){
+            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+            var tag = (typeof(i) == 'object') ? i.getDay() : i ;
+                return tage[tag];
+         },
+    funckrank(){
+      var valdate= []
+           var datum =new Date(this.krank)
+           let datum1 =new Date(this.krank2)
+           let datum2= ''
+           var difference = datum1.getDate() - datum.getDate();
+           
+            //Samstage und Sonntage rausfiltern
+           for (var i= 0; i<difference ; i++){
+               datum2 =datum                           
+               var x = this.wochentag(datum2.getDay().toString())
+               if(x === 'Samstag' || x === 'Sonntag'){                   
+                   datum2= datum2.setDate(datum2.getDate() + 1)   
+               }else{           
+                  valdate.push(datum2.toISOString().split("T",1)[0])                   
+                   datum2= datum2.setDate(datum2.getDate() + 1)
+               }
+           }
+           //Neues Array basteln
+            var l= valdate.length
+            var final = []
+           for(var y=0; y<l;y++){               
+               var object = new Object()
+               object.userUserid=this.getuserid
+               object.leistungsschein='krank'
+               object.serviceleistung ='krank'
+               object.datum=valdate[y]
+               final.push(object)
+           }
+           this.$http.post('http://localhost:8082/zeitstempel/krank',final)
+           .then(res=>{
+             this.list = []
+            this.initialize()
+            })  
     }
   }
 }

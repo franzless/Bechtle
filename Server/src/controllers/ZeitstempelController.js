@@ -64,5 +64,12 @@ module.exports = {
             res.send(response)
         })
 
-    }   
+    },
+    krank(req,res){
+        zeitstempel.bulkCreate(
+            req.body
+        ).then(result=>{
+            res.send(result)
+        })
+    }  
 }
