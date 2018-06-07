@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    userimg:DataTypes.String,
+    userimg:DataTypes.STRING,
     userid:{
       allowNull: false,
       autoIncrement: true,

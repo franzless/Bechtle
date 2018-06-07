@@ -11,7 +11,8 @@ module.exports = {
            arbeitsende:req.body.arbeitsende,
            arbeitsort:req.body.arbeitsort,
            leistungsschein:req.body.leistungsschein,
-           serviceleistung:req.body.serviceleistung
+           serviceleistung:req.body.serviceleistung,
+           pause:req.body.pause
         },{where:
             {zeitstempelid:req.body.zeitstempelid}}  
         ).then(result =>{

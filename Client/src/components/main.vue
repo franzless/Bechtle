@@ -35,7 +35,7 @@
     <v-btn @click="saves=!saves,dialog=!dialog"  color="primary" dark class="mb-2">Neuer Eintrag</v-btn>
     <v-btn @click="dialogkrank=!dialogkrank"  color="primary" dark class="mb-2">Krankheitstage eintragen</v-btn>
     
-      <v-dialog v-model="dialog" max-width="750px">
+      <v-dialog v-model="dialog" max-width="850px">
            
       <v-dialog v-model="dialogkrank" max-width="450px">
       
@@ -68,7 +68,7 @@
         
         
         <v-card-text>
-          <v-container grid-list-md>
+          <v-container grid-list-xl>
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
                  <v-dialog
@@ -151,8 +151,13 @@
           <v-btn flat color="primary" @click="menu3 = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.menu.save(editedItem.arbeitsende)">OK</v-btn>
           </v-time-picker>
+          
         </v-menu>
-              </v-flex>
+         </v-flex>
+         <v-flex xs12 sm6 md4>
+        <v-text-field auto-grow mask="##" prepend-icon="access_time" label="Pausendauer in min" v-model="editedItem.pause"></v-text-field>
+        </v-flex>
+             
                <v-flex xs12 sm6 md4>
                  
                 <v-select prepend-icon="portrait" :items="Serviceleistung" v-model="editedItem.serviceleistung" label="ServiceLeistung"></v-select>
@@ -192,6 +197,7 @@
         <td> {{ props.item.datum }}</td>
         <td> {{ props.item.arbeitsbeginn }}</td>
         <td> {{ props.item.arbeitsende }}</td>
+        <td> {{ props.item.pause }}</td>
         <td> {{ props.item.serviceleistung }}</td>
         <td >{{ props.item.leistungsschein }}</td>
         <td >{{ props.item.arbeitsort }}</td>
@@ -241,10 +247,12 @@ export default {
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
         { text: 'ArbeitsEnde', value: 'bis', sortable: false },
+        { text: 'Pause', value: 'pause', sortable: false },
         { text: 'Serviceleistung', value: 'SL', sortable: false },
         { text: 'Leistungsschein', value: 'LS' },
         { text: 'ArbeitsOrt', value: 'Ort'},
         { text: 'Actions', value: 'name', sortable: false }
+        
       ],
       Leistungsschein: [
         'LS01-AK-Beschaffung',
@@ -289,6 +297,7 @@ export default {
       }
     }
   },
+  
 
   computed: {
     formTitle () {
