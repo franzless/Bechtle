@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     leistungsschein: DataTypes.STRING,
     serviceleistung: DataTypes.STRING,
     arbeitsort: DataTypes.STRING,
+    pause:DataTypes.STRING,
     zeitstempelid:{
       allowNull: false,
       autoIncrement: true,
