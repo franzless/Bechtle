@@ -51,7 +51,7 @@ export default {
       menuitems: [
              {icon: this.usericon, title: 'Profil', link: '/profil'},
              {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
-             {icon: 'assignment', title: 'schichtplan', link: '/schichtplan'},
+             {icon: 'today', title: 'schichtplan', link: '/schichtplan'},
              {icon: 'assignment', title: 'Neue Schicht', link: '/neueschicht'},
              {icon: 'account_box', title: 'Register', link: '/register'},
              {icon: 'exit_to_app', title: 'Logout', link: '/'},

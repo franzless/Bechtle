@@ -215,10 +215,10 @@ export default {
            }
            this.$http.post('http://localhost:8082/db/addschicht',final)
            .then(res=>{
-               
+               router.push('schichtplan')
            })  
            
-           router.push('main')
+           
        }
    } 
 }

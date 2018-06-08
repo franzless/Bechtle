@@ -1,15 +1,17 @@
 <template>
   <div>
     <my-toolbar></my-toolbar>
-      <v-container grid-list-xl fluid>
-        <v-layout row wrap >
+      <v-container grid-list-xl>
+        <v-layout justify-center row wrap >
           
           <v-dialog v-model="dialog" persistent width="400px" >
             
             <v-card>
-              <v-card-title>
-                <span class="headline">{{formTitle}}</span>
-              </v-card-title>
+              
+              <v-toolbar color="primary"><v-toolbar-title>{{formTitle}}</v-toolbar-title></v-toolbar>
+              
+                
+             
               <v-card-text>
                 <v-text-field v-if="datumzeitf!=null" disabled v-model="datumzeitf">{{datumzeitf}}</v-text-field>
                 <v-text-field  v-if="datumzeits!=null" disabled v-model="datumzeits">{{datumzeits}}</v-text-field>
@@ -18,7 +20,7 @@
                   required
                   label="Select"
                   v-model="updatef"
-                  item-text="firstname"
+                  item-text="email"
                   item-value="userid"
                   ></v-select>
                   <v-card-actions>
@@ -47,9 +49,12 @@
                 
               ></v-date-picker>
            </v-flex>
-           <v-flex xs12 sm6 >
-             <v-card>
-               <v-card-title>
+           
+             <v-flex xs10 sm4>
+             <v-card >
+               <v-layout column >
+           <v-flex xs10 sm4 >
+               <v-card-title class="primary"> 
              <h2>Liste der Mitarbeiter:</h2>
              </v-card-title>
              <hr>
@@ -62,12 +67,15 @@
                       <v-list-tile-title v-text="item.firstname +' '+ item.lastname"></v-list-tile-title>
                     </v-list-tile-content>
                    <v-list-tile-avatar>
-                       <img :src="item.avatar">
+                       <img :src="'..\assets\logo.png'">
                    </v-list-tile-avatar>
                   </v-list-tile>
                </v-list>
+               </v-flex>
+           </v-layout>
                </v-card>
-           </v-flex>
+               </v-flex>
+           
            
             <v-flex xs12 sm6 class="my-2 px-1">
               <h1>Spätschicht</h1>
@@ -102,11 +110,14 @@ export default {
       nurdatums:[],
       eventspät:[],
       eventfrüh:[],
-      error:''
+      error:'',
+      userimg:'@assets\Download.jpg'
     }
   },
   
+
   mounted() {
+    console.log('mounted')
     this.getschicht()
     this.start()
   } , 
@@ -182,6 +193,7 @@ export default {
       this.eventfrüh=[]
       this.eventspät=[]
       this.nurdatumf=[]
+      this.nurdatums=[]
       this.getschicht()
       this.start()
       this.cancel()             

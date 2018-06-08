@@ -30,6 +30,7 @@ export const store = new Vuex.Store({
       return fullname
     },
     getusers: state => {
+      
       return state.users
     },
     getfrüh: state => {

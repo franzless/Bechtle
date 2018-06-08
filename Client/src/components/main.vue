@@ -1,10 +1,12 @@
 <template>
   <div>
       <my-toolbar></my-toolbar>
+      <br>
       
       <v-layout justify-center >
-         <v-flex xs5 >
+         <v-flex xs20 sm10 md8>
         <v-card>
+          <v-toolbar  dense dark color="primary"><v-toolbar-title>Mein Zeitnachweiß</v-toolbar-title></v-toolbar>
          <v-expansion-panel color="primary" dark class="mb-2">
          <v-expansion-panel-content>
             <div slot="header">Filter</div>
@@ -46,13 +48,13 @@
             <v-flex xs12 sm6 md4>
             <v-menu :close-on-content-click="false" persistent v-model="menukrank"  >
             <v-text-field prepend-icon="event" label="von" slot="activator" v-model="krank"></v-text-field>
-            <v-date-picker locale="de" v-model="krank"></v-date-picker>
+            <v-date-picker :first-day-of-week="1" locale="de" v-model="krank"></v-date-picker>
              </v-menu>
             </v-flex>
             <v-flex xs12 sm6 md4>
             <v-menu :close-on-content-click="false" persistent v-model="menukrank2" prepend-icon="access_time" >
             <v-text-field prepend-icon="event" label="bis" slot="activator" v-model="krank2"></v-text-field>
-            <v-date-picker locale="de" v-model="krank2"></v-date-picker>
+            <v-date-picker :first-day-of-week="1" locale="de-DE" v-model="krank2"></v-date-picker>
              </v-menu>
             </v-flex>
             <v-btn @click="funckrank" color="primary">add</v-btn>
@@ -82,12 +84,12 @@
       >
         <v-text-field
           slot="activator"
-          v-model="editedItem.datum"
+          v-model="this.editedItem.datum"
           label="Datum"
           prepend-icon="event"
           readonly
         ></v-text-field>
-        <v-date-picker locale="de" v-model="editedItem.datum" scrollable>
+        <v-date-picker :first-day-of-week="1" locale="de" v-model="editedItem.datum" scrollable>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
           <v-btn flat color="primary" @click="$refs.dialog.save(editedItem.datum)">OK</v-btn>
@@ -155,7 +157,7 @@
         </v-menu>
          </v-flex>
          <v-flex xs12 sm6 md4>
-        <v-text-field auto-grow mask="##" prepend-icon="access_time" label="Pausendauer in min" v-model="editedItem.pause"></v-text-field>
+        <v-text-field  mask="##" prepend-icon="access_time" label="Pausendauer in min" v-model="editedItem.pause"></v-text-field>
         </v-flex>
              
                <v-flex xs12 sm6 md4>
@@ -187,10 +189,11 @@
       <v-flex xs20 sm10 md8>
 
       <v-data-table
+      id="tablemain"
       :headers="headers"
       :items="list"
-      
       class="elevation-1"
+      
     > 
      <v-progress-linear slot="progress" color="primary" indeterminate></v-progress-linear>
       <template slot="items" slot-scope="props">
@@ -243,11 +246,12 @@ export default {
       filterdatum2:'',
       krank:'',
       krank2:'',
+      datum:null,
       headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
         { text: 'ArbeitsEnde', value: 'bis', sortable: false },
-        { text: 'Pause', value: 'pause', sortable: false },
+        { text: 'Pause(min)', value: 'pause', sortable: false },
         { text: 'Serviceleistung', value: 'SL', sortable: false },
         { text: 'Leistungsschein', value: 'LS' },
         { text: 'ArbeitsOrt', value: 'Ort'},
@@ -297,6 +301,8 @@ export default {
       }
     }
   },
+
+ 
   
 
   computed: {
@@ -314,10 +320,16 @@ export default {
   watch: {
     dialog (val) {
       val || this.close()
-    }
+    },
+    datum:function(val, oldVal) {
+			this.editedItem.datum = this.gettanggal(val);
+	}
   },
   created () {
     this.initialize()
+  },
+  updated(){
+    console.log(this.editedItem.datum)
   },
 
   methods: {
@@ -381,6 +393,7 @@ export default {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
         this.$http.post('http://localhost:8082/db/zeitstempel', {userUserid: this.getuserid, datum: this.editedItem.datum, arbeitsbeginn: this.editedItem.arbeitsbeginn, arbeitsende: this.editedItem.arbeitsende, leistungsschein: this.editedItem.leistungsschein, serviceleistung: this.editedItem.serviceleistung, arbeitsort: this.editedItem.arbeitsort})
+        
         .then(res => {
           this.list = []
           this.initialize()
@@ -447,7 +460,13 @@ export default {
              this.list = []
             this.initialize()
             })  
-    }
+    },
+  gettanggal(str) {
+	if (str != null) {
+		return str.substring(8, 10)+'-'+str.substring(5, 7)+'-'+str.substring(0, 4);
+	}
+	return '';
+}
   }
 }
 </script>
