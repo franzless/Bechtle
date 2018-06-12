@@ -7,6 +7,7 @@ import urlaubsplan from '@/components/Urlaubsplan'
 import schichtplan from '@/components/Schichtplan'
 import register from '@/components/register'
 import addschicht from '@/components/addschicht'
+import farbpalette from '@/components/farbpalette'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       name: 'schichtplan',
       component: schichtplan
     },
+    {
+      path: '/farbpalette',
+      name: 'farbpalette',
+      component: farbpalette
+    }
   ],
   mode: 'history'
 })

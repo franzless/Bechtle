@@ -7,19 +7,28 @@ export const store = new Vuex.Store({
   state: {
     user: {},
     users: [],
-    schicht:[]
+    schicht:[],
+    neuefarbe:'',
+    newuser:[]
 
   },
   getters: {
     getuserfn: state => {
       return state.user.firstname
     },
+    getusercolor: state => {
+      const farbe=[]
+      var l= state.users.length
+        for(var i=0;i<l;i++){
+          var data= state.users[i].usercolor
+          farbe.push(data)}
+      return farbe
+    },
     getuserid: state => {
       return state.user.userid
     },
     getuser: state => {
-       
-      return state.user
+       return state.user
     },
     fullname: state => {
       const fullname=[]
@@ -42,7 +51,12 @@ export const store = new Vuex.Store({
 
     getbyfirst: (state,first) => {
       return state.users.filter(x=>x.firstname == first)
-
+    },
+    getnewcolor:state=>{
+      return state.neuefarbe
+    },
+    getnewuser:state=>{
+      return state.newuser
     }
     
     
@@ -65,7 +79,13 @@ export const store = new Vuex.Store({
      addschicht:(state,schicht)=>{
       var l= schicht.length
       for(var i= 0; i<l ; i++){
-          state.schicht.push(schicht[i])}}
+          state.schicht.push(schicht[i])}},
+    neuefarbe(state,data){
+      state.neuefarbe=data
+    },
+    savenewuser(state,data){
+      state.newuser=data
+    }
   },
   actions:{
 
