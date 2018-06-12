@@ -8,9 +8,7 @@ export const store = new Vuex.Store({
     user: {},
     users: [],
     schicht:[],
-    neuefarbe:'',
-    newuser:[]
-
+    
   },
   getters: {
     getuserfn: state => {
@@ -80,12 +78,8 @@ export const store = new Vuex.Store({
       var l= schicht.length
       for(var i= 0; i<l ; i++){
           state.schicht.push(schicht[i])}},
-    neuefarbe(state,data){
-      state.neuefarbe=data
-    },
-    savenewuser(state,data){
-      state.newuser=data
-    }
+   
+ 
   },
   actions:{
 

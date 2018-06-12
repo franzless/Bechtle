@@ -1,7 +1,7 @@
 <template>
   <div>
     <my-toolbar></my-toolbar>
-      <v-container grid-list-xl>
+      <v-container grid-list-md>
         <v-layout justify-center row wrap >
           
           <v-dialog v-model="dialog" persistent width="400px" >
@@ -67,7 +67,7 @@
                       <v-list-tile-title v-text="item.firstname +' '+ item.lastname"></v-list-tile-title>
                     </v-list-tile-content>
                    <v-list-tile-avatar>
-                       <img :src="'..\assets\logo.png'">
+                       <img src="@/assets/logo.png">
                    </v-list-tile-avatar>
                   </v-list-tile>
                </v-list>

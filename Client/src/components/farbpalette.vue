@@ -2,6 +2,8 @@
 <div>
     <v-layout justify-center>
         <v-flex xs6>
+            <v-alert type="info" value="true"> Bitte wählen Sie eine Farbe für sich aus, welche ihnen gefällt. Diese wird später im Kalender verwendet.
+                  Bitte wählen Sie die Farbe so, dass man Sie von den anderen Farben, welche bereits vergeben sind unterscheiden kann.</v-alert>
             <v-alert value="true" type="info">
                  Bitte eine Farbe aussuchen und den Namen genau so wie er da steht in das Feld eintragen
             </v-alert>
@@ -20,8 +22,9 @@
         </v-layout>
         <v-layout justify-center>
             <v-flex xs4>
-                <v-text-field clearable v-model="farbe" label="Namen der Farbe eintragen"></v-text-field>
+                <v-text-field  clearable v-model="farbe" label="Namen der Farbe eintragen"></v-text-field>
                 <v-btn @click="abschuss" color="primary">Ok</v-btn>
+
                 <v-alert type="error" :value="farbeok">Bitte suchen Sie sich zuerst eine Farbe aus und tragen Sie diese in das dafür vorgesehene Feld ein</v-alert>
     
             </v-flex>
@@ -77,6 +80,7 @@ export default {
     methods:{
         abschuss(){
             if(this.farbe != ''){
+                dialog=false
                 this.$store.commit('neuefarbe', this.farbe)
                 router.push('register')
             }else{
@@ -86,6 +90,9 @@ export default {
 }
 </script>
 <style scoped>
+.div{
+    background-color: black
+}
 .icon{
     font-size:40px
 }
