@@ -7,12 +7,13 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import toolbar from './components/toolbar.vue'
 import schichtplan from './components/Schichtplan.vue'
-
+import draggable from 'vuedraggable'
 import VueResource from 'vue-resource'
 import {store} from './store/store'
 
 Vue.component('my-toolbar', toolbar)
 Vue.component('my-schichtplan', schichtplan)
+Vue.component('draggable',draggable)
 
 Vue.use(VueResource)
 

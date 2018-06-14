@@ -1,15 +1,22 @@
 <template>
 <div>
     <my-toolbar></my-toolbar>
-    <v-data-table 
-        :headers="headers"
-        
+    <v-card height="400x" width="150">
+       <draggable v-model="users">
+          
+               <v-card v-for="user in users" :key="user.userid">
+                   <v-card-media src="http://source.unsplash.com/random/150x150" height="150px"></v-card-media>
+                    <v-card-title>
+                        {{user.firstname}} {{user.lastname}}
+                    </v-card-title>
+               </v-card>
+       </draggable>             
 
-    >
-    <template slot="items" slot-scope="props">
-        
-    </template>    
-    </v-data-table>
+
+
+
+
+    </v-card>
 </div>
     
 
@@ -18,15 +25,17 @@
 export default {
     data(){
         return{
-           headers:[
-               {text:'Datum', value:'datum'},{text:'MHP', value:'mhp'},{text:'Merceds-Benz-Museum', value:'mbenz'},{text:'Heller', value:'heller'}
-
-           ],
-           data:[
-               {name:'Albert Einstein', datum:'13.06.2018', team:'Kärcher', skill:'Rollout'}
-           ] 
+          
         }
-
+    },
+    computed:{
+        users: {
+            get(){
+                return this.$store.state.users
+            },
+            
+            
+        }
     }
     
 }
