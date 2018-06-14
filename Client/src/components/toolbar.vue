@@ -49,7 +49,7 @@ export default {
 
       sidenav: false,
       menuitems: [
-             {icon: this.usericon, title: 'Profil', link: '/profil'},
+             {icon: this.usericon, title: 'einsatzplanung', link: '/einsatzplanung'},
              {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
              {icon: 'today', title: 'schichtplan', link: '/schichtplan'},
              {icon: 'assignment', title: 'Neue Schicht', link: '/neueschicht'},

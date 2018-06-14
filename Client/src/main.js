@@ -7,13 +7,13 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import toolbar from './components/toolbar.vue'
 import schichtplan from './components/Schichtplan.vue'
-import farbpalette from './components/farbpalette.vue'
+
 import VueResource from 'vue-resource'
 import {store} from './store/store'
 
 Vue.component('my-toolbar', toolbar)
 Vue.component('my-schichtplan', schichtplan)
-Vue.component('my-farbpalette', farbpalette)
+
 Vue.use(VueResource)
 
 Vue.use(Vuetify, { theme: {
