@@ -4,27 +4,27 @@
  <v-layout row >
      <v-flex xs12 sm6 offset-sm3>
          <v-card class="kärcher">
-             <v-toolbar><v-avatar><img src="../assets/kärcher.png" alt=""></v-avatar><v-toolbar-title>Team Kärcher</v-toolbar-title></v-toolbar>
+             <v-toolbar><v-avatar tile><img src="../assets/kärcher.png" alt=""></v-avatar><v-toolbar-title>Team Kärcher</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team'}">
+                <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" @change="update">
                 <v-flex class="kärcher" v-for="k in kärcher" :key="k.name">
                     <div class="header">{{k.name}}</div>
-                    <img :src="k.img" height="150px" width="150px">
-                    <v-flex xs1 >{{k.Information}}  {{k.Dauer}}</v-flex>
+                    <img :src="k.img" height="150px" width="150px" class="my-handle" >
+                    <v-flex xs1 >{{k.Information}}  {{k.Dauer}} </v-flex>
                 </v-flex>
                  </draggable>
              </v-container>
          </v-card>
          <br>
          <v-card class="heller">
-             <v-toolbar><v-avatar><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
+             <v-toolbar><v-avatar tile><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable v-model="heller" :element="'v-layout'" row wrap :options="{group:'team'}">
+                <draggable :move="onMoveCallback" @change="updateh"  v-model="heller" :element="'v-layout'" row wrap :options="{group:'team', ghostClass: '.heller', handle:'.my-handle' }" >
                 <v-flex class="heller" v-for="h in heller" :key="h.name">
                     <div class="header">{{h.name}}</div>
-                    <img :src="h.img" height="150px" width="150px">
+                    <img :src="h.img" height="150px" width="150px" class="my-handle">
                     <v-flex xs3>{{h.Information}}  {{h.Dauer}}</v-flex>
                     
                 </v-flex>
@@ -33,7 +33,31 @@
          </v-card>
      </v-flex>
  </v-layout>
-
+ 
+ <v-dialog v-model="dialog" width="400px" persistent>
+     <v-card>
+         <v-toolbar color="teal lighten-4"> <v-avatar tile><img src="../assets/bechtle.png" ></v-avatar><v-toolbar-title >Zusätzliche Informationen</v-toolbar-title></v-toolbar>
+         <v-container grid-list-xl>
+         <v-flex sm8 >
+             <v-radio-group v-model="sub.Information" row prepend-icon="touch_app">
+                 
+                 <v-radio label="Stamm" value="Stamm"></v-radio>
+                 <v-radio label="Temporär" value="Temporär"></v-radio>
+             </v-radio-group>
+        </v-flex >
+        
+        <v-flex sm6 >
+            <v-text-field prepend-icon="event" mask="##-##-####" label="von" v-model="sub.Dauer"></v-text-field>
+            <v-text-field prepend-icon="event" mask="##-##-####" label="bis"></v-text-field>
+         </v-flex>
+        <br>
+         <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
+         <v-btn color="success" @click="save">Ok</v-btn>
+         <v-btn color="info" @click="cancel">Cancel</v-btn>
+     </v-container>    
+     </v-card>    
+ </v-dialog>
+ 
 
 
 </div>
@@ -44,6 +68,10 @@
 export default {
     data(){
         return{
+            dialog:false,
+            radio:'',
+            ersatz:'',
+            sub:{},
             kärcher:[
                 {name:'Marcel Brodbeck',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
                 {name:'Michele Grasso',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
@@ -59,15 +87,45 @@ export default {
           
         }
     },
-    computed:{
-        users: {
-            get(){
-                return this.$store.state.users
-            },
+    
+    
+    methods:{
+       
+        updateh(){
+           
+            
+            this.heller.map((heller)=>{
+                heller.Team = 'heller'
+            })
+          
+        },
+        update(){
+            this.kärcher.map((kärcher)=>{
+                kärcher.Team = 'Kärcher'
+            })
+          
+        },
+        cancel(){
+            this.dialog=false
+            
+        },
+        onMoveCallback(evt, originalEvent){
+            this.dialog= true
+           
+
+                
             
             
+            console.log(evt.draggedContext)
+            console.log(evt.relatedContext)
+        },
+        save(){
+            this.dialog=false
+
+
         }
     }
+    
     
 }
 </script>
@@ -80,32 +138,11 @@ export default {
     background-color: #BBDEFB;
         min-height:200px  
 }
-.flex.kärcher{
+.my-handle{
     cursor:grab;
 }
-.flex.heller{
-    cursor:grab;
-}
-#kärchercss{
-       
-    display:inline-block;
-    height:160px;
-    width:160px;
-    cursor:grab;
-    
-    }
-.kärcherblock{
-   background-color:antiquewhite;
-   border:3px;
-   height:500px;
-   width:800px;
-   border-style:dashed 
-}    
 
-   
-#hellercss{
-    background-color:aquamarine
-}
+
 
 
 </style>

@@ -1,4 +1,4 @@
-Server/node_modules
+Server/node_modules/
 Server/node_modules/npm
 Server/node_modules/readable-stream/LICENSE
 Server/node_modules/npm/package.json
