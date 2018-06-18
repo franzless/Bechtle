@@ -7,7 +7,7 @@
              <v-toolbar><v-avatar tile><img src="../assets/kärcher.png" alt=""></v-avatar><v-toolbar-title>Team Kärcher</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" @change="update">
+                <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" >
                 <v-flex class="kärcher" v-for="k in kärcher" :key="k.name">
                     <div class="header">{{k.name}}</div>
                     <img :src="k.img" height="150px" width="150px" class="my-handle" >
@@ -21,7 +21,7 @@
              <v-toolbar><v-avatar tile><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable :move="onMoveCallback" @change="updateh"  v-model="heller" :element="'v-layout'" row wrap :options="{group:'team', ghostClass: '.heller', handle:'.my-handle' }" >
+                <draggable :move="onMoveCallback"   v-model="heller" :element="'v-layout'" row wrap :options="{group:'team', ghostClass: '.heller', handle:'.my-handle' }" >
                 <v-flex class="heller" v-for="h in heller" :key="h.name">
                     <div class="header">{{h.name}}</div>
                     <img :src="h.img" height="150px" width="150px" class="my-handle">
@@ -65,44 +65,68 @@
 
 </template>
 <script>
+import Vue from 'vue'
 export default {
     data(){
         return{
             dialog:false,
             radio:'',
             ersatz:'',
-            sub:{},
+            sub:[],
             kärcher:[
-                {name:'Marcel Brodbeck',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Michele Grasso',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Michael Gollhofer',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Wolfgang Reichle',Team:'Kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Frank Valdez',Team:'Kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Sandra Lorey',Team:'Kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Marcel Brodbeck',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Michele Grasso',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Michael Gollhofer',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Wolfgang Reichle',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Frank Valdez',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
+                {name:'Sandra Lorey',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
             ],
             heller:[
-                {name:'Marco Grossberger',Team:'Kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/130x130'},
+                {name:'Marco Grossberger',Team:'Heller',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/130x130'},
                 
             ]
           
         }
     },
-    
+    updated(){
+         
+    },
     
     methods:{
+        save(){
+            var array = this.sub.dragto
+            console.log(array)
+            console.log(this.kärcher[this.sub.index])
+            console.log(this.ersatz)
+           
+            if (this.ersatz == 'true'){
+                console.log('test')
+                Vue.set(this.kärcher,this.sub.index,this.sub)
+                
+                
+                    console.log(this.kärcher)
+                    this.dialog=false;
+                    this.dialog2=true;
+                    this.sub.dragorigin=this.sub.dragto
+
+                }else{}
+                
+
+            },
+        
        
         updateh(){
            
             
-            this.heller.map((heller)=>{
-                heller.Team = 'heller'
-            })
+            //this.heller.map((heller)=>{
+            //    heller.Team = 'heller'
+           // })
           
         },
         update(){
-            this.kärcher.map((kärcher)=>{
-                kärcher.Team = 'Kärcher'
-            })
+            //this.kärcher.map((kärcher)=>{
+            //    kärcher.Team = 'Kärcher'
+            //})
           
         },
         cancel(){
@@ -110,24 +134,16 @@ export default {
             
         },
         onMoveCallback(evt, originalEvent){
-            this.dialog= true
-           
-
-                
-            
-            
             console.log(evt.draggedContext)
             console.log(evt.relatedContext)
-        },
-        save(){
-            this.dialog=false
-
+            this.dialog= true
+            this.sub.dragto = evt.relatedContext.element.Team
+            this.sub.dragorigin =evt.draggedContext.element.Team
+            this.sub.index = evt.draggedContext.futureIndex
 
         }
-    }
-    
-    
-}
+     
+}}
 </script>
 <style scoped>
 .card.kärcher{
