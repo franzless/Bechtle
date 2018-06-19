@@ -48,8 +48,8 @@
         </v-flex >
         
         <v-flex sm6 >
-            <v-text-field prepend-icon="event" mask="##-##-####" label="von" v-model="sub.Dauer"></v-text-field>
-            <v-text-field prepend-icon="event" mask="##-##-####" label="bis"></v-text-field>
+            <v-text-field prepend-icon="event" mask="##X##X####" label="von" v-model="sub.Dauer"></v-text-field>
+            <v-text-field prepend-icon="event" mask="##X##X####" label="bis"></v-text-field>
          </v-flex>
         <br>
          <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
