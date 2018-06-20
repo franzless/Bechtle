@@ -8,6 +8,8 @@ export const store = new Vuex.Store({
     user: {},
     users: [],
     schicht:[],
+    einsatzplan:[],
+    teams:[]
     
   },
   getters: {
@@ -74,15 +76,24 @@ export const store = new Vuex.Store({
         for(var i= 0; i<l ; i++){
             state.schicht.push(schicht[i])}
      },
-     addschicht:(state,schicht)=>{
+    addschicht:(state,schicht)=>{
       var l= schicht.length
       for(var i= 0; i<l ; i++){
           state.schicht.push(schicht[i])}},
+
+     addeinsatzplan:(state,plan)=>{
+      var l= plan.length
+      for(var i= 0; i<l ; i++){
+          state.plan.push(plan[i])}}, 
+      
+      addteams:(state,data)=>{
+        state.teams = data.body}
+      }
+       
+      
    
  
-  },
-  actions:{
-
-  }
+  
+  
 
 })

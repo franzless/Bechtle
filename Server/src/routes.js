@@ -1,6 +1,7 @@
 const AuthenticationController = require ('./controllers/AuthenticationContoller.js')
 const ZeitstempelController = require ('./controllers/ZeitstempelController.js')
 const schichtController = require ('./controllers/schichtController.js')
+const einsatzplanController = require ('./controllers/einsatzplanController.js')
 const {zeitstempel} = require('./db/models')
 const {users} = require('./db/models')
 module.exports = (app) => {
@@ -41,8 +42,13 @@ module.exports = (app) => {
         ZeitstempelController.filter),
 
     app.post('/zeitstempel/krank',
-        ZeitstempelController.krank)
+        ZeitstempelController.krank),
 
+    app.get('/db/einsatzlanung/getall',
+        einsatzplanController.getall
+        ),
+    app.get('/db/einsatzlanung/getteams',
+        einsatzplanController.getteams)   
         
     
 

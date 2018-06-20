@@ -10,13 +10,14 @@ import schichtplan from './components/Schichtplan.vue'
 import draggable from 'vuedraggable'
 import VueResource from 'vue-resource'
 import {store} from './store/store'
+import VueTheMask from 'vue-the-mask'
 
 Vue.component('my-toolbar', toolbar)
 Vue.component('my-schichtplan', schichtplan)
 Vue.component('draggable',draggable)
 
 Vue.use(VueResource)
-
+Vue.use(VueTheMask)
 Vue.use(Vuetify, { theme: {
   primary: '#008d58',
   secondary: '#424242',

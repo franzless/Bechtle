@@ -42,14 +42,14 @@
          <v-flex sm8 >
              <v-radio-group v-model="sub.Information" row prepend-icon="touch_app">
                  
-                 <v-radio label="Stamm" value="Stamm"></v-radio>
-                 <v-radio label="Temporär" value="Temporär"></v-radio>
+                 <v-radio label="Stamm" value="Stamm" ></v-radio>
+                 <v-radio label="Temporär" value="Temporär" ></v-radio>
              </v-radio-group>
         </v-flex >
         
-        <v-flex sm6 >
-            <v-text-field prepend-icon="event" mask="##X##X####" label="von" v-model="sub.Dauer"></v-text-field>
-            <v-text-field prepend-icon="event" mask="##X##X####" label="bis"></v-text-field>
+        <v-flex sm6 v-if="test">
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="sub.von"></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="sub.bis"></v-text-field>
          </v-flex>
         <br>
          <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
@@ -101,6 +101,7 @@ export default {
         return{
             dialog:false,
             dialog2:false,
+            test:false,
             radio:'',
             ersatz:'',
             sub:[],
@@ -119,8 +120,20 @@ export default {
           
         }
     },
+    created(){
+        
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getall')
+    .then(res =>{
+      this.$store.commit('addeinsatzplan', res)
+    }),
+
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
+    .then(response =>{
+      this.$store.commit('addteams', response)
+    })
+    },
     updated(){
-         
+        console.log(this.test)
     },
     
     methods:{
@@ -128,7 +141,7 @@ export default {
             var array = this.sub.dragto
             Vue.set(this[array],this.sub.index,{
                     Team:this.sub.dragto,
-                    Dauer:this.sub.Dauer,
+                    Dauer:this.sub.von +' - '+ this.sub.bis,
                     Information:this.sub.Information,
                     name:this.sub.name,
                     img:this.sub.img
@@ -176,7 +189,8 @@ export default {
             this.sub.name = evt.draggedContext.element.name
             this.sub.img = evt.draggedContext.element.img
 
-        }
+        },
+        
      
 }}
 </script>
