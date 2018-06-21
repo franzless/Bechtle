@@ -5,7 +5,10 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    userimg:DataTypes.STRING,
+    userimg:
+    {type:DataTypes.STRING,
+     defaultValue: 'http://source.unsplash.com/random/150x150' 
+    },
     userid:{
       allowNull: false,
       autoIncrement: true,

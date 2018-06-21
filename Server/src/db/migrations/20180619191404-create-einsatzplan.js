@@ -22,7 +22,7 @@ module.exports = {
         referenes:{
           model:'users',
           key:'userid'
-        },
+        }},
         teamteamid:{
           type:Sequelize.INTEGER,
           referenes:{
@@ -30,8 +30,8 @@ module.exports = {
             key:'team'
           }
       
-    })
-  },
+    }
+    })},
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('einsatzplan');
   }

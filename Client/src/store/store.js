@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
     users: [],
     schicht:[],
     einsatzplan:[],
-    teams:[]
+    teams:[],
+    skills:[]
     
   },
   getters: {
@@ -48,16 +49,20 @@ export const store = new Vuex.Store({
     getspät: state => {
         return state.schicht.filter(x=>x.schichtname == 'spät')
       },
-
-    getbyfirst: (state,first) => {
-      return state.users.filter(x=>x.firstname == first)
+    getkärcher :state => {
+      return state.einsatzplan.filter(x=>x.team.teamname == 'Kärcher')
     },
-    getnewcolor:state=>{
-      return state.neuefarbe
+    getheller :state => {
+      return state.einsatzplan.filter(x=>x.team.teamname == 'Heller')
     },
-    getnewuser:state=>{
-      return state.newuser
+    getmhp :state => {
+      return state.einsatzplan.filter(x=>x.team.teamname == 'MHP')
+    },
+    getbenz :state => {
+      return state.einsatzplan.filter(x=>x.team.teamname == 'Mercedes-Benz-Museum')
     }
+
+  
     
     
     
@@ -82,16 +87,20 @@ export const store = new Vuex.Store({
           state.schicht.push(schicht[i])}},
 
      addeinsatzplan:(state,plan)=>{
-      var l= plan.length
-      for(var i= 0; i<l ; i++){
-          state.plan.push(plan[i])}}, 
+        state.einsatzplan = plan.body },
       
       addteams:(state,data)=>{
         state.teams = data.body}
+      ,
+      addskills:(state,skill)=>{
+        state.skills = skill.body}
+      ,
+      updateplan(state,data){
+        Vue.set(state.einsatzplan,data.einsatzplanid -1,data)
       }
-       
       
-   
+      
+      }  
  
   
   

@@ -48,7 +48,10 @@ module.exports = (app) => {
         einsatzplanController.getall
         ),
     app.get('/db/einsatzlanung/getteams',
-        einsatzplanController.getteams)   
+        einsatzplanController.getteams),
+        
+    app.get('/db/einsatzlanung/getskills',
+        einsatzplanController.getskills)      
         
     
 

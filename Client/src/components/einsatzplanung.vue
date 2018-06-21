@@ -8,10 +8,10 @@
            <v-container fluid grid-list-md> 
             
                 <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" :move="onMoveCallback">
-                <v-flex class="kärcher" v-for="k in kärcher" :key="k.name">
-                    <div class="header">{{k.name}}</div>
-                    <img :src="k.img" height="150px" width="150px" class="my-handle" >
-                    <v-flex xs1 >{{k.Information}}  {{k.Dauer}} </v-flex>
+                <v-flex class="kärcher" v-for="k in kärcher" :key="k.einsatzplanid">
+                    <div class="header">{{k.user.firstname +' '+k.user.lastname}}</div>
+                    <img :src="k.userimg" height="150px" width="150px" class="my-handle" >
+                    <v-flex xs1 >{{k.status}}  {{k.von}} '-'{{k.bis}} </v-flex>
                 </v-flex>
                  </draggable>
              </v-container>
@@ -40,7 +40,7 @@
          <v-toolbar color="teal lighten-4"> <v-avatar tile><img src="../assets/bechtle.png" ></v-avatar><v-toolbar-title >Zusätzliche Informationen</v-toolbar-title></v-toolbar>
          <v-container grid-list-xl>
          <v-flex sm8 >
-             <v-radio-group v-model="sub.Information" row prepend-icon="touch_app">
+             <v-radio-group v-model="sub.status" row prepend-icon="touch_app">
                  
                  <v-radio label="Stamm" value="Stamm" ></v-radio>
                  <v-radio label="Temporär" value="Temporär" ></v-radio>
@@ -101,20 +101,18 @@ export default {
         return{
             dialog:false,
             dialog2:false,
-            test:false,
+            index:'',
+            oldteam:'',
+            newteam:'',
             radio:'',
             ersatz:'',
+            test:false,
             sub:[],
-            kärcher:[
-                {name:'Marcel Brodbeck',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Michele Grasso',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Michael Gollhofer',Team:'kärcher',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Wolfgang Reichle',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Frank Valdez',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
-                {name:'Sandra Lorey',Team:'kärcher',Information:'Temporär',Dauer:'12.6.2018-20.06.2018',img:'http://source.unsplash.com/random/150x150'},
-            ],
+            
+            
             heller:[
-                {name:'Marco Grossberger',Team:'heller',Information:'Stamm',Dauer:'',img:'http://source.unsplash.com/random/130x130'},
+                {name:'Marco Grossberger',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'},
+                {name:'blubb',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'}
                     ],
             skills:['Rollout','Tickets','Beschaffung']
           
@@ -130,22 +128,33 @@ export default {
     this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
     .then(response =>{
       this.$store.commit('addteams', response)
+    }),
+
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
+    .then(r =>{
+      this.$store.commit('addskills', r)
     })
     },
     updated(){
-        console.log(this.test)
+    console.log(this.kärcher)
+    console.log(this.sub)    
     },
+    computed:{
+        kärcher:{
+            get(){
+                return this.$store.getters.getkärcher
+            },
+            set(sub){
+               this.$store.commit('updateplan',sub)
+            }
+        }    
+    },
+    
     
     methods:{
         save(){
-            var array = this.sub.dragto
-            Vue.set(this[array],this.sub.index,{
-                    Team:this.sub.dragto,
-                    Dauer:this.sub.von +' - '+ this.sub.bis,
-                    Information:this.sub.Information,
-                    name:this.sub.name,
-                    img:this.sub.img
-                })
+            var array = this.newteam.
+            Vue.set(this[array],this.index,sub)
             
            
             if (this.ersatz == 'true'){
@@ -161,12 +170,11 @@ export default {
             },
         
        
-        updateh(){
-           
-            
-            //this.heller.map((heller)=>{
-            //    heller.Team = 'heller'
-           // })
+        updatedb(sub){
+           this.$http.post('http://localhost:8082/db/einsatzlanung/update', sub)
+           .then(response=>{
+
+           })
           
         },
         update(){
@@ -183,11 +191,13 @@ export default {
             console.log(evt.draggedContext)
             console.log(evt.relatedContext)
             this.dialog= true
-            this.sub.dragto = evt.relatedContext.element.Team
-            this.sub.dragorigin =evt.draggedContext.element.Team
-            this.sub.index = evt.draggedContext.futureIndex
-            this.sub.name = evt.draggedContext.element.name
-            this.sub.img = evt.draggedContext.element.img
+            this.oldteam = evt.relatedContext.element.teamTeamid
+            this.sub.teamteamid =evt.draggedContext.element.teamTeamid
+            this.index = evt.draggedContext.futureIndex
+            this.sub.einsatzplanid = evt.draggedContext.element.einsatzplanid
+            this.sub.img = evt.draggedContext.element.userimg
+            this.sub.useruserid= evt.draggedContext.element.useruserid
+            this.newteam = evt.relatedContext.element.team.teamname
 
         },
         
