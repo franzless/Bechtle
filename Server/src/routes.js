@@ -51,7 +51,10 @@ module.exports = (app) => {
         einsatzplanController.getteams),
         
     app.get('/db/einsatzlanung/getskills',
-        einsatzplanController.getskills)      
+        einsatzplanController.getskills),
+
+    app.post('/db/einsatzlanung/update',
+        einsatzplanController.update)        
         
     
 

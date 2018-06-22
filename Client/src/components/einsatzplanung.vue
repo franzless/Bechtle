@@ -96,6 +96,7 @@
 </template>
 <script>
 import Vue from 'vue'
+import _ from 'lodash'
 export default {
     data(){
         return{
@@ -118,7 +119,9 @@ export default {
           
         }
     },
+    
     created(){
+    
         
     this.$http.get('http://localhost:8082/db/einsatzlanung/getall')
     .then(res =>{
@@ -135,11 +138,11 @@ export default {
       this.$store.commit('addskills', r)
     })
     },
-    updated(){
-    console.log(this.sub)
-    console.log(this.Kärcher)
+   
+    
+    
       
-    },
+   
     computed:{
         Kärcher:{
             get(){
@@ -148,6 +151,7 @@ export default {
             set(sub){
                this.$store.commit('updateplan',this.sub)
             }
+            
         },
         Heller:{
             get(){
@@ -170,15 +174,22 @@ export default {
                this.$store.commit('updateplan',sub)
             }
         },
+        
             
     },
     
     
+    
     methods:{
+        
         save(){
-            var array = this.newteam
-            Vue.set(this[array],this.index,this.sub[0])
-            
+           // var array = this.newteam
+           // Vue.set(this[array],this.index,this.sub[0])
+            this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
+           .then(response=>{
+              this.$store.commit('updateplan',response) 
+           })
+          
             
            
             if (this.ersatz == 'true'){
@@ -201,10 +212,11 @@ export default {
            })
           
         },
-        update(){
-            //this.kärcher.map((kärcher)=>{
-            //    kärcher.Team = 'Kärcher'
-            //})
+        dateToInt(datum){
+            
+         var newDate = datum.split(".")
+         var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
+         return res  
           
         },
         cancel(){

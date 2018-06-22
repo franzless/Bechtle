@@ -11,6 +11,7 @@ import draggable from 'vuedraggable'
 import VueResource from 'vue-resource'
 import {store} from './store/store'
 import VueTheMask from 'vue-the-mask'
+var debounce = require('lodash.debounce');
 
 Vue.component('my-toolbar', toolbar)
 Vue.component('my-schichtplan', schichtplan)

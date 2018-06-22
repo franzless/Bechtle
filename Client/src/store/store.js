@@ -99,10 +99,11 @@ export const store = new Vuex.Store({
         state.skills = skill.body}
       ,
       updateplan(state,data){
-        console.log('data:', data)
-        console.log('state:',state.einsatzplan)
-        Vue.set(state.einsatzplan,data.einsatzplanid -1,data)
-      }
+        
+        var l= data.length
+        for (var i=0;i<l;i++){
+        Vue.set(state.einsatzplan,i,data[i])
+      }}
       
       
       }  
