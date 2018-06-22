@@ -7,11 +7,11 @@
              <v-toolbar><v-avatar tile><img src="../assets/kärcher.png" alt=""></v-avatar><v-toolbar-title>Team Kärcher</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable v-model="kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" :move="onMoveCallback">
-                <v-flex class="kärcher" v-for="k in kärcher" :key="k.einsatzplanid">
+                <draggable v-model="Kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" :move="onMoveCallback">
+                <v-flex class="kärcher" v-for="k in Kärcher" :key="k.einsatzplanid">
                     <div class="header">{{k.user.firstname +' '+k.user.lastname}}</div>
-                    <img :src="k.userimg" height="150px" width="150px" class="my-handle" >
-                    <v-flex xs1 >{{k.status}}  {{k.von}} '-'{{k.bis}} </v-flex>
+                    <img :src="k.user.userimg" height="150px" width="150px" class="my-handle" >
+                    <v-flex  >{{k.status}} <br> {{k.von}} - {{k.bis}} </v-flex>
                 </v-flex>
                  </draggable>
              </v-container>
@@ -21,11 +21,11 @@
              <v-toolbar><v-avatar tile><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable :move="onMoveCallback"   v-model="heller" :element="'v-layout'" row wrap :options="{group:'team', ghostClass: '.heller', handle:'.my-handle' }" >
-                <v-flex class="heller" v-for="h in heller" :key="h.name">
-                    <div class="header">{{h.name}}</div>
-                    <img :src="h.img" height="150px" width="150px" class="my-handle">
-                    <v-flex xs3>{{h.Information}}  {{h.Dauer}}</v-flex>
+                <draggable :move="onMoveCallback"   v-model="Heller" :element="'v-layout'" row wrap :options="{group:'team',handle:'.my-handle' }" >
+                <v-flex class="heller" v-for="h in Heller" :key="h.einsatzplanid">
+                    <div class="header">{{h.user.firstname + ' ' +h.user.lastname}}</div>
+                    <img :src="h.user.userimg" height="150px" width="150px" class="my-handle">
+                    <v-flex >{{h.status}} <br> {{h.von}} - {{h.bis}}</v-flex>
                     
                 </v-flex>
                  </draggable>
@@ -40,16 +40,16 @@
          <v-toolbar color="teal lighten-4"> <v-avatar tile><img src="../assets/bechtle.png" ></v-avatar><v-toolbar-title >Zusätzliche Informationen</v-toolbar-title></v-toolbar>
          <v-container grid-list-xl>
          <v-flex sm8 >
-             <v-radio-group v-model="sub.status" row prepend-icon="touch_app">
+             <v-radio-group v-model="sub[0].status" row prepend-icon="touch_app">
                  
                  <v-radio label="Stamm" value="Stamm" ></v-radio>
                  <v-radio label="Temporär" value="Temporär" ></v-radio>
              </v-radio-group>
         </v-flex >
         
-        <v-flex sm6 v-if="test">
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="sub.von"></v-text-field>
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="sub.bis"></v-text-field>
+        <v-flex sm6 >
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="sub[0].von"></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="sub[0].bis"></v-text-field>
          </v-flex>
         <br>
          <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
@@ -107,14 +107,14 @@ export default {
             radio:'',
             ersatz:'',
             test:false,
-            sub:[],
+            sub:[{von:'',bis:'',status:'',einsatzplanid:null,teamteamid:null,useruserid:null}],
             
             
-            heller:[
-                {name:'Marco Grossberger',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'},
-                {name:'blubb',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'}
-                    ],
-            skills:['Rollout','Tickets','Beschaffung']
+            //heller:[
+             //   {name:'Marco Grossberger',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'},
+             //   {name:'blubb',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'}
+              //      ]
+           
           
         }
     },
@@ -136,31 +136,55 @@ export default {
     })
     },
     updated(){
-    console.log(this.kärcher)
-    console.log(this.sub)    
+    console.log(this.sub)
+    console.log(this.Kärcher)
+      
     },
     computed:{
-        kärcher:{
+        Kärcher:{
             get(){
                 return this.$store.getters.getkärcher
             },
             set(sub){
+               this.$store.commit('updateplan',this.sub)
+            }
+        },
+        Heller:{
+            get(){
+                return this.$store.getters.getheller
+            },
+            set(sub){
+               this.$store.commit('updateplan',this.sub)
+            }
+        },
+        skills:{
+            get(){
+                return this.$store.getters.getskills
+            }
+        },
+        mhp:{
+            get(){
+                return this.$store.getters.getmhp
+            },
+            set(sub){
                this.$store.commit('updateplan',sub)
             }
-        }    
+        },
+            
     },
     
     
     methods:{
         save(){
-            var array = this.newteam.
-            Vue.set(this[array],this.index,sub)
+            var array = this.newteam
+            Vue.set(this[array],this.index,this.sub[0])
+            
             
            
             if (this.ersatz == 'true'){
                     this.dialog=false;
                     this.dialog2=true;
-                    this.sub.dragorigin=this.sub.dragto
+                    this.oldteam= this.newteam
 
             }else{
 
@@ -188,15 +212,17 @@ export default {
             
         },
         onMoveCallback(evt, originalEvent){
-            console.log(evt.draggedContext)
-            console.log(evt.relatedContext)
+             
             this.dialog= true
+            Vue.set(this.sub,0,{
+            einsatzplanid:evt.draggedContext.element.einsatzplanid,
+            teamTeamid:evt.relatedContext.element.teamTeamid,
+            userUserid:evt.draggedContext.element.userUserid,
+            userimg:evt.draggedContext.element.user.userimg}
+            )
+           
             this.oldteam = evt.relatedContext.element.teamTeamid
-            this.sub.teamteamid =evt.draggedContext.element.teamTeamid
             this.index = evt.draggedContext.futureIndex
-            this.sub.einsatzplanid = evt.draggedContext.element.einsatzplanid
-            this.sub.img = evt.draggedContext.element.userimg
-            this.sub.useruserid= evt.draggedContext.element.useruserid
             this.newteam = evt.relatedContext.element.team.teamname
 
         },

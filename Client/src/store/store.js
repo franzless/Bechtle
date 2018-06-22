@@ -60,6 +60,9 @@ export const store = new Vuex.Store({
     },
     getbenz :state => {
       return state.einsatzplan.filter(x=>x.team.teamname == 'Mercedes-Benz-Museum')
+    },
+    getskills :state => {
+      return state.skills
     }
 
   
@@ -96,6 +99,8 @@ export const store = new Vuex.Store({
         state.skills = skill.body}
       ,
       updateplan(state,data){
+        console.log('data:', data)
+        console.log('state:',state.einsatzplan)
         Vue.set(state.einsatzplan,data.einsatzplanid -1,data)
       }
       
