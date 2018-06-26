@@ -1,6 +1,7 @@
 <template>
 <div>
     <my-toolbar></my-toolbar>
+    <v-btn @click="dialog2=true">test</v-btn>
  <v-layout row >
      <v-flex xs12 sm6 offset-sm3>
          <v-card class="kärcher">
@@ -63,27 +64,33 @@
     <v-dialog v-model="dialog2" width="600px">
         <v-card>
             <v-toolbar color="teal lighten-4"> <v-avatar tile><img src="../assets/bechtle.png" ></v-avatar><v-toolbar-title >Ersatz bestimmen</v-toolbar-title></v-toolbar>
-            <v-container grid-list-sm>
-                <v-layout row wrap>
+            <v-container grid-list-md>
+                <v-layout row align-center>
                     <v-flex sm6>
                         <v-list>
                             
-                                <v-list-tile v-ripple @click="" v-for="(skill, index) in skills" :key="index">
-                                    {{skill}}
-                                </v-list-tile>
-                            
+                        <v-list-tile class="primary" v-ripple @click="filterforuser" v-for="(skill, index) in skills" :key="index">
+                                    {{skill.skillname}}
+                        </v-list-tile>
+                           
                         </v-list>
+                    </v-flex>
+                    <v-flex >
+                        <v-icon>code</v-icon>
                     </v-flex>
                     <v-flex sm6>
                         <v-list>
-                            <v-list-tile>
-
+                            <v-list-tile class="yellow" @click="pickuser" v-ripple  v-for="user in users" :key="user.userid">
+                                {{user.firstname}} {{user.lastname}}
+                                
                             </v-list-tile>
+                            <br>
                         </v-list>
                     </v-flex>
+                    </v-layout>
                     <v-btn>Ok</v-btn>
                     <v-btn>Cancel</v-btn>
-                </v-layout>
+                
             </v-container>
         </v-card>
     </v-dialog>
@@ -148,8 +155,11 @@ export default {
         skills:{
             get(){
                 return this.$store.getters.getskills
-            }
+            }},
+        users:{
+            get(){return this.$store.getters.getusers}
         },
+        
         mhp:{
             get(){
                 return this.$store.getters.getmhp
@@ -165,6 +175,12 @@ export default {
     
     
     methods:{
+        filterforuser(){
+
+        },
+        pickuser(event){
+            console.log(event)
+        },
         
         save(){
            // var array = this.newteam
