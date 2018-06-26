@@ -55,7 +55,19 @@ export const store = new Vuex.Store({
     
     getskills :state => {
       return state.skills
-    }
+    },
+    getkärcher :state => {
+      return state.kärcher
+    },
+    getheller :state => {
+      return state.heller
+    },
+    getmhp :state => {
+      return state.mhp
+    },
+    getbenz :state => {
+      return state.benz
+    },
 
   
     
@@ -100,14 +112,14 @@ export const store = new Vuex.Store({
       addskills:(state,skill)=>{
         state.skills = skill.body}
       ,
-      updateplan(state,data){
-       console.log(data) 
-        //var l= data.length
-        //for (var i=0;i<l;i++){
-        //Vue.set(state.einsatzplan,data.einsatzplanid,data[data.einsatzplanid])
-      //}
-
-    }
+      updatekärcher:(state,data)=>{
+       state.kärcher=data
+       console.log(data)
+          },
+      updateheller:(state,data)=>{
+        state.heller=data
+        
+      }
       
       
       }  

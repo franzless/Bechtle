@@ -11,7 +11,7 @@
                 <v-flex class="kärcher" v-for="k in Kärcher" :key="k.einsatzplanid">
                     <div class="header">{{k.user.firstname +' '+k.user.lastname}}</div>
                     <img :src="k.user.userimg" height="150px" width="150px" class="my-handle" >
-                    <v-flex  >{{k.status}} <br> {{k.von}} - {{k.bis}} </v-flex>
+                    <v-flex  >{{k.status}} <br> {{dateToGer(k.von)}} - {{dateToGer(k.bis)}} </v-flex>
                 </v-flex>
                  </draggable>
              </v-container>
@@ -25,7 +25,7 @@
                 <v-flex class="heller" v-for="h in Heller" :key="h.einsatzplanid">
                     <div class="header">{{h.user.firstname + ' ' +h.user.lastname}}</div>
                     <img :src="h.user.userimg" height="150px" width="150px" class="my-handle">
-                    <v-flex >{{h.status}} <br> {{h.von}} - {{h.bis}}</v-flex>
+                    <v-flex >{{h.status}} <br> {{dateToGer(h.von)}} - {{dateToGer(h.bis)}}</v-flex>
                     
                 </v-flex>
                  </draggable>
@@ -48,8 +48,8 @@
         </v-flex >
         
         <v-flex sm6 >
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="sub[0].von"></v-text-field>
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="sub[0].bis"></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" :value="valuevon"  @input="dateToIntvon"></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" :value="valuebis" @input="dateToIntbis"></v-text-field>
          </v-flex>
         <br>
          <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
@@ -102,7 +102,8 @@ export default {
         return{
             dialog:false,
             dialog2:false,
-            index:'',
+            valuevon:'',
+            valuebis:'',
             oldteam:'',
             newteam:'',
             radio:'',
@@ -161,7 +162,7 @@ export default {
                 return this.$store.getters.getkärcher
             },
             set(sub){
-               this.$store.commit('updateplan',sub)
+               this.$store.commit('updatekärcher',sub)
             }
             
         },
@@ -170,7 +171,8 @@ export default {
                 return this.$store.getters.getheller
             },
             set(sub){
-               this.$store.commit('updateplan',sub)
+               this.$store.commit('updateheller',sub)
+               
             }
         },
         skills:{
@@ -197,13 +199,7 @@ export default {
         save(){
            // var array = this.newteam
            // Vue.set(this[array],this.index,this.sub[0])
-            this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
-           .then(response=>{
-              this.$store.commit('updateplan',response) 
-           })
-          
-            
-           
+             this.updatedb()         
             if (this.ersatz == 'true'){
                     this.dialog=false;
                     this.dialog2=true;
@@ -217,19 +213,32 @@ export default {
             },
         
        
-        updatedb(sub){
-           this.$http.post('http://localhost:8082/db/einsatzlanung/update', sub)
+        updatedb(){
+           this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub)
            .then(response=>{
-
+             console.log(response,'erfolg')
+             this.created()  
            })
           
         },
-        dateToInt(datum){
+        dateToIntvon(event){
             
-         var newDate = datum.split(".")
+         var newDate = event.target.valuevon.split(".")
          var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
-         return res  
+         this.sub[0].von = res 
           
+        },
+        dateToIntbis(event){
+            
+         var newDate = event.target.valuebis.split(".")
+         var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
+         this.sub[0].bis = res 
+          
+        },
+        dateToGer(datum){
+         var newDate = datum.split("-")
+         var res = newDate[2]+'.'+newDate[1]+'.'+newDate[0]
+         return res     
         },
         cancel(){
             this.dialog=false
@@ -244,6 +253,7 @@ export default {
             userUserid:evt.draggedContext.element.userUserid,
             userimg:evt.draggedContext.element.user.userimg}
             )
+            
            
             this.oldteam = evt.relatedContext.element.teamTeamid
             this.index = evt.draggedContext.futureIndex
