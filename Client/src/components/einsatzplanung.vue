@@ -123,14 +123,8 @@ export default {
     
     created(){
     this.fetchdata()
-        
-   
+    
     },
-   
-   
-    
-    
-      
    
     computed:{
         Kärcher:{
@@ -177,10 +171,10 @@ export default {
            // Vue.set(this[array],this.index,this.sub[0])
              this.dateToIntvon()
              this.dateToIntbis()
+             console.log(this.sub[0])
              this.updatedb()
-
+             this.dialog=false;
             if (this.ersatz == 'true'){
-                    this.dialog=false;
                     this.dialog2=true;
                     this.oldteam= this.newteam
 

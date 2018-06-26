@@ -74,8 +74,8 @@ module.exports = {
         var data = req.body
         einsatzplan.update({
             einsatzplanid:data.einsatzplanid,
-            useruserid:data.useruserid,
-            teamteamid:data.teamteamid,
+            userUserid:data.userUserid,
+            teamTeamid:data.teamTeamid,
             status:data.status,
             von:data.von,
             bis:data.bis
