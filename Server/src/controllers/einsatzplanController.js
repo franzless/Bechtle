@@ -81,11 +81,11 @@ module.exports = {
             bis:data.bis
     
         },{where:
-            {einsatzlanid:data.einsatzplanid}
-            .then(reponse =>{
-                getall()
-            .then(r=>{
-                res.send(r)
-            
-            })})
-})}}  
+            {einsatzplanid:data.einsatzplanid}})
+            .then(response =>{
+              res.send(response)
+               })
+            .catch(err=>{
+                res.send(err)
+            })
+}} 

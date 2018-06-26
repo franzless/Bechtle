@@ -48,8 +48,8 @@
         </v-flex >
         
         <v-flex sm6 >
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" :value="valuevon"  @input="dateToIntvon"></v-text-field>
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" :value="valuebis" @input="dateToIntbis"></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="valuevon"   ></v-text-field>
+            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="valuebis" ></v-text-field>
          </v-flex>
         <br>
          <v-checkbox label="Ersatz einplanen?" v-model="ersatz" value="true"></v-checkbox>
@@ -122,35 +122,11 @@ export default {
     },
     
     created(){
-    
+    this.fetchdata()
         
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getkaercher')
-    .then(res =>{
-      this.$store.commit('addkärcher', res)
-    }),
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getmhp')
-    .then(res =>{
-      this.$store.commit('addmhp', res)
-    }),
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getheller')
-    .then(res =>{
-      this.$store.commit('addheller', res)
-    }),
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getbenz')
-    .then(res =>{
-      this.$store.commit('addbenz', res)
-    }),
-
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
-    .then(response =>{
-      this.$store.commit('addteams', response)
-    }),
-
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
-    .then(r =>{
-      this.$store.commit('addskills', r)
-    })
+   
     },
+   
    
     
     
@@ -199,7 +175,10 @@ export default {
         save(){
            // var array = this.newteam
            // Vue.set(this[array],this.index,this.sub[0])
-             this.updatedb()         
+             this.dateToIntvon()
+             this.dateToIntbis()
+             this.updatedb()
+
             if (this.ersatz == 'true'){
                     this.dialog=false;
                     this.dialog2=true;
@@ -214,23 +193,24 @@ export default {
         
        
         updatedb(){
-           this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub)
+            
+           this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
            .then(response=>{
-             console.log(response,'erfolg')
-             this.created()  
+            this.fetchdata() 
+             
            })
           
         },
-        dateToIntvon(event){
-            
-         var newDate = event.target.valuevon.split(".")
+        dateToIntvon(){
+          
+         var newDate = this.valuevon.split(".")
          var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
          this.sub[0].von = res 
           
         },
-        dateToIntbis(event){
+        dateToIntbis(){
             
-         var newDate = event.target.valuebis.split(".")
+         var newDate = this.valuebis.split(".")
          var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
          this.sub[0].bis = res 
           
@@ -250,9 +230,9 @@ export default {
             Vue.set(this.sub,0,{
             einsatzplanid:evt.draggedContext.element.einsatzplanid,
             teamTeamid:evt.relatedContext.element.teamTeamid,
-            userUserid:evt.draggedContext.element.userUserid,
-            userimg:evt.draggedContext.element.user.userimg}
-            )
+            userUserid:evt.draggedContext.element.userUserid
+            
+            })
             
            
             this.oldteam = evt.relatedContext.element.teamTeamid
@@ -260,6 +240,34 @@ export default {
             this.newteam = evt.relatedContext.element.team.teamname
 
         },
+        fetchdata(){
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getkaercher')
+    .then(res =>{
+      this.$store.commit('addkärcher', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getmhp')
+    .then(res =>{
+      this.$store.commit('addmhp', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getheller')
+    .then(res =>{
+      this.$store.commit('addheller', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getbenz')
+    .then(res =>{
+      this.$store.commit('addbenz', res)
+    }),
+
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
+    .then(response =>{
+      this.$store.commit('addteams', response)
+    }),
+
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
+    .then(r =>{
+      this.$store.commit('addskills', r)
+    })
+        }
         
      
 }}
