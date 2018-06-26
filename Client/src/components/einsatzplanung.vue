@@ -123,9 +123,21 @@ export default {
     created(){
     
         
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getall')
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getkaercher')
     .then(res =>{
-      this.$store.commit('addeinsatzplan', res)
+      this.$store.commit('addkärcher', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getmhp')
+    .then(res =>{
+      this.$store.commit('addmhp', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getheller')
+    .then(res =>{
+      this.$store.commit('addheller', res)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getbenz')
+    .then(res =>{
+      this.$store.commit('addbenz', res)
     }),
 
     this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
@@ -149,7 +161,7 @@ export default {
                 return this.$store.getters.getkärcher
             },
             set(sub){
-               this.$store.commit('updateplan',this.sub)
+               this.$store.commit('updateplan',sub)
             }
             
         },
@@ -158,7 +170,7 @@ export default {
                 return this.$store.getters.getheller
             },
             set(sub){
-               this.$store.commit('updateplan',this.sub)
+               this.$store.commit('updateplan',sub)
             }
         },
         skills:{

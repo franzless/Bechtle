@@ -8,9 +8,12 @@ export const store = new Vuex.Store({
     user: {},
     users: [],
     schicht:[],
-    einsatzplan:[],
     teams:[],
-    skills:[]
+    skills:[],
+    kärcher:[],
+    heller:[],
+    mhp:[],
+    benz:[]
     
   },
   getters: {
@@ -49,18 +52,7 @@ export const store = new Vuex.Store({
     getspät: state => {
         return state.schicht.filter(x=>x.schichtname == 'spät')
       },
-    getkärcher :state => {
-      return state.einsatzplan.filter(x=>x.team.teamname == 'Kärcher')
-    },
-    getheller :state => {
-      return state.einsatzplan.filter(x=>x.team.teamname == 'Heller')
-    },
-    getmhp :state => {
-      return state.einsatzplan.filter(x=>x.team.teamname == 'MHP')
-    },
-    getbenz :state => {
-      return state.einsatzplan.filter(x=>x.team.teamname == 'Mercedes-Benz-Museum')
-    },
+    
     getskills :state => {
       return state.skills
     }
@@ -79,7 +71,7 @@ export const store = new Vuex.Store({
       state.users = users
     },
     updateschicht:(state,schicht)=>{
-        state.schicht=[]
+      state.schicht=[]
         var l= schicht.length
         for(var i= 0; i<l ; i++){
             state.schicht.push(schicht[i])}
@@ -89,8 +81,18 @@ export const store = new Vuex.Store({
       for(var i= 0; i<l ; i++){
           state.schicht.push(schicht[i])}},
 
-     addeinsatzplan:(state,plan)=>{
-        state.einsatzplan = plan.body },
+    addkärcher:(state,plan)=>{
+        state.kärcher = plan.body },
+
+    addmhp:(state,plan)=>{
+        state.mph = plan.body },
+
+    addheller:(state,plan)=>{
+        state.heller = plan.body },
+
+    addbenz:(state,plan)=>{
+        state.benz = plan.body },
+      
       
       addteams:(state,data)=>{
         state.teams = data.body}
@@ -99,11 +101,13 @@ export const store = new Vuex.Store({
         state.skills = skill.body}
       ,
       updateplan(state,data){
-        
-        var l= data.length
-        for (var i=0;i<l;i++){
-        Vue.set(state.einsatzplan,i,data[i])
-      }}
+       console.log(data) 
+        //var l= data.length
+        //for (var i=0;i<l;i++){
+        //Vue.set(state.einsatzplan,data.einsatzplanid,data[data.einsatzplanid])
+      //}
+
+    }
       
       
       }  

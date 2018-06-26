@@ -44,8 +44,8 @@ module.exports = (app) => {
     app.post('/zeitstempel/krank',
         ZeitstempelController.krank),
 
-    app.get('/db/einsatzlanung/getall',
-        einsatzplanController.getall
+    app.get('/db/einsatzlanung/getkaercher',
+        einsatzplanController.getkärcher
         ),
     app.get('/db/einsatzlanung/getteams',
         einsatzplanController.getteams),
@@ -54,9 +54,17 @@ module.exports = (app) => {
         einsatzplanController.getskills),
 
     app.post('/db/einsatzlanung/update',
-        einsatzplanController.update)        
+        einsatzplanController.update),        
         
-    
+    app.get('/db/einsatzlanung/getmhp',
+        einsatzplanController.getmhp
+        ),
+    app.get('/db/einsatzlanung/getheller',
+        einsatzplanController.getheller
+        ),
+    app.get('/db/einsatzlanung/getbenz',
+        einsatzplanController.getbenz
+        )
 
             
 }        

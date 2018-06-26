@@ -4,13 +4,58 @@ const {users} = require('../db/models')
 const {skills} = require('../db/models')
 
 module.exports = {
-    getall(req,res){
+    getkärcher(req,res){
         einsatzplan.findAll(
             {
                 include:[{model:users,required:true},
                         {model:teams,required:true}]
-            }
-        )
+                
+            ,  where:{
+                teamTeamid:1
+            }}
+            )
+        .then(result =>{
+            res.send(result)
+        })
+    },
+    getmhp(req,res){
+        einsatzplan.findAll(
+            {
+                include:[{model:users,required:true},
+                        {model:teams,required:true}]
+                
+            ,  where:{
+                teamTeamid:2
+            }}
+            )
+        .then(result =>{
+            res.send(result)
+        })
+    },
+    getheller(req,res){
+        einsatzplan.findAll(
+            {
+                include:[{model:users,required:true},
+                        {model:teams,required:true}]
+                
+            ,  where:{
+                teamTeamid:3
+            }}
+            )
+        .then(result =>{
+            res.send(result)
+        })
+    },
+    getbenz(req,res){
+        einsatzplan.findAll(
+            {
+                include:[{model:users,required:true},
+                        {model:teams,required:true}]
+                
+            ,  where:{
+                teamTeamid:4
+            }}
+            )
         .then(result =>{
             res.send(result)
         })
