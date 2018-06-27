@@ -80,7 +80,7 @@
                     </v-flex>
                     <v-flex sm6>
                         <v-list>
-                            <v-list-tile class="yellow" @click="pickuser" v-ripple  v-for="user in users" :key="user.userid">
+                            <v-list-tile class="yellow" @click="pickuser(user)" v-ripple  v-for="user in users" :key="user.userid">
                                 {{user.firstname}} {{user.lastname}}
                                 
                             </v-list-tile>
@@ -108,7 +108,9 @@ export default {
     data(){
         return{
             dialog:false,
+            
             dialog2:false,
+            color:'yellow',
             valuevon:'',
             valuebis:'',
             oldteam:'',
@@ -116,6 +118,7 @@ export default {
             radio:'',
             ersatz:'',
             test:false,
+            oldteamname:'',
             sub:[{von:'',bis:'',status:'',einsatzplanid:null,teamteamid:null,useruserid:null}],
             
             
@@ -178,8 +181,20 @@ export default {
         filterforuser(){
 
         },
-        pickuser(event){
-            console.log(event)
+        pickuser(key){
+            this.sub=[]
+            this.sub.userUserid= key.userid
+            var index = this.oldteamname.find(x=> x.userUserid == this.sub.userUserid)
+            console.log(index)
+            this.sub.einsatzplanid = this.oldteamname[index].einsatzplanid
+            
+        },
+        confirmuser(){
+            
+            this.dialog2= false
+            this.dialog=true
+            this.sub.teamTeamid= this.oldteam
+            
         },
         
         save(){
@@ -187,7 +202,7 @@ export default {
            // Vue.set(this[array],this.index,this.sub[0])
              this.dateToIntvon()
              this.dateToIntbis()
-             console.log(this.sub[0])
+            
              this.updatedb()
              this.dialog=false;
             if (this.ersatz == 'true'){
@@ -245,7 +260,8 @@ export default {
             })
             
            
-            this.oldteam = evt.relatedContext.element.teamTeamid
+            this.oldteam = evt.draggedContext.element.teamTeamid
+            this.oldteamname = evt.draggedContext.element.team.teamname
             this.index = evt.draggedContext.futureIndex
             this.newteam = evt.relatedContext.element.team.teamname
 
