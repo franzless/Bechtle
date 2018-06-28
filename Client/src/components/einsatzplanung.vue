@@ -88,7 +88,7 @@
                         </v-list>
                     </v-flex>
                     </v-layout>
-                    <v-btn>Ok</v-btn>
+                    <v-btn @click="confirmuser">Ok</v-btn>
                     <v-btn>Cancel</v-btn>
                 
             </v-container>
@@ -163,14 +163,23 @@ export default {
             get(){return this.$store.getters.getusers}
         },
         
-        mhp:{
+        MHP:{
             get(){
                 return this.$store.getters.getmhp
             },
             set(sub){
-               this.$store.commit('updateplan',sub)
+               this.$store.commit('updatemhp',sub)
             }
         },
+        Benz:{
+            get(){
+                return this.$store.getters.getbenz
+            },
+            set(sub){
+               this.$store.commit('updatemhp',sub)
+            }
+        },
+
         
             
     },
@@ -182,19 +191,39 @@ export default {
 
         },
         pickuser(key){
-            this.sub=[]
-            this.sub.userUserid= key.userid
-            var index = this.oldteamname.find(x=> x.userUserid == this.sub.userUserid)
-            console.log(index)
-            this.sub.einsatzplanid = this.oldteamname[index].einsatzplanid
+            this.sub=[{von:'',bis:'',status:'',einsatzplanid:null,teamTeamid:null,userUserid:null}]
             
+            this.sub[0].userUserid= key.userid
+            var arrays = ['Kärcher','MHP','Heller','Benz']
+            
+            arrays.forEach(element=>{
+                
+                var index = this[element].findIndex(x=>x.userUserid == key.userid)
+                
+               if ( index === -1 ){
+                   
+               }else{
+                
+                this.sub[0].einsatzplanid = this[element][index].einsatzplanid   
+               } 
+            })
+           
+            
+            
+           
+            
+           
         },
         confirmuser(){
-            
+            if (this.sub[0].userUserid == null){
+                alert('Choose User first')
+            }else{
+            this.sub[0].teamTeamid = this.oldteam
+            console.log(this.sub[0])
             this.dialog2= false
             this.dialog=true
-            this.sub.teamTeamid= this.oldteam
             
+            }
         },
         
         save(){
@@ -263,7 +292,7 @@ export default {
             this.oldteam = evt.draggedContext.element.teamTeamid
             this.oldteamname = evt.draggedContext.element.team.teamname
             this.index = evt.draggedContext.futureIndex
-            this.newteam = evt.relatedContext.element.team.teamname
+            this.newteam = evt.relatedContext.element.teamTeamid
 
         },
         fetchdata(){
