@@ -69,7 +69,7 @@
                     <v-flex sm6>
                         <v-list>
                             
-                        <v-list-tile class="primary" v-ripple @click="filterforuser" v-for="(skill, index) in skills" :key="index">
+                        <v-list-tile  class="primary" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
                                     {{skill.skillname}}
                         </v-list-tile>
                            
@@ -175,6 +175,11 @@ export default {
                this.$store.commit('updatemhp',sub)
             }
         },
+        userskills:{
+            get(){
+                return this.$store.getters.getuserskills
+            }
+        }
 
         
             
@@ -183,10 +188,19 @@ export default {
     
     
     methods:{
-        filterforuser(){
-
+        filterforuser(skill){
+            
+        
+        console.log(this.userskills)
+            var filtered =  this.userskills.filter(x=>x.skillSkillid == skill.skillid)
+        console.log(filtered)
+      
+        
+        
         },
+        
         pickuser(key){
+
             this.sub=[{von:'',bis:'',status:'',einsatzplanid:null,teamTeamid:null,userUserid:null}]
             this.alert=false
             this.sub[0].userUserid= key.userid
@@ -308,8 +322,12 @@ export default {
     this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
     .then(r =>{
       this.$store.commit('addskills', r)
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getuserskills')
+    .then(res =>{
+      this.$store.commit('adduserskills', res)
     })
-        }
+    }
         
      
 }}
