@@ -10,8 +10,8 @@ export const store = new Vuex.Store({
     schicht:[],
     teams:[],
     skills:[],
-    kärcher:[],
-    heller:[],
+    Kärcher:[],
+    Heller:[],
     mhp:[],
     benz:[]
     
@@ -57,16 +57,16 @@ export const store = new Vuex.Store({
       return state.skills
     },
     getkärcher :state => {
-      return state.kärcher
+      return state.Kärcher
     },
     getheller :state => {
-      return state.heller
+      return state.Heller
     },
     getmhp :state => {
-      return state.mhp
+      return state.MHP
     },
     getbenz :state => {
-      return state.benz
+      return state.Benz
     },
 
   
@@ -94,16 +94,16 @@ export const store = new Vuex.Store({
           state.schicht.push(schicht[i])}},
 
     addkärcher:(state,plan)=>{
-        state.kärcher = plan.body },
+        state.Kärcher = plan.body },
 
     addmhp:(state,plan)=>{
-        state.mph = plan.body },
+        state.MHP = plan.body },
 
     addheller:(state,plan)=>{
-        state.heller = plan.body },
+        state.Heller = plan.body },
 
     addbenz:(state,plan)=>{
-        state.benz = plan.body },
+        state.Benz = plan.body },
       
       
       addteams:(state,data)=>{
@@ -113,11 +113,20 @@ export const store = new Vuex.Store({
         state.skills = skill.body}
       ,
       updatekärcher:(state,data)=>{
-       state.kärcher=data
-       console.log(data)
+       state.Kärcher=data
+       
           },
       updateheller:(state,data)=>{
-        state.heller=data
+        state.Heller=data
+        
+      },
+      canceldragg:(state,data)=>{
+        
+        var oldteam = data[0].element.team.teamname
+        var newteam = data[1].element.team.teamname
+       
+        state[newteam].splice(data[0].futureIndex,1)
+        state[oldteam].splice(data[0].index,0,data[0].element)
         
       }
       

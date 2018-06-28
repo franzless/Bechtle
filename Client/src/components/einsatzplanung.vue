@@ -22,7 +22,7 @@
              <v-toolbar><v-avatar tile><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable :move="onMoveCallback"   v-model="Heller" :element="'v-layout'" row wrap :options="{group:'team',handle:'.my-handle' }" >
+                <draggable  :move="onMoveCallback"   v-model="Heller" :element="'v-layout'" row wrap :options="{group:'team',handle:'.my-handle' }" >
                 <v-flex class="heller" v-for="h in Heller" :key="h.einsatzplanid">
                     <div class="header">{{h.user.firstname + ' ' +h.user.lastname}}</div>
                     <img :src="h.user.userimg" height="150px" width="150px" class="my-handle">
@@ -88,8 +88,10 @@
                         </v-list>
                     </v-flex>
                     </v-layout>
+                    <v-alert type="error" :value="alert">Choose User first</v-alert>
                     <v-btn @click="confirmuser">Ok</v-btn>
                     <v-btn>Cancel</v-btn>
+                    
                 
             </v-container>
         </v-card>
@@ -108,7 +110,7 @@ export default {
     data(){
         return{
             dialog:false,
-            
+            alert:false,
             dialog2:false,
             color:'yellow',
             valuevon:'',
@@ -119,15 +121,9 @@ export default {
             ersatz:'',
             test:false,
             oldteamname:'',
+            canceldragg:[],
             sub:[{von:'',bis:'',status:'',einsatzplanid:null,teamteamid:null,useruserid:null}],
             
-            
-            //heller:[
-             //   {name:'Marco Grossberger',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'},
-             //   {name:'blubb',Team:'heller',Information:'Stamm',Dauer:'',img:'/static/assets/platzhalter.jpg'}
-              //      ]
-           
-          
         }
     },
     
@@ -192,7 +188,7 @@ export default {
         },
         pickuser(key){
             this.sub=[{von:'',bis:'',status:'',einsatzplanid:null,teamTeamid:null,userUserid:null}]
-            
+            this.alert=false
             this.sub[0].userUserid= key.userid
             var arrays = ['Kärcher','MHP','Heller','Benz']
             
@@ -207,19 +203,13 @@ export default {
                 this.sub[0].einsatzplanid = this[element][index].einsatzplanid   
                } 
             })
-           
-            
-            
-           
-            
-           
         },
         confirmuser(){
             if (this.sub[0].userUserid == null){
-                alert('Choose User first')
+                this.alert=true
             }else{
             this.sub[0].teamTeamid = this.oldteam
-            console.log(this.sub[0])
+            
             this.dialog2= false
             this.dialog=true
             
@@ -235,14 +225,9 @@ export default {
              this.updatedb()
              this.dialog=false;
             if (this.ersatz == 'true'){
-                    this.dialog2=true;
-                    this.oldteam= this.newteam
-
-            }else{
-
-                }
-                
-
+                this.dialog2=true;
+             
+            }else{ }
             },
         
        
@@ -251,10 +236,8 @@ export default {
            this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
            .then(response=>{
             this.fetchdata() 
-             
-           })
-          
-        },
+              })
+              },
         dateToIntvon(){
           
          var newDate = this.valuevon.split(".")
@@ -276,22 +259,26 @@ export default {
         },
         cancel(){
             this.dialog=false
+            this.$store.commit('canceldragg',this.canceldragg)
             
+                       
         },
         onMoveCallback(evt, originalEvent){
              
             this.dialog= true
+            
+            
             Vue.set(this.sub,0,{
             einsatzplanid:evt.draggedContext.element.einsatzplanid,
             teamTeamid:evt.relatedContext.element.teamTeamid,
             userUserid:evt.draggedContext.element.userUserid
             
             })
-            
-           
+            this.canceldragg[0]=evt.draggedContext
+            this.canceldragg[1]=evt.relatedContext
             this.oldteam = evt.draggedContext.element.teamTeamid
             this.oldteamname = evt.draggedContext.element.team.teamname
-            this.index = evt.draggedContext.futureIndex
+            this.index = evt.draggedContext.Index
             this.newteam = evt.relatedContext.element.teamTeamid
 
         },
