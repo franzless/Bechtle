@@ -64,6 +64,9 @@ module.exports = (app) => {
         ),
     app.get('/db/einsatzlanung/getbenz',
         einsatzplanController.getbenz
+        ),
+    app.get('/db/einsatzlanung/getuserskills',
+        einsatzplanController.getuserskills
         )
 
             

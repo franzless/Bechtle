@@ -2,6 +2,7 @@ const {einsatzplan} = require('../db/models')
 const {teams} = require('../db/models')
 const {users} = require('../db/models')
 const {skills} = require('../db/models')
+const {userskills} = require('../db/models')
 
 module.exports = {
     getkärcher(req,res){
@@ -88,4 +89,9 @@ module.exports = {
             .catch(err=>{
                 res.send(err)
             })
-}} 
+},
+getuserskills(req,res){
+    userskills.findAll()
+    .then(result =>{
+        res.send(result)
+    })},} 

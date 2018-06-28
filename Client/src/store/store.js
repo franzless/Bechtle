@@ -13,7 +13,8 @@ export const store = new Vuex.Store({
     Kärcher:[],
     Heller:[],
     mhp:[],
-    benz:[]
+    benz:[],
+    userskills:[]
     
   },
   getters: {
@@ -68,6 +69,9 @@ export const store = new Vuex.Store({
     getbenz :state => {
       return state.Benz
     },
+    getuserskills: state =>{
+      return state.userskills
+    }
 
   
     
@@ -128,6 +132,9 @@ export const store = new Vuex.Store({
         state[newteam].splice(data[0].futureIndex,1)
         state[oldteam].splice(data[0].index,0,data[0].element)
         
+      },
+      adduserskills:(state,data)=>{
+        state.userskills = data.body
       }
       
       
