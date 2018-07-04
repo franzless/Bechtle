@@ -9,11 +9,17 @@
            <v-container fluid grid-list-md> 
             
                 <draggable v-model="Kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" :move="onMoveCallback">
-                <v-flex class="kärcher" v-for="k in Kärcher" :key="k.einsatzplanid">
+                   
+                <v-flex v-for="k in Kärcher" :key="k.einsatzplanid">
                     <div class="header">{{k.user.firstname +' '+k.user.lastname}}</div>
                     <img :src="k.user.userimg" height="150px" width="150px" class="my-handle" >
                     <v-flex  >{{k.status}} <br> {{dateToGer(k.von)}} - {{dateToGer(k.bis)}} </v-flex>
                 </v-flex>
+                <v-flex v-if="Kärcher.length<1">
+                    <div class="header">Platzhalter </div>
+                     <img src="../assets/PlatzhalterMann.jpg" height="150px" width="150px" class="my-handle" >
+                </v-flex>
+                
                  </draggable>
              </v-container>
          </v-card>
@@ -22,18 +28,34 @@
              <v-toolbar><v-avatar tile><img src="../assets/heller.png" alt=""></v-avatar><v-toolbar-title>Team Heller</v-toolbar-title></v-toolbar>
            <v-container fluid grid-list-md> 
             
-                <draggable  :move="onMoveCallback"   v-model="Heller" :element="'v-layout'" row wrap :options="{group:'team',handle:'.my-handle' }" >
-                <v-flex class="heller" v-for="h in Heller" :key="h.einsatzplanid">
+                <draggable  :move="onMoveCallback" class="transition-group" row wrap  :element="'v-layout'" v-model="Heller"  :options="{group:'team',handle:'.my-handle' }" >
+                
+                <v-flex class="heller"  v-for="h in Heller" :key="h.einsatzplanid">
                     <div class="header">{{h.user.firstname + ' ' +h.user.lastname}}</div>
                     <img :src="h.user.userimg" height="150px" width="150px" class="my-handle">
-                    <v-flex >{{h.status}} <br> {{dateToGer(h.von)}} - {{dateToGer(h.bis)}}</v-flex>
-                    
-                </v-flex>
+                    <v-flex >{{h.status}} <br> {{dateToGer(h.von)}} - {{dateToGer(h.bis)}}</v-flex>                   
+                </v-flex>                           
+                 </draggable>                
+             </v-container>
+         </v-card>
+           </v-flex>
+ </v-layout>
+         <br>
+         <v-flex xs12 sm6 offset-sm10>
+         <v-toolbar><v-avatar tile><img src="../assets/bechtle.png" alt=""></v-avatar><v-toolbar-title>Krank/Urlaub</v-toolbar-title></v-toolbar>
+         <v-card>
+             <v-container>
+                 <draggable :element="'v-layout'" :options="{group:'team',handle:'.my-handle'}">
+                     <v-flex v-for="k in krank" :key="k.einsatzplanid">
+                        <div class="header">{{k.user.firstname + ' ' +k.user.lastname}}</div>
+                        <img :src="k.user.userimg" height="150px" width="150px" class="my-handle">
+                        <v-flex >{{k.status}} <br> {{dateToGer(k.von)}} - {{dateToGer(k.bis)}}</v-flex> 
+                     </v-flex>
                  </draggable>
              </v-container>
          </v-card>
-     </v-flex>
- </v-layout>
+         </v-flex>
+   
  <!-- dialog 1-->
  
  <v-dialog v-model="dialog" width="400px" persistent>
@@ -109,6 +131,7 @@ import _ from 'lodash'
 export default {
     data(){
         return{
+            
             dialog:false,
             alert:false,
             dialog2:false,
@@ -188,6 +211,9 @@ export default {
     
     
     methods:{
+        start(){
+         return false   
+        },
         filterforuser(skill){
             
         
@@ -253,23 +279,24 @@ export default {
               })
               },
         dateToIntvon(){
-          
+         if (this.valuevon != null){ 
          var newDate = this.valuevon.split(".")
          var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
          this.sub[0].von = res 
-          
+         } 
         },
         dateToIntbis(){
-            
+         if (this.valuebis != null)  { 
          var newDate = this.valuebis.split(".")
          var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
-         this.sub[0].bis = res 
+         this.sub[0].bis = res }
           
         },
         dateToGer(datum){
+            if (datum != null){
          var newDate = datum.split("-")
          var res = newDate[2]+'.'+newDate[1]+'.'+newDate[0]
-         return res     
+         return res  }   
         },
         cancel(){
             this.dialog=false
@@ -280,6 +307,8 @@ export default {
         onMoveCallback(evt, originalEvent){
              
             this.dialog= true
+            console.log(evt.draggedContext)
+            console.log(evt.relatedContext)
             
             
             Vue.set(this.sub,0,{
@@ -343,7 +372,15 @@ export default {
 }
 .my-handle{
     cursor:grab;
+    
 }
+.transition-group{
+    min-height:200px;
+   display:block
+}
+
+
+
 
 
 
