@@ -10,7 +10,7 @@
             
                 <draggable v-model="Kärcher" :element="'v-layout'" row wrap  :options="{group:'team', handle:'.my-handle'}" :move="onMoveCallback">
                    
-                <v-flex v-for="k in Kärcher" :key="k.einsatzplanid">
+                <v-flex v-for="k in Kärcher" :key="k.einsatzplanid" >
                     <div class="header">{{k.user.firstname +' '+k.user.lastname}}</div>
                     <img :src="k.user.userimg" height="150px" width="150px" class="my-handle" >
                     <v-flex  >{{k.status}} <br> {{dateToGer(k.von)}} - {{dateToGer(k.bis)}} </v-flex>
@@ -89,9 +89,9 @@
             <v-container grid-list-md>
                 <v-layout row align-center>
                     <v-flex sm6>
-                        <v-list>
+                        <v-list >
                             
-                        <v-list-tile  class="primary" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
+                        <v-list-tile  class="coloronlick" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
                                     {{skill.skillname}}
                         </v-list-tile>
                            
@@ -102,7 +102,7 @@
                     </v-flex>
                     <v-flex sm6>
                         <v-list>
-                            <v-list-tile class="yellow" @click="pickuser(user)" v-ripple  v-for="user in users" :key="user.userid">
+                            <v-list-tile class="yellow" @click="pickuser(user)"  v-for="user in users" :key="user.userid">
                                 {{user.firstname}} {{user.lastname}}
                                 
                             </v-list-tile>
@@ -131,7 +131,7 @@ import _ from 'lodash'
 export default {
     data(){
         return{
-            
+            filteredskills:[],
             dialog:false,
             alert:false,
             dialog2:false,
@@ -211,15 +211,19 @@ export default {
     
     
     methods:{
+        
         start(){
          return false   
         },
         filterforuser(skill){
-            
+        this.filteredskills.push(skill.skillid)    
+        this.$http.post('http://localhost:8082/db/einsatzplanung/queryusers', this.filteredskills)
+         .then(response=>{
+            console.log(response)
+              })
+       
+            //var filtered =  this.userskills.filter(x=>x.skillSkillid == skill.skillid)
         
-        console.log(this.userskills)
-            var filtered =  this.userskills.filter(x=>x.skillSkillid == skill.skillid)
-        console.log(filtered)
       
         
         
@@ -377,6 +381,12 @@ export default {
 .transition-group{
     min-height:200px;
    display:block
+}
+
+.coloronlick:focus{
+    color:blue;
+    background-color:blue
+    
 }
 
 

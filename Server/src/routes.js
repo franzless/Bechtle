@@ -67,7 +67,10 @@ module.exports = (app) => {
         ),
     app.get('/db/einsatzlanung/getuserskills',
         einsatzplanController.getuserskills
-        )
+        ),
+    app.post('/db/einsatzplanung/queryusers',
+        einsatzplanController.queryusers
+    )
 
             
 }        

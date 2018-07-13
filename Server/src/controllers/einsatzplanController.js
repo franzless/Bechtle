@@ -5,6 +5,24 @@ const {skills} = require('../db/models')
 const {userskills} = require('../db/models')
 
 module.exports = {
+    queryusers(req,res){
+        console.log(req.body)
+        var l = req.body.length
+        console.log(l)
+        switch(l){
+            case 1:
+            userskills.findAll(
+                {where:{
+                    skillskillid:req.body[0]
+                }}).then(users=>{
+                    res.send(users)
+                }
+            )
+            break;
+            default:
+            res.send({Error:'Too many Criterias'})
+        }
+    },
     getkärcher(req,res){
         einsatzplan.findAll(
             {
