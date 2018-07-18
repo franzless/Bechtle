@@ -135,6 +135,11 @@ export const store = new Vuex.Store({
       },
       adduserskills:(state,data)=>{
         state.userskills = data.body
+      },
+      filterusers:(state,data)=>{
+        console.log(data)
+        state.users = data
+        
       }
       
       

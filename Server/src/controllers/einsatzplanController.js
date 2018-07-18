@@ -15,7 +15,13 @@ module.exports = {
                 {where:{
                     skillskillid:req.body[0]
                 }}).then(users=>{
-                    res.send(users)
+                    var result = users.map(r=>r.userUserid)
+                    sequelize.query("SELECT * FROM users WHERE userid IN(?)", {replacements:[result], type:sequelize.QueryTypes.SELECT})
+                .then((r=>{
+                    res.send(r)
+                }))
+                    
+                    
                 }
             )
             break;
@@ -23,18 +29,27 @@ module.exports = {
             sequelize.query("SELECT * FROM userskills WHERE skillSkillid = ? AND userUserid IN(SELECT userUserid from userskills where skillSkillid = ?)",
         {replacements:[req.body[0],req.body[1]],type:sequelize.QueryTypes.SELECT})
             .then((results =>{
-                res.send(results)
-                console.log(results)
+                var result = results.map(r=>r.userUserid)
+                sequelize.query("SELECT * FROM users WHERE userid IN(?)", {replacements:[result], type:sequelize.QueryTypes.SELECT})
+                .then((r=>{
+                    res.send(r)
+                }))
+                
+                
             }))
             break;
             case 3:
             sequelize.query("SELECT * FROM userskills WHERE skillSkillid = ? AND userUserid IN(SELECT userUserid from userskills where skillSkillid = ? AND userUserid IN(select userUserid from userskills where skillSkillid = ?))",
         {replacements:[req.body[0],req.body[1], req.body[2]],type:sequelize.QueryTypes.SELECT})
             .then((results =>{
-                res.send(results)
+                var result = results.map(r=>r.userUserid)
+                sequelize.query("SELECT * FROM users WHERE userid IN(?)", {replacements:[result], type:sequelize.QueryTypes.SELECT})
+                .then((r=>{
+                    res.send(r)
+                }))
             }))
             break;
-            
+
             default:
             res.send({Error:'Too many Criterias'})
         }

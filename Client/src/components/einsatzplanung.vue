@@ -216,18 +216,21 @@ export default {
          return false   
         },
         filterforuser(skill){
+            
+            var double = this.filteredskills.filter(function(val){
+                return val == skill
+            })
+            console.log(double)
+            if(double==true){
+                console.log('already there')
+                
+            }else{
         this.filteredskills.push(skill.skillid)    
         this.$http.post('http://localhost:8082/db/einsatzplanung/queryusers', this.filteredskills)
-         .then(response=>{
-            console.log(response)
-              })
-       
-            //var filtered =  this.userskills.filter(x=>x.skillSkillid == skill.skillid)
-        
-      
-        
-        
-        },
+         .then(response=>{            
+            this.$store.commit('filterusers',response.body)
+            
+        })}},
         
         pickuser(key){
 

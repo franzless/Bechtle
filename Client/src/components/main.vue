@@ -2,7 +2,7 @@
   <div>
       <my-toolbar></my-toolbar>
       <br>
-      
+            
       <v-layout justify-center >
          <v-flex xs20 sm10 md8>
         <v-card>
