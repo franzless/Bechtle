@@ -39,7 +39,7 @@
 </div>
 </template>
 <script>
-import {bus} from '../main'
+
 export default {
   data () {
     return {
@@ -54,8 +54,7 @@ export default {
              {icon: 'today', title: 'schichtplan', link: '/schichtplan'},
              {icon: 'assignment', title: 'Neue Schicht', link: '/neueschicht'},
              {icon: 'account_box', title: 'Register', link: '/register'},
-             {icon: 'exit_to_app', title: 'Logout', link: '/'},
-            
+             {icon: 'exit_to_app', title: 'Logout', link: '/'}
 
       ]
     }

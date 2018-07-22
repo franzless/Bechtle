@@ -41,20 +41,7 @@
            </v-flex>
  </v-layout>
          <br>
-         <v-flex xs12 sm6 offset-sm10>
-         <v-toolbar><v-avatar tile><img src="../assets/bechtle.png" alt=""></v-avatar><v-toolbar-title>Krank/Urlaub</v-toolbar-title></v-toolbar>
-         <v-card>
-             <v-container>
-                 <draggable :element="'v-layout'" :options="{group:'team',handle:'.my-handle'}">
-                     <v-flex v-for="k in krank" :key="k.einsatzplanid">
-                        <div class="header">{{k.user.firstname + ' ' +k.user.lastname}}</div>
-                        <img :src="k.user.userimg" height="150px" width="150px" class="my-handle">
-                        <v-flex >{{k.status}} <br> {{dateToGer(k.von)}} - {{dateToGer(k.bis)}}</v-flex> 
-                     </v-flex>
-                 </draggable>
-             </v-container>
-         </v-card>
-         </v-flex>
+         
    
  <!-- dialog 1-->
  
@@ -91,7 +78,7 @@
                     <v-flex sm6>
                         <v-list >
                             
-                        <v-list-tile  class="coloronlick" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
+                        <v-list-tile  class="primary" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
                                     {{skill.skillname}}
                         </v-list-tile>
                            
@@ -127,246 +114,243 @@
 </template>
 <script>
 import Vue from 'vue'
-import _ from 'lodash'
+
 export default {
-    data(){
-        return{
-            filteredskills:[],
-            dialog:false,
-            alert:false,
-            dialog2:false,
-            color:'yellow',
-            valuevon:'',
-            valuebis:'',
-            oldteam:'',
-            newteam:'',
-            radio:'',
-            ersatz:'',
-            test:false,
-            oldteamname:'',
-            canceldragg:[],
-            sub:[{von:'',bis:'',status:'',einsatzplanid:null,teamteamid:null,useruserid:null}],
-            
-        }
-    },
-    
-    created(){
+  data () {
+    return {
+      filteredskills: [1,2],
+      dialog: false,
+      alert: false,
+      dialog2: false,
+      color: 'yellow',
+      valuevon: '',
+      valuebis: '',
+      oldteam: '',
+      newteam: '',
+      radio: '',
+      ersatz: '',
+      test: false,
+      oldteamname: '',
+      canceldragg: [],
+      sub: [{von: '', bis: '', status: '', einsatzplanid: null, teamteamid: null, useruserid: null}]
+
+    }
+  },
+
+  created () {
     this.fetchdata()
-    
-    },
-   
-    computed:{
-        Kärcher:{
-            get(){
-                return this.$store.getters.getkärcher
-            },
-            set(sub){
-               this.$store.commit('updatekärcher',sub)
-            }
-            
-        },
-        Heller:{
-            get(){
-                return this.$store.getters.getheller
-            },
-            set(sub){
-               this.$store.commit('updateheller',sub)
-               
-            }
-        },
-        skills:{
-            get(){
-                return this.$store.getters.getskills
-            }},
-        users:{
-            get(){return this.$store.getters.getusers}
-        },
-        
-        MHP:{
-            get(){
-                return this.$store.getters.getmhp
-            },
-            set(sub){
-               this.$store.commit('updatemhp',sub)
-            }
-        },
-        Benz:{
-            get(){
-                return this.$store.getters.getbenz
-            },
-            set(sub){
-               this.$store.commit('updatemhp',sub)
-            }
-        },
-        userskills:{
-            get(){
-                return this.$store.getters.getuserskills
-            }
-        }
+  },
 
-        
-            
+  computed: {
+    Kärcher: {
+      get () {
+        return this.$store.getters.getkärcher
+      },
+      set (sub) {
+        this.$store.commit('updatekärcher', sub)
+      }
+
     },
-    
-    
-    
-    methods:{
+    Heller: {
+      get () {
+        return this.$store.getters.getheller
+      },
+      set (sub) {
+        this.$store.commit('updateheller', sub)
+      }
+    },
+    skills: {
+      get () {
+        return this.$store.getters.getskills
+      }},
+    users: {
+      get () { return this.$store.getters.getusers }
+    },
+
+    MHP: {
+      get () {
+        return this.$store.getters.getmhp
+      },
+      set (sub) {
+        this.$store.commit('updatemhp', sub)
+      }
+    },
+    Benz: {
+      get () {
+        return this.$store.getters.getbenz
+      },
+      set (sub) {
+        this.$store.commit('updatemhp', sub)
+      }
+    },
+    userskills: {
+      get () {
+        return this.$store.getters.getuserskills
+      }
+    }
+
+  },
+
+  methods: {
+
+    start () {
+      return false
+    },
+    filterforuser (skill) {
+      
+      var double = this.filteredskills.filter(x => x === skill.skillid)
         
-        start(){
-         return false   
-        },
-        filterforuser(skill){
-            
-            var double = this.filteredskills.filter(function(val){
-                return val == skill
-            })
-            console.log(double)
-            if(double==true){
-                console.log('already there')
-                
-            }else{
-        this.filteredskills.push(skill.skillid)    
+          
+    if (double.length < 1) {
+        this.filteredskills.push(skill.skillid)
         this.$http.post('http://localhost:8082/db/einsatzplanung/queryusers', this.filteredskills)
-         .then(response=>{            
-            this.$store.commit('filterusers',response.body)
-            
-        })}},
-        
-        pickuser(key){
+         .then(response => {
+           this.$store.commit('filterusers', response.body)
+         })
+    }else{
+        var index= this.filteredskills.indexOf(skill.skillid)
+        this.filteredskills.splice(index, 1)
+      if(this.filteredskills.length<1){
+          this.getusers()
+      }    
+      }
+    },
 
-            this.sub=[{von:'',bis:'',status:'',einsatzplanid:null,teamTeamid:null,userUserid:null}]
-            this.alert=false
-            this.sub[0].userUserid= key.userid
-            var arrays = ['Kärcher','MHP','Heller','Benz']
-            
-            arrays.forEach(element=>{
-                
-                var index = this[element].findIndex(x=>x.userUserid == key.userid)
-                
-               if ( index === -1 ){
-                   
-               }else{
-                
-                this.sub[0].einsatzplanid = this[element][index].einsatzplanid   
-               } 
-            })
-        },
-        confirmuser(){
-            if (this.sub[0].userUserid == null){
-                this.alert=true
-            }else{
-            this.sub[0].teamTeamid = this.oldteam
-            
-            this.dialog2= false
-            this.dialog=true
-            
-            }
-        },
-        
-        save(){
+    pickuser (key) {
+      this.sub = [{von: '', bis: '', status: '', einsatzplanid: null, teamTeamid: null, userUserid: null}]
+      this.alert = false
+      this.sub[0].userUserid = key.userid
+      var arrays = ['Kärcher', 'MHP', 'Heller', 'Benz']
+
+      arrays.forEach(element => {
+        var index = this[element].findIndex(x => x.userUserid === key.userid)
+
+        if (index === -1) {
+
+        } else {
+          this.sub[0].einsatzplanid = this[element][index].einsatzplanid
+        }
+      })
+    },
+    confirmuser () {
+      if (this.sub[0].userUserid == null) {
+        this.alert = true
+      } else {
+        this.sub[0].teamTeamid = this.oldteam
+
+        this.dialog2 = false
+        this.dialog = true
+      }
+    },
+
+    save () {
            // var array = this.newteam
            // Vue.set(this[array],this.index,this.sub[0])
-             this.dateToIntvon()
-             this.dateToIntbis()
-            
-             this.updatedb()
-             this.dialog=false;
-            if (this.ersatz == 'true'){
-                this.dialog2=true;
-             
-            }else{ }
-            },
-        
-       
-        updatedb(){
-            
-           this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
-           .then(response=>{
-            this.fetchdata() 
-              })
-              },
-        dateToIntvon(){
-         if (this.valuevon != null){ 
-         var newDate = this.valuevon.split(".")
-         var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
-         this.sub[0].von = res 
-         } 
-        },
-        dateToIntbis(){
-         if (this.valuebis != null)  { 
-         var newDate = this.valuebis.split(".")
-         var res = newDate[2]+'-'+newDate[1]+'-'+newDate[0]
-         this.sub[0].bis = res }
-          
-        },
-        dateToGer(datum){
-            if (datum != null){
-         var newDate = datum.split("-")
-         var res = newDate[2]+'.'+newDate[1]+'.'+newDate[0]
-         return res  }   
-        },
-        cancel(){
-            this.dialog=false
-            this.$store.commit('canceldragg',this.canceldragg)
-            
-                       
-        },
-        onMoveCallback(evt, originalEvent){
-             
-            this.dialog= true
-            console.log(evt.draggedContext)
-            console.log(evt.relatedContext)
-            
-            
-            Vue.set(this.sub,0,{
-            einsatzplanid:evt.draggedContext.element.einsatzplanid,
-            teamTeamid:evt.relatedContext.element.teamTeamid,
-            userUserid:evt.draggedContext.element.userUserid
-            
-            })
-            this.canceldragg[0]=evt.draggedContext
-            this.canceldragg[1]=evt.relatedContext
-            this.oldteam = evt.draggedContext.element.teamTeamid
-            this.oldteamname = evt.draggedContext.element.team.teamname
-            this.index = evt.draggedContext.Index
-            this.newteam = evt.relatedContext.element.teamTeamid
+      this.dateToIntvon()
+      this.dateToIntbis()
 
-        },
-        fetchdata(){
-    this.$http.get('http://localhost:8082/db/einsatzlanung/getkaercher')
-    .then(res =>{
+      this.updatedb()
+      this.dialog = false
+      if (this.ersatz === 'true') {
+        this.dialog2 = true
+      } else { }
+    },
+
+    updatedb () {
+      this.$http.post('http://localhost:8082/db/einsatzlanung/update', this.sub[0])
+           .then(response => {
+             this.fetchdata()
+           })
+    },
+    dateToIntvon () {
+      if (this.valuevon != null) {
+        var newDate = this.valuevon.split('.')
+        var res = newDate[2] + '-' + newDate[1] + '-' + newDate[0]
+        this.sub[0].von = res
+      }
+    },
+    dateToIntbis () {
+      if (this.valuebis != null) {
+        var newDate = this.valuebis.split('.')
+        var res = newDate[2] + '-' + newDate[1] + '-' + newDate[0]
+        this.sub[0].bis = res
+      }
+    },
+    dateToGer (datum) {
+      if (datum != null) {
+        var newDate = datum.split('-')
+        var res = newDate[2] + '.' + newDate[1] + '.' + newDate[0]
+        return res
+      }
+    },
+    cancel () {
+      this.dialog = false
+      this.$store.commit('canceldragg', this.canceldragg)
+    },
+    onMoveCallback (evt, originalEvent) {
+      this.dialog = true
+      console.log(evt.draggedContext)
+      console.log(evt.relatedContext)
+
+      Vue.set(this.sub, 0, {
+        einsatzplanid: evt.draggedContext.element.einsatzplanid,
+        teamTeamid: evt.relatedContext.element.teamTeamid,
+        userUserid: evt.draggedContext.element.userUserid
+
+      })
+      this.canceldragg[0] = evt.draggedContext
+      this.canceldragg[1] = evt.relatedContext
+      this.oldteam = evt.draggedContext.element.teamTeamid
+      this.oldteamname = evt.draggedContext.element.team.teamname
+      this.index = evt.draggedContext.Index
+      this.newteam = evt.relatedContext.element.teamTeamid
+    },
+    getusers () {
+      this.$http.get('http://localhost:8082/users')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('addusers', data)
+    })
+    },
+    fetchdata () {
+      this.$http.get('http://localhost:8082/db/einsatzlanung/getkaercher')
+    .then(res => {
       this.$store.commit('addkärcher', res)
     }),
     this.$http.get('http://localhost:8082/db/einsatzlanung/getmhp')
-    .then(res =>{
+    .then(res => {
       this.$store.commit('addmhp', res)
     }),
     this.$http.get('http://localhost:8082/db/einsatzlanung/getheller')
-    .then(res =>{
+    .then(res => {
       this.$store.commit('addheller', res)
     }),
     this.$http.get('http://localhost:8082/db/einsatzlanung/getbenz')
-    .then(res =>{
+    .then(res => {
       this.$store.commit('addbenz', res)
     }),
 
     this.$http.get('http://localhost:8082/db/einsatzlanung/getteams')
-    .then(response =>{
+    .then(response => {
       this.$store.commit('addteams', response)
     }),
 
     this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
-    .then(r =>{
+    .then(r => {
       this.$store.commit('addskills', r)
     }),
     this.$http.get('http://localhost:8082/db/einsatzlanung/getuserskills')
-    .then(res =>{
+    .then(res => {
       this.$store.commit('adduserskills', res)
+    }),
+       this.$http.get('http://localhost:8082/users')
+    .then(res => {
+      var data = res.body
+      this.$store.commit('addusers', data)
     })
     }
-        
-     
-}}
+
+  }}
 </script>
 <style scoped>
 .card.kärcher{
@@ -386,11 +370,7 @@ export default {
    display:block
 }
 
-.coloronlick:focus{
-    color:blue;
-    background-color:blue
-    
-}
+
 
 
 

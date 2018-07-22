@@ -103,45 +103,42 @@ export default {
       datumzeits: null,
       pickerdatumf: null,
       pickerdatums: null,
-      updatef:'',
+      updatef: '',
       items: [],
-      dialog:false,    
-      nurdatumf:[],
-      nurdatums:[],
-      eventspät:[],
-      eventfrüh:[],
-      error:'',
-      userimg:'@assets\Download.jpg'
+      dialog: false,
+      nurdatumf: [],
+      nurdatums: [],
+      eventspät: [],
+      eventfrüh: [],
+      error: '',
+      userimg: '@assets/Download.jpg'
     }
   },
-  
 
-  mounted() {
+  mounted () {
     console.log('mounted')
     this.getschicht()
     this.start()
-  } , 
-    
-    
-  
-  
+  },
+
   computed: {
     formTitle () {
-      return this.datumzeitf !== null ? 'früh' : 'spät'}
-      ,
+      return this.datumzeitf !== null ? 'früh' : 'spät'
+    },
+
     getusers () {
       return this.$store.getters.getusers
     },
-    getfrüh (){
+    getfrüh () {
       return this.$store.getters.getfrüh
     },
-    getspät (){
-      return this.$store.getters.getspät},
-    
-    
+    getspät () {
+      return this.$store.getters.getspät
+    }
+
   },
-  methods:{
-    getschicht(){
+  methods: {
+    getschicht () {
       this.$http.get('http://localhost:8082/db/schicht')
     .then(res => {
       var data = res.body
@@ -149,65 +146,61 @@ export default {
     })
     .catch(err => {
       console.log(err)
-    })},
-    start(){
-    this.items = this.getusers
-    this.eventfrüh = this.getfrüh
-    this.eventspät = this.getspät
-
-        var x = this.eventfrüh.length
-        var y = this.eventspät.length
-          for (var i= 0; i<x; i++){
-        this.nurdatumf.push(this.eventfrüh[i].datum)}
-          for (var z=0; z<y ;z++){
-          this.nurdatums.push(this.eventspät[z].datum)}
+    })
     },
-    cancel(){
-      this.dialog=false
-      this.datumzeitf=null
-      this.datumzeits=null
+    start () {
+      this.items = this.getusers
+      this.eventfrüh = this.getfrüh
+      this.eventspät = this.getspät
 
+      var x = this.eventfrüh.length
+      var y = this.eventspät.length
+      for (var i = 0; i < x; i++) {
+        this.nurdatumf.push(this.eventfrüh[i].datum)
+      }
+      for (var z = 0; z < y; z++) {
+        this.nurdatums.push(this.eventspät[z].datum)
+      }
     },
-    
-    
-    eventcolorf(date){
+    cancel () {
+      this.dialog = false
+      this.datumzeitf = null
+      this.datumzeits = null
+    },
+
+    eventcolorf (date) {
       var index = this.nurdatumf.indexOf(date)
-      if (index == -1){}
-      else{      
-      return this.eventfrüh[index].user.usercolor  }    
+      if (index === -1) {} else {
+        return this.eventfrüh[index].user.usercolor
+      }
     },
-    eventcolors(date){
+    eventcolors (date) {
       var index = this.nurdatums.indexOf(date)
-      if (index == -1){}
-      else{      
-      return this.eventspät[index].user.usercolor  }    
+      if (index === -1) {} else {
+        return this.eventspät[index].user.usercolor
+      }
     },
-    updateschicht(){
-       
-      var data = {datum:this.datumzeitf,userid:this.updatef,schichtname:this.formTitle}
+    updateschicht () {
+      var data = {datum: this.datumzeitf, userid: this.updatef, schichtname: this.formTitle}
 
-      this.$http.post('http://localhost:8082/db/updateschichtf',data)
+      this.$http.post('http://localhost:8082/db/updateschichtf', data)
       .then(res => {
-      var data = res.body
-      this.$store.commit('updateschicht', data)
-      this.eventfrüh=[]
-      this.eventspät=[]
-      this.nurdatumf=[]
-      this.nurdatums=[]
-      this.getschicht()
-      this.start()
-      this.cancel()             
-        
-        
+        var data = res.body
+        this.$store.commit('updateschicht', data)
+        this.eventfrüh = []
+        this.eventspät = []
+        this.nurdatumf = []
+        this.nurdatums = []
+        this.getschicht()
+        this.start()
+        this.cancel()
       })
-      .catch(err =>{
+      .catch(err => {
         console.log(err)
-        this.error= 'Irgendwas ist schief gegangen'
+        this.error = 'Irgendwas ist schief gegangen'
       })
     }
-    
 
-    
   }
 
 }

@@ -165,21 +165,21 @@
 export default {
   data () {
     return {
-      dialog:false,
-      farbeok:false,
+      dialog: false,
+      farbeok: false,
       newuser: {
         email: '',
         firstname: '',
         lastname: '',
         password: '',
         password2: '',
-        usercolor:''
+        usercolor: ''
       },
-      
+
       valid: true,
       alert: false,
       login: 'http://localhost:8080/',
-    
+
       emailrules: [
         v => !!v || 'E-mail is required',
         v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
@@ -190,48 +190,44 @@ export default {
       ]
     }
   },
-  updated(){
+  updated () {
     console.log(this.newuser)
   },
-  
-    
-    
-  computed:{
+
+  computed: {
     getusercolor () {
       return this.$store.getters.getusercolor
     },
-    getnewcolor(){
+    getnewcolor () {
       return this.$store.getters.getnewcolor
     },
-    getnewuser(){
+    getnewuser () {
       return this.$store.getters.getnewuser
     }
   },
   methods: {
     submit () {
-      if (this.newuser.password != this.newuser.password2) {
+      if (this.newuser.password !== this.newuser.password2) {
         alert('passwords have to be the same. Please check')
       } else if ((this.$refs.form.validate())) {
         this.$http.post('http://localhost:8082/register', this.newuser)
         console.log(this.newuser)
         this.alert = true
         this.newuser = ''
-        
       } else {
         alert('Please check your entries')
       }
     },
-    abschuss(){
-            if(this.newuser.usercolor != ''){
-                this.dialog=false
-                              
-            }else{
-                this.farbeok=true            }
-        }
+    abschuss () {
+      if (this.newuser.usercolor !== '') {
+        this.dialog = false
+      } else {
+        this.farbeok = true
+      }
     }
-  
   }
 
+}
 </script>
 <style scoped>
 .append-icon{

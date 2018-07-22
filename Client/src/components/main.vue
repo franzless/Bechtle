@@ -225,28 +225,28 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
+
 export default {
   data () {
     return {
       dialog: false,
-      dialogkrank:false,
-      menukrank:false,
-      menukrank2:false,
+      dialogkrank: false,
+      menukrank: false,
+      menukrank2: false,
       modal: false,
       menu: false,
       menu1: false,
       menu2: false,
       menu3: false,
-      menüfilter:false,
-      menüfilter2:false,
+      menüfilter: false,
+      menüfilter2: false,
       updates: false,
       saves: false,
-      filterdatum1:'',
-      filterdatum2:'',
-      krank:'',
-      krank2:'',
-      datum:null,
+      filterdatum1: '',
+      filterdatum2: '',
+      krank: '',
+      krank2: '',
+      datum: null,
       headers: [
         { text: 'Datum', align: 'left', value: 'datum'},
         { text: 'Arbeitsbeginn', value: 'von', sortable: false },
@@ -256,7 +256,7 @@ export default {
         { text: 'Leistungsschein', value: 'LS' },
         { text: 'ArbeitsOrt', value: 'Ort'},
         { text: 'Actions', value: 'name', sortable: false }
-        
+
       ],
       Leistungsschein: [
         'LS01-AK-Beschaffung',
@@ -302,9 +302,6 @@ export default {
     }
   },
 
- 
-  
-
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'Neuer Eintrag' : 'Eintrag editieren'
@@ -321,14 +318,14 @@ export default {
     dialog (val) {
       val || this.close()
     },
-    datum:function(val, oldVal) {
-			this.editedItem.datum = this.gettanggal(val);
-	}
+    datum: function (val, oldVal) {
+      this.editedItem.datum = this.gettanggal(val)
+    }
   },
   created () {
     this.initialize()
   },
-  updated(){
+  updated () {
     console.log(this.editedItem.datum)
   },
 
@@ -360,7 +357,7 @@ export default {
       console.log(spliced[0])
 
       var conf = confirm('Are you sure you want to delete this item?')
-      if (conf == true) {
+      if (conf === true) {
         this.$http.post('http://localhost:8082/db/zeitstempel/del', spliced[0])
          .then(res => {
            this.list = []
@@ -393,7 +390,7 @@ export default {
         Object.assign(this.list[this.editedIndex], this.editedItem)
       } else {
         this.$http.post('http://localhost:8082/db/zeitstempel', {userUserid: this.getuserid, datum: this.editedItem.datum, arbeitsbeginn: this.editedItem.arbeitsbeginn, arbeitsende: this.editedItem.arbeitsende, leistungsschein: this.editedItem.leistungsschein, serviceleistung: this.editedItem.serviceleistung, arbeitsort: this.editedItem.arbeitsort})
-        
+
         .then(res => {
           this.list = []
           this.initialize()
@@ -401,72 +398,71 @@ export default {
         })
       }
     },
-    filter(){
-      var daten = new Object()
-               daten.userid=this.getuser.userid
-               daten.datum1=this.filterdatum1
-               daten.datum2=this.filterdatum2
+    filter () {
+      var daten = {}
+      daten.userid = this.getuser.userid
+      daten.datum1 = this.filterdatum1
+      daten.datum2 = this.filterdatum2
       this.$http.post('http://localhost:8082/db/filter', daten)
-                  .then(filter =>{
-                    
+                  .then(filter => {
                     this.list = []
                     var newdata = filter.body
                     var x = newdata.length
                     for (var i = 0; i < x; i++) {
-                     this.list.push(newdata[i])
-                  }})               
+                      this.list.push(newdata[i])
+                    }
+                  })
     },
-    filterlöschen (){
-      
-       this.list = []
-        this.initialize()
+    filterlöschen () {
+      this.list = []
+      this.initialize()
     },
-    wochentag(i){
-            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
-            var tag = (typeof(i) == 'object') ? i.getDay() : i ;
-                return tage[tag];
-         },
-    funckrank(){
-      var valdate= []
-           var datum =new Date(this.krank)
-           let datum1 =new Date(this.krank2)
-           let datum2= ''
-           var difference = datum1.getDate() - datum.getDate();
-           
-            //Samstage und Sonntage rausfiltern
-           for (var i= 0; i<difference ; i++){
-               datum2 =datum                           
-               var x = this.wochentag(datum2.getDay().toString())
-               if(x === 'Samstag' || x === 'Sonntag'){                   
-                   datum2= datum2.setDate(datum2.getDate() + 1)   
-               }else{           
-                  valdate.push(datum2.toISOString().split("T",1)[0])                   
-                   datum2= datum2.setDate(datum2.getDate() + 1)
-               }
-           }
-           //Neues Array basteln
-            var l= valdate.length
-            var final = []
-           for(var y=0; y<l;y++){               
-               var object = new Object()
-               object.userUserid=this.getuserid
-               object.leistungsschein='krank'
-               object.serviceleistung ='krank'
-               object.datum=valdate[y]
-               final.push(object)
-           }
-           this.$http.post('http://localhost:8082/zeitstempel/krank',final)
-           .then(res=>{
+    wochentag (i) {
+      var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+      var tag = (typeof (i) === 'object') ? i.getDay() : i
+      return tage[tag]
+    },
+    funckrank () {
+      var valdate = []
+      var datum = new Date(this.krank)
+      let datum1 = new Date(this.krank2)
+      let datum2 = ''
+      var difference = datum1.getDate() - datum.getDate()
+
+            // Samstage und Sonntage rausfiltern
+      for (var i = 0; i < difference; i++) {
+        datum2 = datum
+        var x = this.wochentag(datum2.getDay().toString())
+        if (x === 'Samstag' || x === 'Sonntag') {
+          datum2 = datum2.setDate(datum2.getDate() + 1)
+        } else {
+          valdate.push(datum2.toISOString().split('T', 1)[0])
+          datum2 = datum2.setDate(datum2.getDate() + 1)
+        }
+      }
+           // Neues Array basteln
+      var l = valdate.length
+      var final = []
+      for (var y = 0; y < l; y++) {
+        var object = {}
+        object.userUserid = this.getuserid
+        object.leistungsschein = 'krank'
+        object.serviceleistung = 'krank'
+        object.datum = valdate[y]
+        final.push(object)
+      }
+      this.$http.post('http://localhost:8082/zeitstempel/krank', final)
+           .then(res => {
              this.list = []
-            this.initialize()
-            })  
+             this.initialize()
+           })
     },
-  gettanggal(str) {
-	if (str != null) {
-		return str.substring(8, 10)+'-'+str.substring(5, 7)+'-'+str.substring(0, 4);
-	}
-	return '';
-}
+    gettanggal (str) {
+      if (str != null) {
+        return str.substring(8, 10) + '-' + str.substring(5, 7) + '-' + str.substring(0, 4)
+      }
+      return ''
+    }
   }
 }
 </script>

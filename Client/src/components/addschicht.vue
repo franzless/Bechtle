@@ -127,35 +127,33 @@
 <script>
 import router from '../router'
 export default {
-    data(){
-        return{
-            dialog:true,
-            e1:0,
-            radiogroup:"früh",
-            picker:null,
-            picker2:null,
-            user:''
-        }
-    },
-    updated(){
+  data () {
+    return {
+      dialog: true,
+      e1: 0,
+      radiogroup: 'früh',
+      picker: null,
+      picker2: null,
+      user: ''
+    }
+  },
+  updated () {
         /* var datum = new Date (this.picker)
         console.log(datum)
         console.log(this.wochentag(datum.getDay())) */
+  },
+  computed: {
+    getusers () {
+      return this.$store.getters.getusers
     },
-    computed:{
-        getusers () {
-            return this.$store.getters.getusers
-        },
-        fullname () {
-            return this.$store.getters.fullname
-        },
-        
-    },
-        
-        
-    
-   methods:{
-       getschicht(){
+    fullname () {
+      return this.$store.getters.fullname
+    }
+
+  },
+
+  methods: {
+    getschicht () {
       this.$http.get('http://localhost:8082/db/schicht')
     .then(res => {
       var data = res.body
@@ -163,65 +161,56 @@ export default {
     })
     .catch(err => {
       console.log(err)
-    })},
-       main(){
-           router.push('main')
-       },
+    })
+    },
+    main () {
+      router.push('main')
+    },
 
-         wochentag(i){
-            var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
-            var tag = (typeof(i) == 'object') ? i.getDay() : i ;
-                return tage[tag];
-         },
-         
-    
-        
-    
-       submit(){
-           var valdate= []
-           var datum =new Date(this.picker)
-           let datum1 =new Date(this.picker2)
-           let datum2= ''
-           var difference = datum1.getDate() - datum.getDate();
-           console.log(difference)
-            //Samstage und Sonntage rausfiltern
-           for (var i= 0; i<difference ; i++){
-               datum2 =datum
-               
-               
-               var x = this.wochentag(datum2.getDay().toString())
+    wochentag (i) {
+      var tage = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+      var tag = (typeof (i) === 'object') ? i.getDay() : i
+      return tage[tag]
+    },
 
-               if(x === 'Samstag' || x === 'Sonntag'){
-                   
-                   datum2= datum2.setDate(datum2.getDate() + 1)   
-               }else{               
-                                  
-                   valdate.push(datum2.toISOString().split("T",1)[0])
-                   
-                   datum2= datum2.setDate(datum2.getDate() + 1)
-               }
-           }
-           //Neues Array basteln
+    submit () {
+      var valdate = []
+      var datum = new Date(this.picker)
+      let datum1 = new Date(this.picker2)
+      let datum2 = ''
+      var difference = datum1.getDate() - datum.getDate()
+      console.log(difference)
+            // Samstage und Sonntage rausfiltern
+      for (var i = 0; i < difference; i++) {
+        datum2 = datum
 
-            var l= valdate.length
-            var final = []
-           for(var y=0; y<l;y++){
-               
-               var object = new Object()
-               object.userUserid=this.user
-               object.schichtname=this.radiogroup
-               object.datum=valdate[y]
-               final.push(object)
-           }
-           this.$http.post('http://localhost:8082/db/addschicht',final)
-           .then(res=>{
-               router.push('schichtplan')
-           })  
-           
-           
-       }
-   } 
+        var x = this.wochentag(datum2.getDay().toString())
+
+        if (x === 'Samstag' || x === 'Sonntag') {
+          datum2 = datum2.setDate(datum2.getDate() + 1)
+        } else {
+          valdate.push(datum2.toISOString().split('T', 1)[0])
+
+          datum2 = datum2.setDate(datum2.getDate() + 1)
+        }
+      }
+           // Neues Array basteln
+
+      var l = valdate.length
+      var final = []
+      for (var y = 0; y < l; y++) {
+        var object = {}
+        object.userUserid = this.user
+        object.schichtname = this.radiogroup
+        object.datum = valdate[y]
+        final.push(object)
+      }
+      this.$http.post('http://localhost:8082/db/addschicht', final)
+           .then(res => {
+             router.push('schichtplan')
+           })
+    }
+  }
 }
-
 </script>
 

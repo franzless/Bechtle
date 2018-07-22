@@ -30,7 +30,7 @@
 
 <script>
 import router from '../router'
-import {mapMutations} from 'vuex'
+
 export default {
   data () {
     return {
@@ -69,7 +69,7 @@ export default {
       console.log(err)
     })
     },
-    getschicht(){
+    getschicht () {
       this.$http.get('http://localhost:8082/db/schicht')
     .then(res => {
       var data = res.body
