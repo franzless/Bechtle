@@ -19,6 +19,9 @@ Vue.component('draggable', draggable)
 Vue.use(VueResource)
 Vue.use(VueTheMask)
 Vue.use(Vuetify, { theme: {
+  
+  plight:'#4dbe85',
+  pdark:'#005e2e',
   primary: '#008d58',
   secondary: '#424242',
   accent: '#82B1FF',

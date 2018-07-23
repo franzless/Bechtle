@@ -78,7 +78,7 @@
                     <v-flex sm6>
                         <v-list >
                             
-                        <v-list-tile  class="primary" v-ripple @click="filterforuser(skill)" v-for="(skill, index) in skills" :key="index">
+                        <v-list-tile    @click="filterforuser(skill)" class="colortest" v-for="(skill, index) in skills" :key="index">
                                     {{skill.skillname}}
                         </v-list-tile>
                            
@@ -353,23 +353,37 @@ export default {
   }}
 </script>
 <style scoped>
-.card.kärcher{
+.v-card.kärcher{
     background-color:yellow;
     min-height:200px   
 }
-.card.heller{
+.v-card.heller{
     background-color: #BBDEFB;
         min-height:200px  
 }
 .my-handle{
     cursor:grab;
-    
+   
 }
 .transition-group{
     min-height:200px;
    display:block
 }
 
+.colortest{
+    background-color:#4dbe85
+}
+
+.colortest:focus{
+    background-color:#005e2e
+}
+.a.v-list__tile{
+    background-color:#005e2e;
+    color:white
+}
+.v-list__tile.v-list__tile--link:hover{
+  background-color:#005e2e  
+}
 
 
 
