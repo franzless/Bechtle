@@ -1,5 +1,4 @@
-const {users} = require('../db/models')
-const {zeitstempel} = require('../db/models')
+
 const {userskills}= require('../db/models')
 const config = require('../config/config')
 
@@ -7,16 +6,29 @@ const config = require('../config/config')
 
 module.exports = {
     getuserskills(req,res){
-    var u= req.body
-    userskills.findAll(
+    
+    var u = req.body.userid
+     userskills.findAll(
         {where:{
             userUserid:u
         }}
     ).then(r=>{
         var skills= r.map(m=>m.skillSkillid)
         res.send(skills)
-    })    
-    }
-   
+    })
+    },
 
+    updateuserskills(req,res){
+        var data = req.body
+        userskills.destroy({
+            where:{
+                userUserid:data[0].userUserid
+            }
+        }).then(()=>{
+            userskills.bulkCreate(data)
+        }).then(()=>{
+            res.send({message:'erfolgreich'})
+        })
+    },
+    
     }

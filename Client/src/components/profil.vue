@@ -2,13 +2,14 @@
 <div>
 <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
 <v-card>
-  <v-toolbar color="primary">
+  <v-toolbar color="pdark">
      <v-btn icon dark router to="/main">
             <v-icon>close</v-icon>
           </v-btn>
     <v-toolbar-title>Profil</v-toolbar-title>
+    <v-spacer></v-spacer>
     <v-toolbar-items>
-      <v-btn router to="/main" @click="save">Save</v-btn>
+      <v-btn  @click="save">Save</v-btn>
     </v-toolbar-items>
     </v-toolbar>
     <v-layout row>
@@ -45,7 +46,10 @@ export default {
     }
   },
   created(){
-    this.$http.post('http://localhost:8082/db/profil/userskill',this.user.userid)
+        this.$http.post('http://localhost:8082/db/profil/userskill',this.user)
+    .then(r=>{
+        this.skiller=r.body
+    })
   },
 
 computed:{
@@ -61,6 +65,16 @@ computed:{
 },
 methods:{
   save(){
+    var user= this.user.userid
+    var skills= this.skiller.map(function(m){
+      var s = {skillSkillid:m,
+              userUserid:user}
+      return s
+    }) 
+   this.$http.post('http://localhost:8082/db/profil/updateuserskills', skills)
+    .then(()=>{     
+    }) 
+    
 
   }
 }}

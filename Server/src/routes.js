@@ -73,7 +73,10 @@ module.exports = (app) => {
         einsatzplanController.queryusers
     ),
     app.post('/db/profil/userskill',
-        profilController.getuserskills)
+        profilController.getuserskills
+    ),
+    app.post('/db/profil/updateuserskills',
+        profilController.updateuserskills)
 
             
 }        
