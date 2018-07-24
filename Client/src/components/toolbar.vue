@@ -49,8 +49,8 @@ export default {
 
       sidenav: false,
       menuitems: [
-             {icon: this.usericon, title: 'einsatzplanung', link: '/einsatzplanung'},
-             {icon: 'flight', title: 'Urlaubsplan', link: '/Urlaubsplan'},
+             {icon: 'sync', title: 'einsatzplanung', link: '/einsatzplanung'},
+             {icon: 'person_pin', title: 'Profil', link: '/profil'},
              {icon: 'today', title: 'schichtplan', link: '/schichtplan'},
              {icon: 'assignment', title: 'Neue Schicht', link: '/neueschicht'},
              {icon: 'account_box', title: 'Register', link: '/register'},

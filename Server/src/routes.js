@@ -2,6 +2,7 @@ const AuthenticationController = require ('./controllers/AuthenticationContoller
 const ZeitstempelController = require ('./controllers/ZeitstempelController.js')
 const schichtController = require ('./controllers/schichtController.js')
 const einsatzplanController = require ('./controllers/einsatzplanController.js')
+const profilController = require ('./controllers/profilController.js')
 const {zeitstempel} = require('./db/models')
 const {users} = require('./db/models')
 module.exports = (app) => {
@@ -70,7 +71,9 @@ module.exports = (app) => {
         ),
     app.post('/db/einsatzplanung/queryusers',
         einsatzplanController.queryusers
-    )
+    ),
+    app.post('/db/profil/userskill',
+        profilController.getuserskills)
 
             
 }        

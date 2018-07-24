@@ -58,7 +58,7 @@
         </v-flex >
         
         <v-flex sm6 >
-            <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="valuevon"   ></v-text-field>
+            <v-text-field v-if="sub[0].status='Temporär'" prepend-icon="event" v-mask="'##.##.####'" label="von" v-model="valuevon"   ></v-text-field>
             <v-text-field prepend-icon="event" v-mask="'##.##.####'" label="bis" v-model="valuebis" ></v-text-field>
          </v-flex>
         <br>
@@ -77,9 +77,11 @@
                 <v-layout row align-center>
                     <v-flex sm6>
                         <v-list >
-                            
-                        <v-list-tile    @click="filterforuser(skill)" class="colortest" v-for="(skill, index) in skills" :key="index">
-                                    {{skill.skillname}}
+                           <v-list-tile v-focus
+                            @click="filterforuser(skill)" 
+                            class="colortest" 
+                            v-for="(skill, index) in skills" :key="index">
+                              {{skill.skillname}}
                         </v-list-tile>
                            
                         </v-list>
@@ -136,6 +138,14 @@ export default {
 
     }
   },
+  directives: {
+  focus: {
+    // directive definition
+    inserted: function (el) {
+      el.focus()
+    }
+  }
+},
 
   created () {
     this.fetchdata()
@@ -377,12 +387,9 @@ export default {
 .colortest:focus{
     background-color:#005e2e
 }
-.a.v-list__tile{
+.a.v-list__tile:focus{
     background-color:#005e2e;
     color:white
-}
-.v-list__tile.v-list__tile--link:hover{
-  background-color:#005e2e  
 }
 
 
