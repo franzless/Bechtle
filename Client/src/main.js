@@ -6,6 +6,7 @@ import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import toolbar from './components/toolbar.vue'
+import fileupload from './components/fileupload.vue'
 import schichtplan from './components/schichtplan.vue'
 import draggable from 'vuedraggable'
 import VueResource from 'vue-resource'
@@ -13,6 +14,7 @@ import {store} from './store/store'
 import VueTheMask from 'vue-the-mask'
 
 Vue.component('my-toolbar', toolbar)
+Vue.component('my-fileupload', fileupload)
 Vue.component('my-schichtplan', schichtplan)
 Vue.component('draggable', draggable)
 

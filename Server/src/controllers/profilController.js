@@ -1,4 +1,4 @@
-
+const {users}= require('../db/models')
 const {userskills}= require('../db/models')
 const config = require('../config/config')
 
@@ -30,5 +30,22 @@ module.exports = {
             res.send({message:'erfolgreich'})
         })
     },
+    uploadfiles(req,res){
+        var id = req.file.originalname.split(/^[a-zA-Z]+/)[1];
+        users.update({
+            userimg:req.file.destination+'/'+req.file.filename
+        },{where:{
+          userid:id  
+        }})
+        users.findAll({
+            where:{
+                 userid:id
+                }
+        })
+        .then(r=>{
+            res.send(r)
+        })
+        
+    }
     
     }

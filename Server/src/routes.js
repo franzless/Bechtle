@@ -4,7 +4,19 @@ const schichtController = require ('./controllers/schichtController.js')
 const einsatzplanController = require ('./controllers/einsatzplanController.js')
 const profilController = require ('./controllers/profilController.js')
 const {zeitstempel} = require('./db/models')
+var multer  = require('multer')
 const {users} = require('./db/models')
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './src/assets/userimages')
+      },    
+    filename: function (req, file, cb) {
+        var extension= file.mimetype.split('/')
+      cb(null, file.originalname+'.'+extension[1])
+    }
+  })
+var upload = multer({ storage:storage})
+
 module.exports = (app) => {
     app.post('/register', 
         AuthenticationController.register
@@ -76,7 +88,11 @@ module.exports = (app) => {
         profilController.getuserskills
     ),
     app.post('/db/profil/updateuserskills',
-        profilController.updateuserskills)
+        profilController.updateuserskills
+    ),
+    app.post('/db/profil/uploadimage',upload.single('userimg'),
+        profilController.uploadfiles)
+
 
             
 }        

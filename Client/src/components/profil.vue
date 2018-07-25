@@ -1,7 +1,7 @@
 <template>
 <div>
 <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
-<v-card>
+<v-card >
   <v-toolbar color="pdark">
      <v-btn icon dark router to="/main">
             <v-icon>close</v-icon>
@@ -16,12 +16,14 @@
     <v-flex sm3>
       <div class="headline">{{user.firstname}} {{user.lastname}}</div>
       <img :src="user.userimg" height="250px" width="250px">
+      <my-fileupload></my-fileupload>
     </v-flex>
     <v-flex>
       <div class="headline">Persönliche Informationen</div>
       <v-list >
         <v-list-tile> Vorname: {{user.firstname}} </v-list-tile>
         <v-list-tile> Nachname: {{user.lastname}} </v-list-tile>
+        <v-list-tile> E-Mail: {{user.email}} </v-list-tile>
         <v-list-tile> Passwort verändern :{{user.password}}</v-list-tile>
       </v-list>
     </v-flex>
@@ -46,9 +48,13 @@ export default {
     }
   },
   created(){
-        this.$http.post('http://localhost:8082/db/profil/userskill',this.user)
+      this.$http.post('http://localhost:8082/db/profil/userskill',this.user)
     .then(r=>{
         this.skiller=r.body
+    }),
+    this.$http.get('http://localhost:8082/db/einsatzlanung/getskills')
+    .then(r => {
+      this.$store.commit('addskills', r)
     })
   },
 
@@ -81,3 +87,7 @@ methods:{
 
 
 </script>
+<style scoped>
+
+</style>
+
