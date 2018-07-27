@@ -15,7 +15,7 @@
     <v-layout row>
     <v-flex sm3>
       <div class="headline">{{user.firstname}} {{user.lastname}}</div>
-      <img :src="user.userimg" height="250px" width="250px">
+      <img :src="imagepath" height="250px" width="250px">
       <my-fileupload></my-fileupload>
     </v-flex>
     <v-flex>
@@ -32,7 +32,7 @@
     <div class="headline">Skills</div>
     <v-switch color="primary" v-for="skill in skills" :key="skill.skillid" :label="skill.skillname" v-model="skiller" :value="skill.skillid">
     </v-switch>
-    <p>{{skiller}}</p>
+   
     
   </v-card>  
 </v-dialog>  
@@ -44,7 +44,8 @@ export default {
   data(){
     return{
       dialog:true,
-      skiller:[]
+      skiller:[],
+      path:'../assets/bechtle1.jpg'
     }
   },
   created(){
@@ -67,7 +68,16 @@ computed:{
   skills:{
     get()
     {return this.$store.getters.getskills}
-  }
+  },
+    imagepath(){
+      var path = this.user.firstname+this.user.lastname+this.user.userid
+      console.log(`${path}`)
+      return require('../assets/'+path)
+    }  
+    
+  
+  
+  
 },
 methods:{
   save(){

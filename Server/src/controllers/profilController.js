@@ -31,11 +31,13 @@ module.exports = {
         })
     },
     uploadfiles(req,res){
-        var id = req.file.originalname.split(/^[a-zA-Z]+/)[1];
+        var id = req.file.originalname.replace(/[^0-9]/g,'');
+        
+       
         users.update({
-            userimg:req.file.destination+'/'+req.file.filename
+            userimg:'../assets/'+ req.file.filename
         },{where:{
-          userid:id  
+          userid:id 
         }})
         users.findAll({
             where:{
