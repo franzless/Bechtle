@@ -15,16 +15,45 @@
     <v-layout row>
     <v-flex sm3>
       <div class="headline">{{user.firstname}} {{user.lastname}}</div>
-      <img :src="imagepath" height="250px" width="250px">
+      <img :src="user.userimg" height="250px" width="250px">
       <my-fileupload></my-fileupload>
     </v-flex>
     <v-flex>
       <div class="headline">Persönliche Informationen</div>
       <v-list >
-        <v-list-tile> Vorname: {{user.firstname}} </v-list-tile>
-        <v-list-tile> Nachname: {{user.lastname}} </v-list-tile>
-        <v-list-tile> E-Mail: {{user.email}} </v-list-tile>
-        <v-list-tile> Passwort verändern :{{user.password}}</v-list-tile>
+        <v-layout row>
+          <v-flex xs2>
+            <v-subheader>Vorname</v-subheader>
+          </v-flex>
+          <v-flex xs4>
+            <v-list-tile><v-text-field  :value="user.firstname" ></v-text-field> </v-list-tile>
+          </v-flex>
+        </v-layout>
+         
+        <v-layout row>
+          <v-flex xs2>
+            <v-subheader>Nachname</v-subheader>
+          </v-flex>
+          <v-flex xs4>
+            <v-list-tile><v-text-field  :value="user.lastname" ></v-text-field> </v-list-tile>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2>
+            <v-subheader>E-Mail</v-subheader>
+          </v-flex>
+          <v-flex xs4>
+            <v-list-tile><v-text-field  :value="user.email" ></v-text-field> </v-list-tile>
+          </v-flex>
+        </v-layout>
+        <v-layout row>
+          <v-flex xs2>
+            <v-subheader>Passwort</v-subheader>
+          </v-flex>
+          <v-flex xs4>
+            <v-list-tile><v-text-field :append-icon="show ? 'visibility_off' : 'visibility'" :type="show ? 'text' : 'password'" :value="user.password" @click:append="show = !show" ></v-text-field> </v-list-tile>
+          </v-flex>
+        </v-layout>
       </v-list>
     </v-flex>
     </v-layout>
@@ -45,7 +74,8 @@ export default {
     return{
       dialog:true,
       skiller:[],
-      path:'../assets/bechtle1.jpg'
+      path:'../assets/bechtle1.jpg',
+      show:false
     }
   },
   created(){
@@ -71,7 +101,7 @@ computed:{
   },
     imagepath(){
       var path = this.user.firstname+this.user.lastname+this.user.userid
-      console.log(`${path}`)
+      console.log(path)
       return require('../assets/'+path)
     }  
     
