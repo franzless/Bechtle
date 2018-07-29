@@ -26,7 +26,7 @@
             <v-subheader>Vorname</v-subheader>
           </v-flex>
           <v-flex xs4>
-            <v-list-tile><v-text-field  :value="user.firstname" ></v-text-field> </v-list-tile>
+            <v-list-tile><v-text-field  v-model="user.firstname" ></v-text-field> </v-list-tile>
           </v-flex>
         </v-layout>
          
@@ -75,7 +75,8 @@ export default {
       dialog:true,
       skiller:[],
       path:'../assets/bechtle1.jpg',
-      show:false
+      show:false,
+      userChanged:[]
     }
   },
   created(){
@@ -88,11 +89,14 @@ export default {
       this.$store.commit('addskills', r)
     })
   },
-
+  
 computed:{
   user:{
-    get()
-    {return this.$store.getters.getuser
+    get(){
+    return this.$store.getters.getuser
+    },
+    set(){
+     
     }
   },
   skills:{
@@ -119,10 +123,14 @@ methods:{
     }) 
    this.$http.post('http://localhost:8082/db/profil/updateuserskills', skills)
     .then(()=>{     
-    }) 
-    
+    })
+    this.$http.post('http://localhost:8082/db/profil/updateuser', this.user)
+    .then(r=>{
+      console.log(r)
+    })     
 
   }
+  
 }}
 
 

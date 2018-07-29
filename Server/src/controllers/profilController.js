@@ -48,6 +48,20 @@ module.exports = {
             res.send(r)
         })
         
+    },
+    updateuser(req,res){
+        var data = req.body
+        console.log(data)
+        users.update({
+            firstname:data.firstname,
+            lastname:data.lastname,
+            email:data.email,
+            password:data.password}
+        ,{where:{
+            userid:req.body.userid
+        }}).then(r=>{
+            res.send(r)
+        })
     }
     
     }

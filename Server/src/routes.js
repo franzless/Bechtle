@@ -91,7 +91,10 @@ module.exports = (app) => {
         profilController.updateuserskills
     ),
     app.post('/db/profil/uploadimage',upload.single('userimg'),
-        profilController.uploadfiles)
+        profilController.uploadfiles
+    ),
+    app.post('/db/profil/updateuser',
+        profilController.updateuser)
 
 
             
