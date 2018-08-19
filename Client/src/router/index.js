@@ -53,6 +53,7 @@ export default new Router({
       name: 'einsatzplanung',
       component: einsatzplanung
     }
+    
   ],
   mode: 'history'
 })

@@ -2,6 +2,67 @@
 <div>
     <my-toolbar></my-toolbar>
     <v-btn @click="dialog2=true">test</v-btn>
+<v-content>
+      <v-container fluid grid-list-sm>
+        <v-layout align-start justify-center row wrap>
+          <v-flex xs3 class="elevation-1 pa-3 ma-2 ">
+            <v-list two-line >
+              <v-avatar class="ma-1" tile size="70"><img src="../assets/kärcher.png" ></v-avatar>
+             
+              <v-divider></v-divider>
+              <draggable id="kärcher" v-model="Kärcher" :options="{group:'people'}" style="min-height: 10px">
+                <template v-for="(k,index) in Kärcher"  >
+              <v-list-tile :key="k.einsatzplanid" avatar >
+                <v-list-tile-avatar :style="{ cursor: 'grab'}">
+                  <img src="@/assets/PlatzhalterMann.jpg">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="k.user.firstname +' '+ k.user.lastname" :style="{ cursor: 'grab'}"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="k.status"></v-list-tile-sub-title>
+                </v-list-tile-content>
+                <v-list-tile-action>
+              <v-icon :style="{ cursor: 'pointer'}"
+                  @click="toggle(index)"
+                  v-if="k.value == false"
+                  color="grey lighten-1"
+                >
+                  lock
+                </v-icon>
+
+                <v-icon
+                  v-else
+                  color="yellow darken-2"
+                  @click="toggle(index)"
+                >
+                  lock
+                </v-icon>
+              </v-list-tile-action>
+              </v-list-tile>
+              
+            </template>
+              </draggable>
+            </v-list>
+          </v-flex>
+          <v-flex xs4 class="elevation-1 pa-3 ma-2">
+            
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
  <v-layout row >
      <v-flex xs12 sm6 offset-sm3>
          <v-card class="kärcher">
